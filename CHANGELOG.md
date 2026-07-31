@@ -5,6 +5,36 @@ own changelog in [spec/CHANGELOG.md](spec/CHANGELOG.md); the two version lines
 move independently. Release tags: `v<implementation>` and
 `spec-v<specification>`.
 
+## Unreleased
+
+- Fixed: **the provenance block graded the claims and read as though it
+  graded the arrangement of them.** A label says whether a claim was checked
+  against the project, reported from the conversation or concluded, and it is
+  honest about exactly that. What nothing in the block said is that a section
+  is one model's assembly of a conversation into one place: which claims were
+  gathered together, and in which words, is that model's synthesis even where
+  every claim in the section was checked. A reader taking the label as covering
+  the grouping reads a synthesis as a transcript. The block now closes with
+  its own scope, after the label bullets rather than before them, in all five
+  reference implementations. A document carrying no labels renders the bytes it
+  rendered before: the heading, the framing and the note are emitted together
+  or not at all.
+- Fixed: **the extraction recipe asked why a path was rejected and got
+  verdicts**, and the recipe version moves to **1.5.0** for it. `rejectedPaths`
+  asked for what was attempted and what went wrong or why it was rejected, and
+  a model answering it honestly writes "too slow" or "did not work". That
+  preserves THAT a path is closed and teaches nothing a later reader can act
+  on: they cannot tell whether their own idea is the same dead end, or whether
+  the thing that broke has since been fixed, so the section that exists to stop
+  a retry cannot be checked against. The guidance now asks HOW it failed in
+  observable terms, naming them: the symptom, the measurement, the error, or
+  the cost that appeared. The guard is part of the ask rather than a caveat
+  under it, because a demand for a symptom is a demand a model can meet by
+  inventing one: where only the verdict is genuinely known, the recipe says to
+  say exactly that and move on, an honest gap never blocks a save, and a
+  symptom you do not have is a gap to note rather than a blank to fill
+  (RULE 3).
+
 ## 0.1.0
 
 The first public release, and the only one this file has ever described.

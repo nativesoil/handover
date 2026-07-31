@@ -55,7 +55,7 @@ import { SECTION_KEYS, type SectionKey } from "./sections.js";
  * report of something actually seen rather than an assumption made downstream.
  * A document from another writer may still lack it and stays valid.
  */
-export const RECIPE_VERSION = "1.4.0" as const;
+export const RECIPE_VERSION = "1.5.0" as const;
 
 /**
  * The SHARED RULES: the non-negotiable contract every Soil handover obeys.
@@ -158,7 +158,7 @@ export const SECTION_GUIDANCE: Readonly<Record<SectionKey, string>> =
     constraints:
       "The hard invariants and non-negotiables this project must never violate — the rules that, if broken, make the work wrong: safety/compliance limits, budget or scope ceilings, platform/contract requirements, performance or correctness bars, and any 'this must always hold' the user locked. State each as a firm invariant with the reason it binds; capture safe verbatim user instructions where the user locked it, and state exact safe limits VERBATIM (numbers, thresholds, version pins — never secrets), never rounded or paraphrased. A constraint that binds only under stated circumstances keeps its VALIDITY CONDITIONS attached ('valid while/until/only when ...'); carrying it forward without its bound turns a scoped rule into a false absolute. Absence of conditions is normal — never invent one. These are carried forward and must not be quietly relaxed. Note confidence; 'none' only if there are genuinely none.",
     rejectedPaths:
-      "The approaches that were TRIED and ABANDONED, and WHY — the dead ends, reverted experiments, and explicitly-rejected options, carried forever so the next model does not retry them. For each, capture what was attempted, what went wrong or why it was rejected, and any residue it left. This is the institutional memory of what NOT to do; never drop it just because it is old. Note confidence and source class; 'none' if nothing has been rejected yet.",
+      "The approaches that were TRIED and ABANDONED, and WHY — the dead ends, reverted experiments, and explicitly-rejected options, carried forever so the next model does not retry them. For each, capture what was attempted, HOW it failed in observable terms (the symptom, the measurement, the error, or the cost that appeared), and any residue it left. A bare verdict ('too slow', 'did not work') records THAT a path was closed and teaches nothing: a later reader cannot tell whether their own idea is the same dead end, or whether the thing that broke has since been fixed. Where only the verdict is genuinely known, say exactly that and move on. An honest gap never blocks a save, and an invented symptom is worse than a missing one: a symptom you do not have is a gap to note, not a blank to fill (RULE 3). This is the institutional memory of what NOT to do; never drop it just because it is old. Note confidence and source class; 'none' if nothing has been rejected yet.",
     // --- Tier B — the latest (this session's frontier) ---
     executiveSummary:
       "One screen the next model reads first: what this project is, its purpose and domain, where it stood at capture, and the single most important thing to do next. Comprehensive but high-signal — enough that a cold reader is oriented before reading anything else. Note confidence and any coverage gaps.",

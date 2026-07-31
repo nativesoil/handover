@@ -16,7 +16,7 @@ and in every SDK in the same commit, and it bumps the recipe version.
 
 ## The recipe version
 
-The current recipe version is **1.4.0**, and both files print it on their own
+The current recipe version is **1.5.0**, and both files print it on their own
 first line.
 
 That first line is not decoration. Nothing in this repository stamps
