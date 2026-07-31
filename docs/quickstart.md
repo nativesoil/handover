@@ -27,7 +27,7 @@ alias soil="node $PWD/packages/cli/bin/soil.js"
 Check it:
 
 ```bash
-soil --version     # 0.1.0 (spec 1.0)
+soil --version     # 0.2.0 (spec 1.0)
 soil where         # ~/.soil
 ```
 
@@ -87,6 +87,11 @@ Three tools appear: `soil_save`, `soil_load`, `soil_list`. Then:
 > Save the project state.
 
 > Load handover #001 and pick up where we left off.
+
+> Save this into @acme.
+
+The last one addresses a project, a shared container inside the same store;
+the "Projects" section below says what that is and how one is created.
 
 The MCP server and the CLI share `~/.soil`, so a handover saved from your
 editor loads in your terminal, and the other way round.
@@ -216,6 +221,48 @@ soil render '#001'           # the card, without the restore prompt
 soil validate handover.json  # check a document against the spec
 ```
 
+## Projects
+
+A project is a shared container of handovers inside the same store, for work
+that more than one thread keeps coming back to. The grammar is the same
+everywhere: `@` says where, `#` says which.
+
+```bash
+soil project add acme        # create the container; a save never creates one
+soil save - @acme            # store the model's reply into it
+soil list @acme              # what the project holds
+soil load @acme              # its newest handover
+soil load @acme '#003'       # one of its codes
+soil project remove acme     # remove it; refuses while it holds handovers,
+                             # --purge deletes the handovers with it
+```
+
+A save without `@` is personal, always, and is never filed into a project on
+its own. The other direction holds too: saving to a project that does not
+exist is refused, and the message names the command that creates it, because a
+handover written somewhere you did not ask for is worse than a command you
+have to run first. `soil project remove` keeps the same shape: an empty
+project is removed directly, one that still holds handovers refuses and names
+`soil project remove acme --purge`, and no project command ever touches a
+personal save.
+
+Codes are per container: `#001` in your personal store and `#001` in `@acme`
+are different handovers, told apart by the reference. The MCP tools take the
+same reference as an optional `project` argument, so a connected assistant
+saves into `@acme` too; creating and removing projects stays at the terminal,
+on purpose.
+
+The container is not a private dialect. `~/.soil/projects/acme` is byte for
+byte the store the self-hostable server serves for a shared project
+([server.md](server.md)), so the day a project outgrows one machine, the
+operator points `soil-server` at the same data, registers the project and its
+members, and every handover already in it is served unchanged. Membership and
+tokens are the server's concern; the files are the same files.
+
+A project today is exactly this: a shared container of handovers. Accumulated
+project knowledge on top of these containers is planned as a next step, and
+this page will describe it when it exists rather than before.
+
 ## When the thread is already dead
 
 Sometimes there is no room left to run anything, or the assistant has no tools
@@ -233,13 +280,19 @@ normal handover with a normal load code.
 
 ```
 ~/.soil/
-  index.json          the code counter and one row per handover
-  handovers/001.json  the documents
+  index.json               the code counter and one row per handover
+  handovers/001.json       the documents
+  projects/acme/           one container per project, the same layout again
+    index.json
+    handovers/001.json
 ```
 
 Plain JSON. Read them with `cat`, back them up with anything, keep them in a
-private git repo if you want a history. Set `SOIL_HOME` to put the store
-somewhere else.
+private git repo if you want a history. Set `SOIL_HOME` to put the whole store
+somewhere else; that is an isolation escape hatch (tests, a scratch machine),
+not how work is separated. Projects are containers inside the one store,
+managed by `soil project`, and nothing here ever asks you to create a
+directory or wire an environment variable per project.
 
 ## Check a capture
 
@@ -249,6 +302,10 @@ soil check '#001'
 
 That grades the capture against deterministic, documented rules
 ([checking.md](checking.md)): completeness, self-containment, time anchoring,
-decisions carrying their reasons. The grade is printed, never stored on the
-handover. It does not tell you whether the handover would actually restore a
-session; only a real load into a real target answers that.
+decisions carrying their reasons. Every save already runs the same rules and
+prints the grade and the finding counts on the receipt, so a weak capture is
+named at the moment you can still do something about it; `soil check` is the
+full report, finding by finding. A grade informs and never blocks a save: an
+honest gap is worth more than a tidy handover. The grade is printed, never
+stored on the handover. It does not tell you whether the handover would
+actually restore a session; only a real load into a real target answers that.

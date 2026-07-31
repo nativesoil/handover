@@ -59,7 +59,7 @@ describe("protocol", () => {
         "io.modelcontextprotocol/serverInfo": {
           name: "soil-handover",
           title: "Soil Handover (local)",
-          version: "0.1.0",
+          version: "0.2.0",
         },
       },
     });
@@ -456,7 +456,7 @@ describe("working-style capture", () => {
     expect(stored.observations).toHaveLength(1);
     const observation = stored.observations?.[0];
     expect(observation?.kind).toBe("working.style");
-    expect(observation?.producedBy).toBe("@nativesoil/handover-mcp 0.1.0");
+    expect(observation?.producedBy).toBe("@nativesoil/handover-mcp 0.2.0");
     expect(observation?.producedAt).toBe("2026-07-22T10:00:00.000Z");
     const instances = observation?.data["instances"] as {
       situation: string;
@@ -523,7 +523,7 @@ describe("working-style capture", () => {
     expect(text).toMatch(
       /^=== soil:[0-9a-f]{32} WORKING STYLE, RECORDED INSTANCES ===$/m,
     );
-    expect(text).toContain("Evidence from @nativesoil/handover-mcp 0.1.0");
+    expect(text).toContain("Evidence from @nativesoil/handover-mcp 0.2.0");
     expect(text).toContain("the section wins");
     expect(text).toContain(ANSWERS.assumption);
     expect(text.indexOf("the section wins")).toBeGreaterThan(
@@ -705,7 +705,7 @@ describe("the producer surface", () => {
       note: "A producer this reader postdates.",
     });
     expect(stored.observations?.[0]?.producedBy).toBe(
-      "@nativesoil/handover-mcp 0.1.0",
+      "@nativesoil/handover-mcp 0.2.0",
     );
 
     // Every one of the 17 keys is present in the stored document: a gap is

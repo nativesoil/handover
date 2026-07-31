@@ -1,4 +1,8 @@
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { checkHandover } from "@nativesoil/handover-sdk";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import {
@@ -65,6 +69,108 @@ describe("the HTTP API", () => {
       });
       expect(response.status).toBe(401);
       await response.text();
+    });
+  });
+
+  describe("check at save", () => {
+    // The strong document is the install guide's own inline test document,
+    // read out of the guide rather than copied, so the `strong` this test
+    // expects and the `strong` the guide promises are one claim. The guide's
+    // executed test already holds that document to the grade.
+    const strongDocument = (): Record<string, unknown> => {
+      const guide = readFileSync(
+        join(
+          dirname(fileURLToPath(import.meta.url)),
+          "../../..",
+          "docs/install-with-an-agent.md",
+        ),
+        "utf8",
+      );
+      const block = [...guide.matchAll(/```json\n([\s\S]*?)```/g)]
+        .map((match) => match[1] ?? "")
+        .find((body) => body.includes("install-smoke-test"));
+      expect(block).toBeDefined();
+      return JSON.parse(block as string) as Record<string, unknown>;
+    };
+
+    it("reports the grade and finding counts on the receipt, for a strong document", async () => {
+      const saved = await requestJson(
+        ts.base,
+        "POST",
+        "/v1/handovers",
+        tokens.alice,
+        strongDocument(),
+      );
+      expect(saved.status).toBe(201);
+      const check = asRecord(asRecord(saved.json)["check"]);
+      expect(check["grade"]).toBe("strong");
+      expect(check["problems"]).toBe(0);
+      expect(check["cautions"]).toBe(0);
+      expect(typeof check["advice"]).toBe("number");
+    });
+
+    it("reports a poor grade on a thin document without changing the status", async () => {
+      // A finished document through this door declares all 17 sections, so
+      // the thin fixture starts from the valid one and empties it down to a
+      // single one-line section.
+      const document = validHandover();
+      const sections = document["sections"] as Record<string, unknown>;
+      sections["projectIdentity"] = { status: "missing", summary: null };
+      sections["decisions"] = { status: "missing", summary: null };
+      sections["executiveSummary"] = {
+        status: "available",
+        summary: "Some work happened.",
+      };
+      const saved = await requestJson(
+        ts.base,
+        "POST",
+        "/v1/handovers",
+        tokens.alice,
+        document,
+      );
+      // The grade never touches the status: an honest gap never blocks a
+      // save, so a poorly graded document is stored and answered 201 exactly
+      // like a strong one.
+      expect(saved.status).toBe(201);
+      const receipt = asRecord(saved.json);
+      expect(receipt["code"]).toBe("#001");
+      const check = asRecord(receipt["check"]);
+      expect(["thin", "failing"]).toContain(check["grade"]);
+
+      // The wire grade is the deterministic checker's verdict on the stored
+      // document itself, not a second opinion: recompute it from what a load
+      // hands back and the two must agree.
+      const loaded = await requestJson(
+        ts.base,
+        "GET",
+        "/v1/handovers/%23001",
+        tokens.alice,
+      );
+      const stored = asRecord(loaded.json)["handover"];
+      const report = checkHandover(stored as never);
+      expect(check["grade"]).toBe(report.grade);
+      expect(check["problems"]).toBe(report.counts.problems);
+      expect(check["cautions"]).toBe(report.counts.cautions);
+      expect(check["advice"]).toBe(report.counts.advice);
+    });
+
+    it("writes nothing from the report onto the stored document", async () => {
+      await requestJson(
+        ts.base,
+        "POST",
+        "/v1/handovers",
+        tokens.alice,
+        validHandover(),
+      );
+      const loaded = await requestJson(
+        ts.base,
+        "GET",
+        "/v1/handovers/%23001",
+        tokens.alice,
+      );
+      const stored = asRecord(asRecord(loaded.json)["handover"]);
+      expect(stored["check"]).toBeUndefined();
+      expect(stored["grade"]).toBeUndefined();
     });
   });
 

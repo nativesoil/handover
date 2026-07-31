@@ -71,10 +71,23 @@
  * and the interface is the door most callers go through.
  *
  * Descriptions say exactly what the tool does, including what it does not do.
- * A local save stores what the model wrote and counts the sections that carry
- * content. Grading is the CLI's job (soil check), not this server's, so it
- * does not claim either.
+ * A local save stores what the model wrote, counts the sections that carry
+ * content, and runs the open deterministic check (the same rules `soil check`
+ * applies) on the stored document, reporting the grade. The grade informs and
+ * never refuses a save, and it is never written onto the handover: the format
+ * has no grade field and will not get one.
+ *
+ * Projects are first-class containers here, with the same semantics the
+ * self-hosted server exposes: an optional `project` argument on every tool
+ * addresses `projects/<name>` inside the store root, which is byte for byte
+ * the store layout that server serves for its shared projects. Membership
+ * administration stays a server concern; locally there is one operator, and
+ * the data is what unifies the two: a container written here is served there
+ * unchanged.
  */
+
+import { existsSync, readdirSync, statSync } from "node:fs";
+import { join } from "node:path";
 
 import {
   HandoverStore,
@@ -82,12 +95,14 @@ import {
   SECTION_KEYS,
   SECTION_STATUSES,
   buildRestorePrompt,
+  checkHandover,
   countSections,
   normalizeHandover,
   renderList,
   renderSaved,
   uuidv7,
   validateHandover,
+  type CheckReport,
   type HandoverObservation,
   type SectionKey,
 } from "@nativesoil/handover-sdk";
@@ -113,6 +128,28 @@ export interface ToolDefinition {
   readonly description: string;
   readonly inputSchema: Record<string, unknown>;
 }
+
+/**
+ * What a project reference may name. The same rule, in the same words, as the
+ * self-hosted server's `PROJECT_ID_PATTERN` in
+ * `packages/server/src/registry.ts`, because the project containers this
+ * server writes are exactly the stores that server serves, and a name one of
+ * the two refuses is a directory the other cannot use. A test holds the two
+ * patterns equal.
+ */
+export const PROJECT_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
+
+/**
+ * The `project` argument, shared by all three tools. The reference follows
+ * the product's one command grammar: `@` says where, `#` says which, so
+ * `@acme` and `acme` name the same project and the leading `@` is the way the
+ * grammar spells it.
+ */
+const PROJECT_ARG = {
+  type: "string",
+  description:
+    'Optional. A project reference, e.g. "@acme" (the leading @ may be left out). With it, the save, load or list runs against that project\'s shared container inside the local store; without it, against your personal store. A project is never created by a save and a reference never falls back to personal: an unknown project is refused, and the fix it names is to run `soil project add <name>` first. Leaving the argument out is the only way to address your personal store: a project stated as anything other than a name is refused, never read as though you had left it out, because a handover written somewhere you did not ask for is worse than a call you have to make again.',
+} as const;
 
 function sectionProperties(): Record<string, unknown> {
   const properties: Record<string, unknown> = {};
@@ -245,7 +282,7 @@ export const TOOLS: readonly ToolDefinition[] = Object.freeze([
     name: "soil_save",
     title: "Save handover",
     description:
-      "Save the working state of this project as a Soil handover in the local store (~/.soil), and return its load code. Fill every section you can from this conversation and the project's real state: enumerate every locked decision with its reason, and keep the project's own vocabulary word for word. Never include secrets, credentials, tokens or private absolute paths: say that the thing exists and where it is configured, never its value. A save carrying credential-shaped material is refused and nothing is stored. A section you cannot fill honestly should be left out rather than padded, and a section you withheld for safety belongs in sectionStatus as blocked, with a line saying what exists and where. Label each section's origin in sectionProvenance so a cold reader can tell what was checked from what was reported or guessed. This is a local file write: nothing is sent anywhere. The save reports how many of the 17 sections carry content, and does not grade what you write. Alongside the sections, answer the four working-style questions from real moments in this thread when you can: they are optional, a save without them succeeds unchanged, and the answers are recorded as evidence rather than graded.",
+      "Save the working state of this project as a Soil handover in the local store (~/.soil), personally or into a project container, and return its load code. Fill every section you can from this conversation and the project's real state: enumerate every locked decision with its reason, and keep the project's own vocabulary word for word. Never include secrets, credentials, tokens or private absolute paths: say that the thing exists and where it is configured, never its value. A save carrying credential-shaped material is refused and nothing is stored. A section you cannot fill honestly should be left out rather than padded, and a section you withheld for safety belongs in sectionStatus as blocked, with a line saying what exists and where. Label each section's origin in sectionProvenance so a cold reader can tell what was checked from what was reported or guessed. This is a local file write: nothing is sent anywhere. The save reports how many of the 17 sections carry content, and runs the open deterministic document check on what was stored, reporting its grade and findings. The grade informs and never refuses a save, and only a real load shows what a target model actually keeps. Alongside the sections, answer the four working-style questions from real moments in this thread when you can: they are optional, a save without them succeeds unchanged, and the answers are recorded as evidence rather than graded.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -265,6 +302,7 @@ export const TOOLS: readonly ToolDefinition[] = Object.freeze([
           type: "string",
           description: "A short human title for this handover.",
         },
+        project: PROJECT_ARG,
         sections: {
           type: "object",
           additionalProperties: false,
@@ -334,8 +372,9 @@ export const TOOLS: readonly ToolDefinition[] = Object.freeze([
         code: {
           type: "string",
           description:
-            'The load code, e.g. "#004". Use "last" or leave it out for the most recent handover. Leaving it out is the only way to ask for the most recent one: a code stated as anything other than text is refused rather than read as "last", because being handed a different handover than the one you asked for is worse than being told to ask again.',
+            'The load code, e.g. "#004". Use "last" or leave it out for the most recent handover in the addressed store. Leaving it out is the only way to ask for the most recent one: a code stated as anything other than text is refused rather than read as "last", because being handed a different handover than the one you asked for is worse than being told to ask again.',
         },
+        project: PROJECT_ARG,
       },
     },
   },
@@ -343,12 +382,14 @@ export const TOOLS: readonly ToolDefinition[] = Object.freeze([
     name: "soil_list",
     title: "List handovers",
     description:
-      "List the handovers in the local store, newest first, with their load codes and how many of the 17 sections carry content. Local only.",
+      "List the handovers in the local store, newest first, with their load codes, where each lives (personal or a project container), and how many of the 17 sections carry content. Local only.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
       required: [],
-      properties: {},
+      properties: {
+        project: PROJECT_ARG,
+      },
     },
   },
 ]);
@@ -364,6 +405,30 @@ function text(body: string, isError = false): ToolResult {
     content: [{ type: "text", text: body }],
     ...(isError ? { isError: true } : {}),
   };
+}
+
+/** `1 problem`, `2 problems`. The same spelling `soil check` prints. */
+function pluralize(n: number, word: string): string {
+  return `${n} ${word}${n === 1 ? "" : "s"}`;
+}
+
+/**
+ * The one line a save adds about the deterministic document check it just ran
+ * on what was stored: the grade band and the finding counts, in the vocabulary
+ * `soil check` prints. This is the open save-time baseline from
+ * `docs/checking.md`, run on the document alone. The grade informs and never
+ * refuses a save: an honest gap is worth more than a tidy handover, and
+ * whether a handover actually restores a session is answered only by a real
+ * load.
+ */
+function checkedAtSaveLine(report: CheckReport): string {
+  return (
+    `Checked at save: ${report.grade} · ` +
+    `${pluralize(report.counts.problems, "problem")} · ` +
+    `${pluralize(report.counts.cautions, "caution")} · ` +
+    `${report.counts.advice} advice. ` +
+    "The deterministic document check informs and never blocks a save; only a real load proves restore."
+  );
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -383,6 +448,7 @@ const TRANSLATED_ARGUMENTS: readonly string[] = Object.freeze([
   "sectionProvenance",
   "observations",
   "workingStyle",
+  "project",
 ]);
 
 /**
@@ -591,6 +657,7 @@ const READ_SHAPE: Readonly<Record<string, string>> = {
   sectionStatus: "an object",
   sectionProvenance: "an object",
   code: "a non-empty string",
+  project: "a project reference such as @acme",
 };
 
 /**
@@ -682,6 +749,18 @@ function discardedValueIssues(
   input: Record<string, unknown>,
 ): StatedIssue[] {
   const issues: StatedIssue[] = [];
+  // `project` is checked on all three tools, because all three read it to
+  // decide which store they are talking to, and a save is not the only call
+  // that can answer about the wrong one. A stated reference that is not a
+  // usable name is refused, never read as absent: the destination is the one
+  // thing the caller was most explicit about.
+  const project = input["project"];
+  if (project !== undefined && projectSlug(project) === undefined) {
+    issues.push({
+      path: "/project",
+      message: `must be ${READ_SHAPE["project"]}`,
+    });
+  }
   if (name === "soil_save") {
     const sections = input["sections"];
     if (sections !== undefined && !isRecord(sections)) {
@@ -712,6 +791,73 @@ function discardedValueIssues(
 /** Whether a stated load code is one this surface can look up. */
 function isLoadCode(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
+}
+
+/**
+ * The project name a stated reference addresses, or `undefined` when the value
+ * is not a usable reference. `@acme` and `acme` are the same reference: the
+ * grammar is `@` says where, `#` says which, and the `@` is the marker rather
+ * than part of the name. A bare `@`, an empty string, or anything that is not
+ * text is unusable, and the caller is refused rather than defaulted.
+ */
+function projectSlug(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const raw = value.trim();
+  const slug = raw.startsWith("@") ? raw.slice(1) : raw;
+  return slug.length > 0 ? slug : undefined;
+}
+
+/**
+ * The store a project reference addresses: `projects/<name>` inside the same
+ * store root, which is byte for byte the layout the self-hosted server serves
+ * for its shared projects. `soil-server` pointed at the same directory serves
+ * these containers unchanged; that identity is held by a test against the
+ * server's own store code.
+ */
+function projectStore(store: HandoverStore, slug: string): HandoverStore {
+  return new HandoverStore(join(store.root, "projects", slug));
+}
+
+/** Whether a project container exists under this store root. */
+function projectExists(store: HandoverStore, slug: string): boolean {
+  const root = join(store.root, "projects", slug);
+  return existsSync(root) && statSync(root).isDirectory();
+}
+
+/** Every project container under this store root, name-sorted. */
+function projectNames(store: HandoverStore): readonly string[] {
+  const dir = join(store.root, "projects");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((name) => PROJECT_ID_PATTERN.test(name))
+    .filter((name) => statSync(join(dir, name)).isDirectory())
+    .sort();
+}
+
+/**
+ * Refuse a call that referenced a project this store does not have.
+ *
+ * A project is never created by a save and a stated reference never falls back
+ * to the personal store: creating a container is a decision, and it has its
+ * own command. The refusal names that command exactly, so the fix is a paste.
+ */
+function refuseUnknownProject(name: string, slug: string): ToolResult {
+  const lead =
+    name === "soil_save"
+      ? "The handover was not saved: there is no project named " +
+        `${slug} in this store.`
+      : `The call was refused: there is no project named ${slug} in this store.`;
+  return text(
+    [
+      lead,
+      `A project is never created by a ${
+        name === "soil_save" ? "save" : "call"
+      }, and a stated project reference never falls back to your personal store.`,
+      `Create it first with: soil project add ${slug}`,
+      "Or leave the project argument out to address your personal store.",
+    ].join("\n"),
+    true,
+  );
 }
 
 /**
@@ -950,6 +1096,17 @@ export function callTool(
     if (discarded.length > 0) return refuseDiscarded(name, discarded);
   }
 
+  // The destination is resolved before anything else happens to the call: a
+  // reference to a project this store does not have is refused whole, and only
+  // an ABSENT `project` means personal. A save is never filed into a project
+  // nobody named, and a named project is never quietly created or replaced by
+  // the personal store.
+  const slug = projectSlug(input["project"]);
+  if (slug !== undefined && !projectExists(store, slug)) {
+    return refuseUnknownProject(name, slug);
+  }
+  const target = slug === undefined ? store : projectStore(store, slug);
+
   switch (name) {
     case "soil_save": {
       // `createdAt` is set here, not by normalization. This tool IS the
@@ -1009,8 +1166,13 @@ export function callTool(
           true,
         );
       }
-      const entry = store.save(candidate);
+      const entry = target.save(candidate);
       const counts = countSections(candidate);
+      // The deterministic document check, run at save on the document that
+      // was just stored. The report is ephemeral output: nothing from it is
+      // written onto the handover, because the format has no grade field and
+      // will not get one.
+      const report = checkHandover(target.read(entry.code));
       // A gap is a section with nothing in it. A section withheld for safety
       // has its own line below, and one this project has no subject for is not
       // a gap at all: that status exists to tell the next reader to stop
@@ -1030,7 +1192,8 @@ export function callTool(
         [
           renderSaved(candidate, entry.code),
           "",
-          `Saved locally as ${entry.code}. ${counts.withContent} of ${counts.total} sections carry content. That is structural content presence, not a measure of completeness.`,
+          `Saved locally${slug === undefined ? "" : ` into project ${slug}`} as ${entry.code}. ${counts.withContent} of ${counts.total} sections carry content. That is structural content presence, not a measure of completeness.`,
+          checkedAtSaveLine(report),
           gaps.length > 0
             ? `Sections with nothing in them: ${gaps.join(", ")}.`
             : "",
@@ -1047,7 +1210,9 @@ export function callTool(
             ? `${built.entries.length} observation(s) ride with this handover, attributed to this server and carried unchanged by any reader.`
             : "",
           ...workingStyleReport(style.dropped),
-          `Load it in any other session with: soil load ${entry.code}`,
+          slug === undefined
+            ? `Load it in any other session with: soil load ${entry.code}`
+            : `Load it in any other session with: soil load @${slug} ${entry.code}`,
         ]
           .filter(Boolean)
           .join("\n"),
@@ -1060,7 +1225,7 @@ export function callTool(
       // documented way to ask for the newest handover; asking for `1` and being
       // handed the newest is a different document than the one requested.
       const code = isLoadCode(input["code"]) ? input["code"].trim() : "last";
-      const handover = store.read(code);
+      const handover = target.read(code);
       // Recorded working-style instances are part of the prompt the assembler
       // builds, not a block appended to it: only the assembler holds this
       // render's marker, so only the assembler can write a heading a document
@@ -1070,8 +1235,36 @@ export function callTool(
     }
 
     case "soil_list": {
+      // With a project reference, exactly that container. Without one,
+      // everything the store holds: the personal handovers first, then each
+      // project container, which is the same order the self-hosted server
+      // lists for a member of every project.
+      if (slug !== undefined) {
+        const entries = target.list();
+        if (entries.length === 0) {
+          return text(`Nothing saved in project ${slug} yet.`);
+        }
+        return text(
+          [
+            renderList(entries),
+            "",
+            ...entries.map(
+              (entry) =>
+                `${entry.code}  ${entry.title}  (project ${slug}, ${entry.projectId}, ${entry.sectionsWithContent}/17 sections carrying content, saved ${entry.createdAt})`,
+            ),
+          ].join("\n"),
+        );
+      }
       const entries = store.list();
-      if (entries.length === 0) {
+      const projectLines: string[] = [];
+      for (const project of projectNames(store)) {
+        for (const entry of projectStore(store, project).list()) {
+          projectLines.push(
+            `${entry.code}  ${entry.title}  (project ${project}, ${entry.projectId}, ${entry.sectionsWithContent}/17 sections carrying content, saved ${entry.createdAt})`,
+          );
+        }
+      }
+      if (entries.length === 0 && projectLines.length === 0) {
         return text("The local store is empty. Nothing has been saved yet.");
       }
       return text(
@@ -1082,6 +1275,7 @@ export function callTool(
             (entry) =>
               `${entry.code}  ${entry.title}  (${entry.projectId}, ${entry.sectionsWithContent}/17 sections carrying content, saved ${entry.createdAt})`,
           ),
+          ...projectLines,
         ].join("\n"),
       );
     }

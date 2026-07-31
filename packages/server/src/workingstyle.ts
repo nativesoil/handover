@@ -53,7 +53,7 @@ import type { HandoverObservation } from "@nativesoil/handover-sdk";
  * the claim and can tell an instance recorded here from one recorded by the
  * local stdio server, exactly as spec/observations.md asks of a `producedBy`.
  */
-export const WORKING_STYLE_PRODUCER = "@nativesoil/handover-server 0.1.0";
+export const WORKING_STYLE_PRODUCER = "@nativesoil/handover-server 0.2.0";
 
 /**
  * An answer longer than this is dropped. Four sentences about one moment fit

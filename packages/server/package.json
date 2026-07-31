@@ -1,6 +1,6 @@
 {
   "name": "@nativesoil/handover-server",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A self-hostable single-node reference server for the Soil Handover Specification: bearer-token users, shared projects, an HTTP API and an MCP endpoint over the same plain-file stores.",
   "license": "Apache-2.0",
   "repository": {

@@ -51,6 +51,17 @@ export {
 export { HANDOVER_ID_PATTERN, isHandoverId, uuidv7 } from "./identity.js";
 
 export {
+  CLAIM_ID_DOMAIN,
+  CLAIM_ID_LENGTH,
+  CLAIM_KINDS,
+  ClaimIdentityError,
+  claimId,
+  isClaimKind,
+  normalizeClaimStatement,
+  type ClaimKind,
+} from "./claim.js";
+
+export {
   HandoverValidationError,
   assertHandover,
   validateHandover,

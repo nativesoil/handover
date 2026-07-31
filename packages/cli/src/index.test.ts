@@ -299,7 +299,7 @@ describe("soil check", () => {
     expect(after.code).toBe("#001");
     expect(after.observations).toHaveLength(1);
     expect(after.observations[0]?.kind).toBe("quality.capture");
-    expect(after.observations[0]?.producedBy).toBe("soil-cli/0.1.0");
+    expect(after.observations[0]?.producedBy).toBe("soil-cli/0.2.0");
     expect(after.observations[0]?.producedAt).toBe("2026-07-22T10:00:00.000Z");
     // The report keeps its grade; the document never receives one.
     expect(after.observations[0]?.data["grade"]).toBeUndefined();

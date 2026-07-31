@@ -1,0 +1,287 @@
+{
+  "description": "The cross-language identity corpus for project-knowledge claims. A claim's identifier is derived from its content, never allocated: the same statement of the same kind gets the same identifier in every implementation, on every machine, with no shared state. That property is the whole mechanism, and it fails silently if two implementations normalize a statement differently, so this corpus exists before any implementation and every implementation is held to it. The rows that must DIFFER matter more than the rows that must agree: an implementation that reaches for its language's Unicode-aware string helpers passes every sameness row and fails only here.",
+  "identity": {
+    "hash": "SHA-256",
+    "domain": "soil.claim.v1",
+    "idLength": 16,
+    "derivation": "The identifier is the first 16 lowercase hexadecimal characters of SHA-256 over: the UTF-8 bytes of the domain string, one 0x0A byte, the UTF-8 bytes of the kind key, one 0x0A byte, the normalized statement bytes. The three parts cannot bleed into each other: the domain and the kind keys contain no 0x0A, and normalization removes every 0x0A from the statement."
+  },
+  "normalization": {
+    "unit": "The rules operate on the UTF-8 bytes of the statement. Every rule touches only bytes below 0x80, and no byte of a multi-byte UTF-8 sequence is below 0x80, so the rules cannot corrupt a sequence and need no decoder.",
+    "rules": [
+      "1. Encode the statement as UTF-8.",
+      "2. Whitespace is exactly the four bytes 0x09, 0x0A, 0x0D and 0x20. No other byte and no other code point is whitespace.",
+      "3. Remove leading and trailing whitespace bytes.",
+      "4. Replace every remaining maximal run of whitespace bytes with a single 0x20.",
+      "5. Replace every byte in 0x41..0x5A with the byte 0x20 higher, folding A..Z to a..z. No other byte changes.",
+      "6. Nothing else changes. No Unicode normalization form is applied, no locale is consulted, and every byte of 0x80 and above passes through untouched.",
+      "7. A statement that is empty after rule 3 has no identifier and is refused."
+    ],
+    "forbiddenOperations": "The built-ins that look like these rules and are not: every general-purpose lower-casing helper (toLowerCase, toLocaleLowerCase, lower, casefold, strings.ToLower, Character.toLowerCase, String.lowercase, ToLower, ToLowerInvariant), every whitespace character class or Unicode-aware trim (the regex class \\s, trim, strip, strings.TrimSpace, isspace, char.IsWhiteSpace), every Unicode normalization form (NFC, NFD, NFKC, NFKD, String.normalize, unicodedata.normalize, java.text.Normalizer, String.Normalize, x/text/unicode/norm), and every locale-aware operation (Intl, collators, the locale module, culture-sensitive comparisons). Each of them gives a different answer in at least one of the five languages or at least one locale, and a one-byte divergence does not fail a test, it quietly splits one claim into two."
+  },
+  "kinds": {
+    "note": "The claim kinds are exactly the section keys whose tier is durable, read from the implementation's own tier table rather than restated by hand, so the two cannot drift. Rank order puts constraints and decisions first; the remaining four follow in the canonical section order.",
+    "ranked": [
+      "constraints",
+      "decisions",
+      "projectIdentity",
+      "workflow",
+      "architecture",
+      "rejectedPaths"
+    ]
+  },
+  "sameId": [
+    {
+      "name": "ascii case folds",
+      "kind": "decisions",
+      "id": "bd34d7b50ae2328e",
+      "statements": [
+        "Charge on shipment, not on order",
+        "charge on shipment, not on order",
+        "CHARGE ON SHIPMENT, NOT ON ORDER",
+        "cHARGE ON sHIPMENT, NOT ON ORDER"
+      ],
+      "note": "Rule 5: A..Z fold to a..z, so restating a decision with different capitalisation is the same claim."
+    },
+    {
+      "name": "edge whitespace is stripped",
+      "kind": "constraints",
+      "id": "a2f53163225e2995",
+      "statements": [
+        "Refunds settle within 30 days",
+        "  Refunds settle within 30 days",
+        "Refunds settle within 30 days \t",
+        "\nRefunds settle within 30 days\r\n"
+      ],
+      "note": "Rule 3: the four whitespace bytes are stripped at both ends, including tab, line feed and carriage return."
+    },
+    {
+      "name": "interior runs collapse to one space",
+      "kind": "workflow",
+      "id": "7efcc379e747b9b8",
+      "statements": [
+        "Review before merge",
+        "Review  before   merge",
+        "Review\tbefore merge",
+        "Review \r\n before merge"
+      ],
+      "note": "Rule 4: every interior run of the four whitespace bytes becomes one 0x20, so a rewrapped statement is the same claim."
+    },
+    {
+      "name": "bytes above 0x7f pass through while the ascii rules still apply",
+      "kind": "architecture",
+      "id": "471da076323a96c5",
+      "statements": [
+        "café menu lives in the repo",
+        " Café  MENU lives in the repo "
+      ],
+      "note": "Rules 3, 4 and 5 apply around a non-ASCII character without touching it: both statements carry U+00E9 in composed form and normalize to the same bytes."
+    },
+    {
+      "name": "every erasable difference at once",
+      "kind": "rejectedPaths",
+      "id": "735659330e839dad",
+      "statements": [
+        "No SQLite in production",
+        "\tNO   sqlite IN\nPRODUCTION "
+      ],
+      "note": "All three erasures in one row: edge whitespace, interior runs and ASCII case."
+    }
+  ],
+  "mustDiffer": [
+    {
+      "name": "composed form and decomposed form",
+      "left": {
+        "kind": "decisions",
+        "statement": "café menu",
+        "id": "d52a27164cda898c"
+      },
+      "right": {
+        "kind": "decisions",
+        "statement": "café menu",
+        "id": "e4f82fc13a5e60a5"
+      },
+      "note": "U+00E9 against U+0065 U+0301: the two render identically and are different bytes. An implementation applying any Unicode normalization form merges them; rule 6 forbids exactly that."
+    },
+    {
+      "name": "a sharp s and its full case fold",
+      "left": {
+        "kind": "decisions",
+        "statement": "straße route",
+        "id": "10772261d6f805de"
+      },
+      "right": {
+        "kind": "decisions",
+        "statement": "strasse route",
+        "id": "a58c4953675cab67"
+      },
+      "note": "A full case fold maps U+00DF to the two letters ss, so a casefold-based implementation merges these. Rule 5 folds only A..Z and leaves U+00DF alone."
+    },
+    {
+      "name": "a dotted capital i and its locale mapping",
+      "left": {
+        "kind": "decisions",
+        "statement": "İstanbul plans",
+        "id": "a4de368231d69d96"
+      },
+      "right": {
+        "kind": "decisions",
+        "statement": "istanbul plans",
+        "id": "19edde6d96185426"
+      },
+      "note": "U+0130 lower-cases to different results under the root locale and the Turkish locale, which is the definition of an answer this corpus cannot allow. Rule 5 leaves it untouched, so neither locale's answer appears."
+    },
+    {
+      "name": "greek letters that only a unicode case map relates",
+      "left": {
+        "kind": "decisions",
+        "statement": "ΣΙΓΜΑ",
+        "id": "73e93e50faa240af"
+      },
+      "right": {
+        "kind": "decisions",
+        "statement": "σιγμα",
+        "id": "bc50b5a3ae9a842e"
+      },
+      "note": "A Unicode lower-casing helper merges these; rule 5 folds only A..Z, so upper and lower Greek stay two claims. Where that costs a duplicate, it costs it identically in every implementation, which is the property being bought."
+    },
+    {
+      "name": "a no-break space is content",
+      "left": {
+        "kind": "constraints",
+        "statement": "ship weekly",
+        "id": "852ebd0494ec8daf"
+      },
+      "right": {
+        "kind": "constraints",
+        "statement": "ship weekly",
+        "id": "bccadf61de0a23ab"
+      },
+      "note": "U+00A0 is inside the regex class \\s in more than one of the five languages. Rule 2 names four bytes and no more, so the no-break space is content."
+    },
+    {
+      "name": "an ideographic space is content",
+      "left": {
+        "kind": "constraints",
+        "statement": "ship　weekly",
+        "id": "fe3ac352451780a6"
+      },
+      "right": {
+        "kind": "constraints",
+        "statement": "ship weekly",
+        "id": "bccadf61de0a23ab"
+      },
+      "note": "U+3000 is whitespace to every Unicode-aware whitespace test and not to rule 2."
+    },
+    {
+      "name": "a zero-width space is content",
+      "left": {
+        "kind": "constraints",
+        "statement": "ship​weekly",
+        "id": "93ebcd5e90ee1315"
+      },
+      "right": {
+        "kind": "constraints",
+        "statement": "shipweekly",
+        "id": "49f8db956accebd8"
+      },
+      "note": "U+200B is invisible and is not one of the four whitespace bytes, so it is content and the two statements are two claims."
+    },
+    {
+      "name": "fullwidth letters and their compatibility mapping",
+      "left": {
+        "kind": "workflow",
+        "statement": "ＡＰＩ first",
+        "id": "8a1cb316ee282ffa"
+      },
+      "right": {
+        "kind": "workflow",
+        "statement": "api first",
+        "id": "c37039de34b52e43"
+      },
+      "note": "NFKC maps fullwidth A P I onto ASCII; rule 6 applies no compatibility mapping, so they stay distinct."
+    },
+    {
+      "name": "a ligature and its compatibility mapping",
+      "left": {
+        "kind": "workflow",
+        "statement": "ﬁle everything",
+        "id": "2cac0ea59f80ffa3"
+      },
+      "right": {
+        "kind": "workflow",
+        "statement": "file everything",
+        "id": "d761212a4ff0967a"
+      },
+      "note": "U+FB01 decomposes to the letters f i under NFKC and under nothing in these rules."
+    },
+    {
+      "name": "a leading no-break space survives",
+      "left": {
+        "kind": "constraints",
+        "statement": " ship weekly",
+        "id": "fb2bf50a3d10dc16"
+      },
+      "right": {
+        "kind": "constraints",
+        "statement": "ship weekly",
+        "id": "bccadf61de0a23ab"
+      },
+      "note": "The general-purpose trim in each of the five languages removes U+00A0 at the edges. Rule 3 removes only the four whitespace bytes, so the leading no-break space stays."
+    },
+    {
+      "name": "whitespace collapses to one space, never to none",
+      "left": {
+        "kind": "architecture",
+        "statement": "data base",
+        "id": "f39c3d86e49f545d"
+      },
+      "right": {
+        "kind": "architecture",
+        "statement": "database",
+        "id": "4d7fb6b2aa713513"
+      },
+      "note": "Rule 4 replaces a run with one 0x20 rather than deleting it: word boundaries are content, and an implementation that strips all whitespace merges two different statements."
+    },
+    {
+      "name": "the kind participates in the identity",
+      "left": {
+        "kind": "decisions",
+        "statement": "one queue per tenant",
+        "id": "5b2f8367c2951f3e"
+      },
+      "right": {
+        "kind": "constraints",
+        "statement": "one queue per tenant",
+        "id": "ae233c2a1cfbe1c9"
+      },
+      "note": "The same bytes under two kinds are two claims: the kind is hashed before the statement, so a decision and a constraint stated in the same words never share an identifier."
+    }
+  ],
+  "refused": [
+    {
+      "name": "an empty statement",
+      "kind": "decisions",
+      "statement": "",
+      "note": "Rule 7: nothing to identify."
+    },
+    {
+      "name": "a whitespace-only statement",
+      "kind": "decisions",
+      "statement": " \t\r\n ",
+      "note": "Rule 7: empty after rule 3, so it has no identifier. A statement of only U+00A0 would NOT be refused: the no-break space is content under rule 2."
+    },
+    {
+      "name": "a section key outside the durable tier",
+      "kind": "nextSteps",
+      "statement": "ship the importer",
+      "note": "A real section key whose tier is frontier. Claims carry what stays true across sessions, so only the durable keys are kinds."
+    },
+    {
+      "name": "a key that is not a section",
+      "kind": "vibes",
+      "statement": "ship the importer",
+      "note": "Not a section key at all."
+    }
+  ]
+}

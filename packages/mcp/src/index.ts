@@ -24,6 +24,7 @@ import {
 import { TOOLS, callTool } from "./tools.js";
 
 export {
+  PROJECT_ID_PATTERN,
   TOOLS,
   callTool,
   type ToolDefinition,
@@ -67,7 +68,7 @@ const META_SERVER_INFO = "io.modelcontextprotocol/serverInfo";
 const SERVER_INFO = {
   name: "soil-handover",
   title: "Soil Handover (local)",
-  version: "0.1.0",
+  version: "0.2.0",
 } as const;
 
 /**
@@ -82,7 +83,7 @@ const CAPABILITIES = {
 } as const;
 
 const INSTRUCTIONS =
-  "Soil carries a project's working state between sessions. Call soil_save when the user asks to save, when a thread is getting long, or before switching tools: fill every section you can, enumerate the locked decisions with their reasons, and never include secrets or private paths. Call soil_load at the start of a session to pick a project back up. Everything is stored in local files on this machine; nothing is sent anywhere. A save reports how many of the 17 sections carry content; the soil CLI's check command can grade a stored handover with deterministic, documented rules, and only a real load shows what a target model actually keeps. Alongside the sections, soil_save asks four working-style questions: answer them from real moments in the thread when you can, skip them when you cannot, and the save succeeds either way.";
+  "Soil carries a project's working state between sessions. Call soil_save when the user asks to save, when a thread is getting long, or before switching tools: fill every section you can, enumerate the locked decisions with their reasons, and never include secrets or private paths. Call soil_load at the start of a session to pick a project back up. Pass the optional project argument (a reference such as @acme; the grammar is @ says where, # says which) to address a project container instead of the personal store; a container is created with `soil project add <name>`, never by a save, and a stated reference never falls back to personal. Everything is stored in local files on this machine; nothing is sent anywhere. A save reports how many of the 17 sections carry content and the grade from the open deterministic check of the stored document; the grade informs and never blocks a save, and only a real load shows what a target model actually keeps. Alongside the sections, soil_save asks four working-style questions: answer them from real moments in the thread when you can, skip them when you cannot, and the save succeeds either way.";
 
 interface JsonRpcRequest {
   readonly jsonrpc: "2.0";

@@ -1,6 +1,6 @@
 {
   "name": "soil-handover",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "The Soil Handover Specification and its official implementations: save the project state, load it anywhere, see what survived.",
@@ -22,8 +22,10 @@
     "verify": "pnpm build && pnpm test && pnpm test:py && pnpm conformance && pnpm conformance:interop"
   },
   "devDependencies": {
+    "@nativesoil/handover-cli": "workspace:*",
     "@nativesoil/handover-mcp": "workspace:*",
     "@nativesoil/handover-sdk": "workspace:*",
+    "@nativesoil/handover-server": "workspace:*",
     "@types/node": "^20.17.10",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",

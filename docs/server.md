@@ -70,6 +70,22 @@ Each `user add` prints that user's token exactly once, along with their user
 id. A lost token is replaced with `user remove` followed by `user add`, which
 is deliberately a _new account_: see "A username is a label" below.
 
+That is the whole team setup: install, start, add each member once, hand each
+their token once. From there the round trip is the same grammar the local
+tools use. Each member points their client at `/v1/mcp` with their token (the
+JSON block under "The MCP endpoint" below), and then ada tells her assistant
+to save into `@team-x`; the `project` argument reads `"@team-x"` and
+`"team-x"` as the same reference. Grace loads it back the same way:
+
+> Save this into @team-x.
+
+> Load #001 from @team-x.
+
+A save with no project reference stays in that member's personal store, and a
+reference to a project the member does not belong to answers like a project
+that does not exist. Nothing about the shared store is configured on the
+members' machines: the URL and the token are the whole client setup.
+
 ## Running a team: every operator task has a command
 
 Nothing here needs a text editor, and every one of these commands takes the
@@ -235,6 +251,12 @@ $ curl -s -X POST http://127.0.0.1:8787/v1/handovers \
     "missing": 15,
     "blocked": 0,
     "total": 17
+  },
+  "check": {
+    "grade": "thin",
+    "problems": 1,
+    "cautions": 2,
+    "advice": 0
   }
 }
 ```
@@ -242,6 +264,14 @@ $ curl -s -X POST http://127.0.0.1:8787/v1/handovers \
 `withContent` counts sections holding a non-empty summary: structural content
 presence, not completeness. There is no `captured` mirror of that number and no
 `sectionsCaptured` key on a list row.
+
+`check` is the open deterministic document check
+([checking.md](checking.md)), run on what was just stored, exactly as a local
+save runs it: the grade band and the finding counts, in `soil check`'s own
+vocabulary. It is a report and nothing more. The grade never changes the
+status code, a poorly graded save is still a `201`, because an honest gap
+never blocks a save, and nothing from the report is written onto the
+handover.
 
 Leave `project` out (or send the document bare, with no wrapper) and the save
 goes to your personal store. A document that fails validation, including the
@@ -296,10 +326,12 @@ run by an external client against it is recorded in this repository yet. The
 committed client sessions on [the compatibility page](compatibility.md) were
 recorded against the local stdio server, not this one.
 
-The same three tools means the same inputs, and the addition is the only
-difference: `soil_save` here takes the 17 sections, the per-section status and
-provenance, the honesty record, the safety record, attached observations and
-the four working-style questions exactly as the local server does, and
+The same three tools means the same inputs and the same receipts: `soil_save`
+here takes the 17 sections, the per-section status and provenance, the honesty
+record, the safety record, attached observations and the four working-style
+questions exactly as the local server does, and its receipt carries the same
+`Checked at save` line, the open deterministic check's grade and finding
+counts in the local receipt's own words, informing and never refusing a save.
 `soil_load` here renders the recorded working-style instances as the same
 attributed evidence block, from the same assembler, so one stored document
 reads the same through the two surfaces.
@@ -466,6 +498,16 @@ read-modify-write. `.locks` is runtime state, never content. Copy a
 `handovers/NNN.json` file anywhere and it is still a complete, readable
 handover.
 
+`projects/<id>` is also exactly what `soil project add` creates inside a local
+store. That identity is the point, and a test holds it: a project container
+written by the local tools is served by this server unchanged, and a project
+this server stores reads back through the local tools unchanged. Moving a solo
+project to a team is therefore not a migration: bring the containers into the
+server's data directory, register each project and its members, and every
+handover already in them is served as it stands. The registry files above are
+the only thing the server adds, and they sit beside the stores, never inside
+them.
+
 The two locks are different scopes, not two mechanisms. The store's lock covers
 one store's read-modify-write and is what makes the CLI safe; this server's
 `<home>/.locks` covers the wider sections only the server has: a save plus the
@@ -548,9 +590,11 @@ refusing to act is the whole mechanism.
 ## What is deliberately absent
 
 No accounts beyond the operator's user list, no OAuth, no billing, no
-telemetry, no accumulation or merging of project knowledge, no checking or
-grading of what a save contains. A save validates, scans, stores, and counts
-sections; nothing here measures quality.
+telemetry, no accumulation or merging of project knowledge. A save validates,
+scans, stores, counts sections and reports the open deterministic check's
+grade, the same baseline every save runs everywhere; nothing deeper than
+those documented rules measures anything here, and the grade informs without
+ever refusing a save.
 
 If you want the same open format with a managed service around it, the hosted
 option at [nativesoil.dev](https://nativesoil.dev) exists for that; this

@@ -15,7 +15,14 @@
  * command paths without spawning a process or touching a real home directory.
  */
 
-import { readFileSync } from "node:fs";
+import {
+  existsSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+} from "node:fs";
+import { join } from "node:path";
 
 import {
   HandoverNotFoundError,
@@ -39,6 +46,7 @@ import {
   renderValidation,
   resolveStoreHome,
   validateHandover,
+  type CheckReport,
   type Handover,
 } from "@nativesoil/handover-sdk";
 
@@ -95,11 +103,21 @@ USAGE
   soil save <file.json>         store a handover from a file
   soil load [#NNN|last]         print the restore prompt for a stored handover
   soil list                     list what is stored
+  soil project add <name>       create a project: a shared container of handovers
+  soil project remove <name>    remove a project; refuses when it holds handovers
+                                unless --purge says to delete them too
   soil validate <file|->        check a document against the spec
   soil check <#NNN|file|->      check and grade a handover with deterministic rules
   soil render <#NNN|file>       print the rail card for a handover
   soil rescue                   print the prompt for a dead or full thread
   soil where                    print the store location
+
+PROJECTS
+  @ says where, # says which. Add @<name> to save, load, list, check or render
+  to address that project's container instead of your personal store:
+  \`soil save - @acme\`, \`soil load @acme\` (its newest), \`soil load @acme '#003'\`.
+  A save without @ is personal, always. A save to a project that does not
+  exist is refused and names the command that creates it.
 
 OPTIONS
   --json                        with load/render/check: print the raw document or report
@@ -112,12 +130,13 @@ OPTIONS
 An option a command does not take is refused by name, never ignored.
 
 The store is ~/.soil, or $SOIL_HOME when that is set. Nothing leaves the machine.
-Saving records what your model wrote and counts the sections that carry content.
-\`soil check\` grades the document with open deterministic rules (docs/checking.md);
-whether a handover actually restores a session is answered only by a real load.
+Saving records what your model wrote, counts the sections that carry content, and
+grades the stored document with the open deterministic rules (docs/checking.md);
+the grade informs and never blocks a save, and whether a handover actually
+restores a session is answered only by a real load.
 `;
 
-const CLI_VERSION = "0.1.0";
+const CLI_VERSION = "0.2.0";
 const VERSION = `${CLI_VERSION} (spec 1.0)`;
 
 /**
@@ -131,7 +150,7 @@ const VERSION = `${CLI_VERSION} (spec 1.0)`;
  * an option nobody has.
  *
  * This table is the whole parser, and it is deliberately a table. There are
- * nine verbs and three options between them; a general parser would be a
+ * ten verbs and four options between them; a general parser would be a
  * larger thing to read than the surface it guards. Each list is exactly the
  * options that command's body reads, and the test suite walks the table
  * against every command, so a new option cannot be added to one without the
@@ -142,6 +161,7 @@ const COMMAND_OPTIONS: Readonly<Record<string, readonly string[]>> = {
   load: ["--json"],
   list: [],
   ls: [],
+  project: ["--purge"],
   validate: [],
   check: ["--json", "--attach"],
   render: ["--json"],
@@ -168,6 +188,70 @@ function isOption(arg: string): boolean {
 /** The arguments a command reads as targets rather than as options. */
 function positionalsIn(args: readonly string[]): readonly string[] {
   return args.filter((arg) => !isOption(arg));
+}
+
+/**
+ * What a project may be named. The same rule, in the same words, as the
+ * self-hosted server's `PROJECT_ID_PATTERN` in
+ * `packages/server/src/registry.ts`, because a project container this CLI
+ * creates is exactly the store that server serves, and a name one of the two
+ * refuses is a directory the other cannot use. A test holds the two patterns
+ * equal.
+ */
+export const PROJECT_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
+
+/**
+ * A command's positionals, read through the product's one command grammar:
+ * `@` says where, `#` says which. A positional leading with `@` is a project
+ * reference; everything else stays a target for the command to interpret.
+ */
+interface Address {
+  /** The project the command addresses, or `undefined` for the personal store. */
+  readonly project?: string;
+  /** The remaining positionals, in order. */
+  readonly targets: readonly string[];
+  /** What was wrong with the reference, when something was. */
+  readonly error?: string;
+}
+
+function splitAddress(args: readonly string[]): Address {
+  const positionals = positionalsIn(args);
+  const references = positionals.filter((arg) => arg.startsWith("@"));
+  const targets = positionals.filter((arg) => !arg.startsWith("@"));
+  if (references.length > 1) {
+    return {
+      targets,
+      error: `one project reference at a time, got ${listInProse(references)}`,
+    };
+  }
+  const reference = references[0];
+  if (reference === undefined) return { targets };
+  const slug = reference.slice(1);
+  if (slug.length === 0) {
+    return {
+      targets,
+      error: "a project reference needs a name after the @, e.g. @acme",
+    };
+  }
+  return { project: slug, targets };
+}
+
+/**
+ * Thrown when a stated project reference names a container this store does
+ * not have. A project is never created by a save and a reference never falls
+ * back to the personal store, so the only honest answer is a refusal that
+ * names the command that creates it.
+ */
+class NoSuchProjectError extends Error {
+  readonly slug: string;
+
+  constructor(slug: string) {
+    super(
+      `no such project: ${slug}. A stated project is never created for you and never falls back to your personal store. Create it first with: soil project add ${slug}`,
+    );
+    this.name = "NoSuchProjectError";
+    this.slug = slug;
+  }
 }
 
 /** `a`, `a and b`, `a, b and c`. */
@@ -217,6 +301,57 @@ function defaultEnvironment(): CliEnvironment {
 
 function storeFor(env: CliEnvironment): HandoverStore {
   return new HandoverStore(resolveStoreHome(env.env));
+}
+
+/** Where a project container lives: `projects/<name>` inside the one store. */
+function projectRoot(env: CliEnvironment, slug: string): string {
+  return join(resolveStoreHome(env.env), "projects", slug);
+}
+
+/**
+ * The store a command addresses: the personal store for no reference, the
+ * project's container for one. The container layout is byte for byte what the
+ * self-hosted server serves for a shared project, which is the point: a store
+ * written here is served there unchanged.
+ *
+ * @throws {NoSuchProjectError} for a reference to a project this store does
+ * not have. Nothing is created: creation has its own command.
+ */
+function storeAt(env: CliEnvironment, project?: string): HandoverStore {
+  if (project === undefined) return storeFor(env);
+  const root = projectRoot(env, project);
+  if (!existsSync(root) || !statSync(root).isDirectory()) {
+    throw new NoSuchProjectError(project);
+  }
+  return new HandoverStore(root);
+}
+
+/** Every project container in this store, name-sorted. */
+function projectNames(env: CliEnvironment): readonly string[] {
+  const dir = join(resolveStoreHome(env.env), "projects");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((name) => PROJECT_ID_PATTERN.test(name))
+    .filter((name) => statSync(join(dir, name)).isDirectory())
+    .sort();
+}
+
+/** `1 problem`, `2 problems`. The same spelling `soil check` prints. */
+function pluralize(n: number, word: string): string {
+  return `${n} ${word}${n === 1 ? "" : "s"}`;
+}
+
+/**
+ * The two lines a save prints about the deterministic check it just ran on
+ * the stored document: the grade band and the finding counts, in the
+ * vocabulary `soil check` prints. The grade informs and never blocks a save,
+ * and it is never written onto the handover.
+ */
+function checkedAtSave(report: CheckReport, code: string): string {
+  return [
+    `checked at save: ${report.grade} · ${pluralize(report.counts.problems, "problem")} · ${pluralize(report.counts.cautions, "caution")} · ${report.counts.advice} advice`,
+    `the open deterministic rules, the same ones \`soil check '${code}'\` prints; a grade informs and never blocks a save, and only a real load proves restore`,
+  ].join("\n");
 }
 
 /**
@@ -278,13 +413,20 @@ async function cmdSave(
   env: CliEnvironment,
 ): Promise<number> {
   const quiet = args.includes("--quiet");
-  const positional = positionalsIn(args);
-  const target = positional[0];
+  const address = splitAddress(args);
+  if (address.error !== undefined) {
+    env.stderr(`soil save: ${address.error}\n`);
+    return 2;
+  }
+  // Resolved before anything is read, so a reference to a project that does
+  // not exist is answered before the user pastes a whole reply into it.
+  const store = storeAt(env, address.project);
+  const target = address.targets[0];
 
   if (target === undefined) {
     env.stdout(renderRecipe());
     env.stdout(
-      `\nPaste that into the session you want to keep. When the model answers with the JSON block, run:\n\n  ${env.invocation ?? "soil"} save -\n\nand paste the reply.\n`,
+      `\nPaste that into the session you want to keep. When the model answers with the JSON block, run:\n\n  ${env.invocation ?? "soil"} save -${address.project === undefined ? "" : ` @${address.project}`}\n\nand paste the reply.\n`,
     );
     return 0;
   }
@@ -305,20 +447,30 @@ async function cmdSave(
     return 1;
   }
 
-  const store = storeFor(env);
   const entry = store.save(candidate as never);
   if (quiet) {
     env.stdout(`${entry.code}\n`);
     return 0;
   }
-  env.stdout(`${renderSaved(store.read(entry.code), entry.code)}\n`);
+  const stored = store.read(entry.code);
+  env.stdout(`${renderSaved(stored, entry.code)}\n`);
+  if (address.project !== undefined) {
+    env.stdout(
+      `\nsaved into project ${address.project} · load it with: soil load @${address.project} '${entry.code}'\n`,
+    );
+  }
+  env.stdout(`\n${checkedAtSave(checkHandover(stored), entry.code)}\n`);
   return 0;
 }
 
 function cmdLoad(args: readonly string[], env: CliEnvironment): number {
-  const positional = positionalsIn(args);
-  const code = positional[0] ?? "last";
-  const store = storeFor(env);
+  const address = splitAddress(args);
+  if (address.error !== undefined) {
+    env.stderr(`soil load: ${address.error}\n`);
+    return 2;
+  }
+  const code = address.targets[0] ?? "last";
+  const store = storeAt(env, address.project);
 
   const handover = store.read(code);
   if (args.includes("--json")) {
@@ -334,9 +486,98 @@ function cmdLoad(args: readonly string[], env: CliEnvironment): number {
   return 0;
 }
 
-function cmdList(env: CliEnvironment): number {
-  const store = storeFor(env);
+function cmdList(args: readonly string[], env: CliEnvironment): number {
+  const address = splitAddress(args);
+  if (address.error !== undefined) {
+    env.stderr(`soil list: ${address.error}\n`);
+    return 2;
+  }
+  const store = storeAt(env, address.project);
   env.stdout(`${renderList(store.list())}\n`);
+  if (address.project === undefined) {
+    const names = projectNames(env);
+    if (names.length > 0) {
+      const described = names.map((name) => {
+        const count = new HandoverStore(projectRoot(env, name)).list().length;
+        return `@${name} (${pluralize(count, "handover")})`;
+      });
+      env.stdout(
+        `\nprojects in this store: ${described.join(", ")}\nlist one with: soil list @${names[0]}\n`,
+      );
+    }
+  }
+  return 0;
+}
+
+/**
+ * `soil project`: the project lifecycle. `add` creates a container inside the
+ * one store; `remove` takes it away again, refusing while it still holds
+ * handovers unless `--purge` says to delete those too. Deletion is a human
+ * decision at a terminal: the MCP tools can save into, load from and list a
+ * project, and deliberately cannot create or remove one.
+ */
+function cmdProject(args: readonly string[], env: CliEnvironment): number {
+  const purge = args.includes("--purge");
+  const positional = positionalsIn(args);
+  const [sub, raw] = positional;
+
+  if (sub !== "add" && sub !== "remove") {
+    env.stderr(
+      `soil project: ${sub === undefined ? "give a subcommand" : `unknown subcommand "${sub}"`}\nusage: soil project add <name> · soil project remove <name> [--purge]\n`,
+    );
+    return 2;
+  }
+  if (raw === undefined) {
+    env.stderr(`soil project ${sub}: give a project name, e.g. acme\n`);
+    return 2;
+  }
+  // `@acme` and `acme` are the same reference; the `@` is the grammar's
+  // marker, never part of the name.
+  const slug = raw.startsWith("@") ? raw.slice(1) : raw;
+  if (!PROJECT_ID_PATTERN.test(slug)) {
+    env.stderr(
+      `soil project ${sub}: project ids are 1-64 characters of lowercase letters, digits or hyphen, starting with a letter or digit\n`,
+    );
+    return 2;
+  }
+  const root = projectRoot(env, slug);
+
+  if (sub === "add") {
+    if (purge) {
+      env.stderr(`soil project add: --purge belongs to project remove\n`);
+      return 2;
+    }
+    if (existsSync(root)) {
+      env.stderr(`soil project add: the project ${slug} already exists\n`);
+      return 1;
+    }
+    new HandoverStore(root).init();
+    env.stdout(
+      `Created project ${slug}: a shared container of handovers inside this store.\n\n  save into it   soil save - @${slug}\n  list it        soil list @${slug}\n  load from it   soil load @${slug}\n`,
+    );
+    return 0;
+  }
+
+  // remove
+  if (!existsSync(root) || !statSync(root).isDirectory()) {
+    throw new NoSuchProjectError(slug);
+  }
+  const handoversDir = join(root, "handovers");
+  const held = existsSync(handoversDir)
+    ? readdirSync(handoversDir).filter((file) => file.endsWith(".json")).length
+    : 0;
+  if (held > 0 && !purge) {
+    env.stderr(
+      `soil project remove: the project ${slug} still holds ${pluralize(held, "handover")}.\nRemoving a project and destroying what it holds are two different decisions.\nTo delete the project and its handovers: soil project remove ${slug} --purge\n`,
+    );
+    return 1;
+  }
+  rmSync(root, { recursive: true, force: true });
+  env.stdout(
+    held > 0
+      ? `Removed project ${slug} and deleted the ${pluralize(held, "handover")} it held. Personal saves were not touched.\n`
+      : `Removed project ${slug}. It held no handovers, and personal saves were not touched.\n`,
+  );
   return 0;
 }
 
@@ -375,13 +616,19 @@ async function cmdCheck(
 ): Promise<number> {
   const attach = args.includes("--attach");
   const asJson = args.includes("--json");
-  const target = positionalsIn(args)[0];
+  const address = splitAddress(args);
+  if (address.error !== undefined) {
+    env.stderr(`soil check: ${address.error}\n`);
+    return 2;
+  }
+  const target =
+    address.targets[0] ?? (address.project === undefined ? undefined : "last");
   if (target === undefined) {
     env.stderr("soil check: give a load code, a file path, or - for stdin\n");
     return 2;
   }
 
-  const store = storeFor(env);
+  const store = storeAt(env, address.project);
   const fromStore =
     target.startsWith("#") ||
     target.toLowerCase() === "last" ||
@@ -440,13 +687,23 @@ async function cmdCheck(
 }
 
 function cmdRender(args: readonly string[], env: CliEnvironment): number {
-  const target = positionalsIn(args)[0];
+  const address = splitAddress(args);
+  if (address.error !== undefined) {
+    env.stderr(`soil render: ${address.error}\n`);
+    return 2;
+  }
+  const target =
+    address.targets[0] ?? (address.project === undefined ? undefined : "last");
   if (target === undefined) {
     env.stderr("soil render: give a load code or a file path\n");
     return 2;
   }
-  const store = storeFor(env);
-  const handover = target.startsWith("#")
+  const store = storeAt(env, address.project);
+  const fromStore =
+    target.startsWith("#") ||
+    target.toLowerCase() === "last" ||
+    /^\d+$/.test(target);
+  const handover = fromStore
     ? store.read(target)
     : (ingestRawDocument(env.readFile(target)) as never);
 
@@ -515,7 +772,9 @@ export async function run(
         return cmdLoad(args, environment);
       case "list":
       case "ls":
-        return cmdList(environment);
+        return cmdList(args, environment);
+      case "project":
+        return cmdProject(args, environment);
       case "validate":
         return await cmdValidate(args, environment);
       case "check":
@@ -533,6 +792,10 @@ export async function run(
         return 2;
     }
   } catch (error) {
+    if (error instanceof NoSuchProjectError) {
+      environment.stderr(`soil: ${error.message}\n`);
+      return 1;
+    }
     if (error instanceof HandoverNotFoundError) {
       environment.stderr(
         `soil: ${error.message}. Run \`soil list\` to see what is stored.\n`,

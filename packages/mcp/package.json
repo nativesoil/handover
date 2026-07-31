@@ -1,6 +1,6 @@
 {
   "name": "@nativesoil/handover-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A local MCP stdio server exposing soil_save, soil_load and soil_list against the handover store in ~/.soil.",
   "license": "Apache-2.0",
   "repository": {

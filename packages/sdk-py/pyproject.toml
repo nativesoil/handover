@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "soil-handover"
-version = "0.1.0"
+version = "0.2.0"
 description = "Python SDK for the Soil Handover Specification: types, validation, the extraction recipe, the local store, and the rail-card renderer."
 readme = "README.md"
 license = "Apache-2.0"

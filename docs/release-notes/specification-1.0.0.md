@@ -3,7 +3,8 @@
 Draft release notes for the `spec-v1.0.0` tag (2026-07-23). The
 specification and the implementation are versioned separately; improving the
 code or the docs never moves the specification version. The implementation's
-own notes are in [implementation-0.1.0.md](implementation-0.1.0.md).
+own notes are in [implementation-0.1.0.md](implementation-0.1.0.md) and
+[implementation-0.2.0.md](implementation-0.2.0.md).
 
 The first version of the Soil Handover Specification: the format contract
 for a portable JSON document carrying a project's working state between AI

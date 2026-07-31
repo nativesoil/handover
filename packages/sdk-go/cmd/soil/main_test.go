@@ -75,7 +75,7 @@ func TestVersion(t *testing.T) {
 	if code := Run([]string{"-v"}, io.env()); code != 0 {
 		t.Fatalf("exit %d", code)
 	}
-	if strings.TrimSpace(io.out.String()) != "0.1.0 (spec 1.0)" {
+	if strings.TrimSpace(io.out.String()) != "0.2.0 (spec 1.0)" {
 		t.Fatalf("unexpected version: %s", io.out.String())
 	}
 }

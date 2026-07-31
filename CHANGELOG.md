@@ -5,32 +5,93 @@ own changelog in [spec/CHANGELOG.md](spec/CHANGELOG.md); the two version lines
 move independently. Release tags: `v<implementation>` and
 `spec-v<specification>`.
 
-## 0.1.0
+## 0.2.0
 
-The first public release, and the only one this file has ever described.
-Everything below ships under the `v0.1.0` tag; there is no earlier public
-version for any of it to be unreleased relative to. The format contract moves
-on its own version line and is at 1.0.0, in
-[spec/CHANGELOG.md](spec/CHANGELOG.md).
+Everything merged after the `v0.1.0` tag. The format contract does not move:
+the specification stays at 1.0.0, in [spec/CHANGELOG.md](spec/CHANGELOG.md).
+The extraction recipe moves to 1.5.0 inside this release.
 
 In outline, the release is:
 
-- TypeScript SDK, the `soil` CLI and a local MCP stdio server
-- Python, Go, JVM (Kotlin) and .NET SDKs, all passing the shared conformance
-  fixtures (conformant previews until packaged)
-- The self-hostable single-node server preview, `packages/server`: bearer-token
-  users, personal and shared project stores, an HTTP API and an experimental
-  MCP endpoint, on the same on-disk layout as the local store
-- Conformance suite with five runners, two classes reported separately
-- The pre-schema ingestion boundary, in all five SDKs and on the CLI's
-  raw-document input path
-- Local store: one JSON file per handover plus an index, `SOIL_HOME` override
-- Documentation: quickstart, concepts, format, architecture, the server,
-  checking, related work, FAQ
+- Projects everywhere: shared containers inside the one store, addressed by
+  the one command grammar (`@` says where, `#` says which), on the CLI, the
+  local stdio tools and both served surfaces, with the container layout held
+  byte for byte to the store the self-hosted server serves
+- The open deterministic check run at every save, on every surface, printing
+  a grade that informs and never blocks
+- Knowledge accumulation phase 1: content-derived claim identity in the
+  TypeScript SDK, pinned by a cross-language identity corpus that lands ahead
+  of the other four implementations
+- Three honesty fixes found by an external cold reader, one of which moves
+  the extraction recipe to 1.5.0
+- The first recorded install run made from the public files alone
 
-The rest of this section is the detailed record of how it got there, newest
-first.
+The rest of this section is the detailed record, newest first.
 
+- Added: **projects, everywhere, with the one command grammar.** A project is
+  a shared container of handovers inside the one store, `projects/<name>`,
+  created and removed by the new `soil project` command and addressed with
+  the product's one grammar: `@` says where, `#` says which. The local stdio
+  tools gain an optional `project` argument on `soil_save`, `soil_load` and
+  `soil_list`, and the self-hosted server reads `@team-x` and `team-x` as the
+  same reference, so a client that learned `@acme` locally says the same
+  thing to the served endpoint. A save without `@` is personal, always; a
+  reference to a project that does not exist is refused with the exact
+  command that creates it, never auto-created and never read as personal; and
+  removal refuses while the container holds handovers unless `--purge` says
+  to delete those too. The container layout is byte for byte the store the
+  self-hosted server serves for a shared project, held by a test in both
+  directions against one directory: a handover saved through the local stdio
+  path reads back through the server's own store code, and one the server
+  stores reads back through the local `soil_load`.
+- Added: **the check at every save, on every surface.** Every save now runs
+  the open deterministic checker on the document it just stored and reports
+  the grade band with the finding counts, in the vocabulary `soil check`
+  prints: the CLI and the local stdio server in their receipts, the server's
+  HTTP save receipt in a `check` object, and the server's MCP endpoint with
+  the same `Checked at save` line as the local one, held to it by a test that
+  compares the two lines as one string rather than against prose. The grade
+  informs and never blocks a save, it never touches the status code, and it
+  is never written onto the handover: a poorly graded save is still a result,
+  because an honest gap never blocks a save.
+- Fixed: **the committed bin entry points were not executable, and pnpm makes
+  them so.** Every CI build dirtied the tree the moment pnpm restored the
+  bit, and the export sweep then rightly refused to judge a tree that was not
+  HEAD. The executable bit is committed now.
+- Added: **knowledge accumulation phase 1, content-derived claim identity.**
+  A claim's identifier is the first 16 lowercase hex characters of SHA-256
+  over a versioned domain string, the kind key and the normalized statement,
+  framed by bytes none of the three parts can contain. The kinds are the six
+  durable-tier section keys, read from the tier table rather than restated,
+  ranked with constraints and decisions first. Normalization is seven
+  byte-level rules and none of the built-ins that resemble them: no
+  lower-casing helper, no whitespace character class, no Unicode
+  normalization form, no locale-aware operation, because the failure mode of
+  a content-derived identity is two implementations normalizing one byte
+  apart, which no test inside a single language can see. A statement carrying
+  an unpaired surrogate is refused rather than encoded, since no identifier
+  is the one answer all five implementations could give identically. The
+  cross-language identity corpus
+  (`conformance/fixtures/claims/identity.json`) landed before the
+  implementation, on purpose, and states the derivation, the rules, the
+  forbidden built-ins and the kind ranking; the TypeScript SDK is the first
+  implementation held to it, with a test that strips the comments from the
+  module's source and holds the code to the forbidden-built-ins list.
+- Recorded: **the first install run made from the public files alone.** An
+  agent that had not seen the project before installed the tooling on a clean
+  project working only from the public repository at the `v0.1.0` tag, wired
+  the local server into two clients, and drove the documented smoke test end
+  to end against an isolated store. That is the first evidence for the
+  AGENTS.md compatibility row that did not come from this repository's own
+  commands running in CI. The row's limitation had said no agent had been
+  observed following the files and that the client wiring was not exercised;
+  both now were, and what is still true is narrower and now says so: one
+  agent, one machine, at the versions the client-switch walkthrough was run
+  on, and no save in one live model session followed by a load in another.
+  The report says on its first line that it was transcribed from the
+  operator's run log rather than being a first-hand session record, because
+  an evidence file that presents a synthesis as a first-hand record is the
+  same overclaim the product fixes elsewhere, one level up.
 - Fixed: **the restore prompt framed the whole document as context and never
   said why part of it is written in the second person.** The boot prompt is a
   paste-ready prompt for a model, so it is phrased as one, and that is its
@@ -69,6 +130,31 @@ first.
   say exactly that and move on, an honest gap never blocks a save, and a
   symptom you do not have is a gap to note rather than a blank to fill
   (RULE 3).
+
+## 0.1.0
+
+The first public release. Everything below ships under the `v0.1.0` tag;
+there was no earlier public version for any of it to be unreleased relative
+to. The format contract moves on its own version line and is at 1.0.0, in
+[spec/CHANGELOG.md](spec/CHANGELOG.md).
+
+In outline, the release is:
+
+- TypeScript SDK, the `soil` CLI and a local MCP stdio server
+- Python, Go, JVM (Kotlin) and .NET SDKs, all passing the shared conformance
+  fixtures (conformant previews until packaged)
+- The self-hostable single-node server preview, `packages/server`: bearer-token
+  users, personal and shared project stores, an HTTP API and an experimental
+  MCP endpoint, on the same on-disk layout as the local store
+- Conformance suite with five runners, two classes reported separately
+- The pre-schema ingestion boundary, in all five SDKs and on the CLI's
+  raw-document input path
+- Local store: one JSON file per handover plus an index, `SOIL_HOME` override
+- Documentation: quickstart, concepts, format, architecture, the server,
+  checking, related work, FAQ
+
+The rest of this section is the detailed record of how it got there, newest
+first.
 
 - Added: **checking and grading in every implementation, and `soil check` in
   the Go binary.** The deterministic baseline existed only in the TypeScript
