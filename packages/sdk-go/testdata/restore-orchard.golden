@@ -150,6 +150,8 @@ These are the provenance labels the writer put on the sections above, grouped by
 - model_reported: project identity, decisions, architecture, rejected paths
 - owner_observed: rejected paths
 
+These labels describe the individual claims, never the arrangement. A section is the extracting model's assembly of the conversation, so which claims were gathered into it and how they sit together is that model's synthesis even where every claim in it carries a label saying it was checked.
+
 === soil:0123456789abcdef0123456789abcdef KNOWN GAPS ===
 
 - not captured: Conversion numbers since Monday's address-step deploy had not accumulated at capture, so the effect of that deploy is unknown.

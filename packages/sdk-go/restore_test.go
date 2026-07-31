@@ -132,6 +132,48 @@ func TestRestorePromptIsDeterministicForAGivenToken(t *testing.T) {
 	}
 }
 
+func TestProvenanceLabelsAreScopedToTheClaims(t *testing.T) {
+	// The labels are honest about each claim and say nothing about how the
+	// claims were gathered into sections, which is the extracting model's work.
+	// The note follows the bullets, so it qualifies what the reader has just
+	// read rather than what it is about to.
+	lines := strings.Split(testPrompt(t), "\n")
+	heading, note, lastBullet := -1, -1, -1
+	bullet := regexp.MustCompile(`^- [a-z_]+: `)
+	for i, line := range lines {
+		switch {
+		case line == "=== soil:"+testBoundaryToken+" WHERE THE CLAIMS CAME FROM ===":
+			heading = i
+		case strings.HasPrefix(line, "These labels describe the individual claims"):
+			note = i
+		case bullet.MatchString(line):
+			lastBullet = i
+		}
+	}
+	if heading < 0 || lastBullet < heading || note < lastBullet {
+		t.Fatalf("the scope note must follow the label bullets (heading %d, last bullet %d, note %d)", heading, lastBullet, note)
+	}
+	if !strings.Contains(lines[note], "the extracting model's assembly") {
+		t.Fatal("the scope note must name the assembly as the extracting model's own")
+	}
+}
+
+func TestADocumentWithNoLabelsSaysNothingAboutTheAssembly(t *testing.T) {
+	// A record with no labels renders exactly as it did before the labels were
+	// scoped: the whole block, framing and note included, is absent.
+	doc := norm(parse(t, `{"projectId":"unlabelled","title":"No labels anywhere","createdAt":"2026-07-22T10:00:00Z","sections":{"executiveSummary":"One line of state, labelled by nobody."}}`))
+	rendered := BuildRestorePromptWithToken(doc, testBoundaryToken)
+	for _, absent := range []string{
+		"WHERE THE CLAIMS CAME FROM",
+		"These are the provenance labels",
+		"These labels describe",
+	} {
+		if strings.Contains(rendered, absent) {
+			t.Fatalf("an unlabelled document must not render %q", absent)
+		}
+	}
+}
+
 func TestRestorePromptMatchesTheReferenceBytes(t *testing.T) {
 	if testPrompt(t) != readTestdata(t, "restore-orchard.golden") {
 		t.Fatal("the restore prompt must be byte-identical to the TypeScript SDK's prompt")
