@@ -7,6 +7,17 @@ move independently. Release tags: `v<implementation>` and
 
 ## Unreleased
 
+- Fixed: **the restore prompt framed the whole document as context and never
+  said why part of it is written in the second person.** The boot prompt is a
+  paste-ready prompt for a model, so it is phrased as one, and that is its
+  design rather than a defect in it. Wrapped in a frame saying the text is a
+  report and not an instruction, the two read as a contradiction, and a
+  careless reader resolves a contradiction by picking the half in front of it:
+  recovered working shape taken for current authority. The frame now names the
+  voice, in the paragraph that already carried the contract rather than in a
+  second sentence of its own, so every guarantee that paragraph made is still
+  the same paragraph's. Nothing about the escaping, the per-render marker or
+  the four kinds of text changed.
 - Fixed: **the provenance block graded the claims and read as though it
   graded the arrangement of them.** A label says whether a claim was checked
   against the project, reported from the conversation or concluded, and it is
