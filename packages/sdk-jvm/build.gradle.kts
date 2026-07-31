@@ -17,7 +17,7 @@ repositories {
 dependencies {
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+    testImplementation("org.junit.jupiter:junit-jupiter:6.1.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
