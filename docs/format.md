@@ -113,6 +113,13 @@ also says the thing an absence would not: a section named under no label carries
 none, which is not the same as a label saying it was checked. The rail cards name
 the labels present, which is what fits in a column.
 
+A label covers the claims and not the arrangement of them. A section is one
+model's assembly of a conversation into one place, so which claims were gathered
+into it, and in which words, is that model's synthesis even where every claim in
+it was checked. The prompt says so under the labels rather than leaving a reader
+to infer it, because a reader that takes the label as covering the grouping reads
+a synthesis as a transcript.
+
 ## The two honesty records
 
 ```json

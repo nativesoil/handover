@@ -22,7 +22,7 @@ package dev.nativesoil.handover
  * and ask the model to copy it back. Improving the recipe bumps this version
  * and never moves the format version.
  */
-const val RECIPE_VERSION: String = "1.4.0"
+const val RECIPE_VERSION: String = "1.5.0"
 
 private object ResourceAnchor
 

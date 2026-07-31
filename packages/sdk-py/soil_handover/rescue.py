@@ -19,7 +19,7 @@ which is how the manual on-ramp reaches the same store as everything else.
 Pure string, standard library only.
 """
 
-RESCUE_PROMPT = """SOIL RESCUE SAVE — spec v1.0 · recipe v1.4.0
+RESCUE_PROMPT = """SOIL RESCUE SAVE — spec v1.0 · recipe v1.5.0
 
 Produce a SAVE of everything important in THIS conversation so it can be reloaded into a fresh AI session. Output ONE fenced ```json code block and nothing else (no text before or after).
 

@@ -24,7 +24,7 @@ public static class Recipe
     /// back. Improving the recipe bumps this version and never moves the
     /// format version.
     /// </summary>
-    public const string RecipeVersion = "1.4.0";
+    public const string RecipeVersion = "1.5.0";
 
     private static readonly Lazy<ParsedRecipe> Parsed = new(Parse);
 

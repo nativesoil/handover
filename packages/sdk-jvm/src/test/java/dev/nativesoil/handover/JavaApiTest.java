@@ -71,7 +71,7 @@ class JavaApiTest {
         assertTrue(Identity.isHandoverId(Identity.uuidv7()));
         assertTrue(Recipe.RECIPE_TEXT.startsWith("SOIL HANDOVER EXTRACTION"));
         assertTrue(Rescue.RESCUE_PROMPT.contains("extractionSections"));
-        assertEquals("1.4.0", Recipe.RECIPE_VERSION);
+        assertEquals("1.5.0", Recipe.RECIPE_VERSION);
         // Both recipe texts print the version the model is asked to report.
         assertTrue(Recipe.RECIPE_TEXT.split("\n")[0].contains("recipe v" + Recipe.RECIPE_VERSION));
         assertTrue(Rescue.RESCUE_PROMPT.split("\n")[0].contains("recipe v" + Recipe.RECIPE_VERSION));

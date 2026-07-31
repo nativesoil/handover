@@ -27,7 +27,7 @@ import (
 // recipe: the model. Both recipe texts print this version on their first line
 // and ask the model to copy it back. Improving the recipe bumps this version
 // and never moves the format version.
-const RecipeVersion = "1.4.0"
+const RecipeVersion = "1.5.0"
 
 //go:embed embedded/handover-recipe-v1.txt
 var recipeText string

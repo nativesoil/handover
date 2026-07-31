@@ -85,6 +85,44 @@ class TestBuildRestorePrompt:
         assert "decisions" in thin_prompt
         assert "BOOT PROMPT" not in thin_prompt
 
+    def test_scopes_the_labels_to_the_claims_not_to_the_assembly(self):
+        # The labels are honest about each claim and say nothing about how the
+        # claims were gathered into sections, which is the extracting model's
+        # work. The note follows the bullets, so it qualifies what the reader
+        # has just read rather than what it is about to.
+        lines = PROMPT.split("\n")
+        heading = lines.index(f"=== {MARK} WHERE THE CLAIMS CAME FROM ===")
+        note = next(
+            index
+            for index, line in enumerate(lines)
+            if line.startswith("These labels describe the individual claims")
+        )
+        last_bullet = max(
+            index
+            for index, line in enumerate(lines)
+            if re.match(r"^- [a-z_]+: ", line)
+        )
+        assert heading < last_bullet < note
+        assert "the extracting model's assembly" in lines[note]
+
+    def test_says_nothing_about_the_assembly_without_labels(self):
+        # A record with no labels renders exactly as it did before the labels
+        # were scoped: the whole block, framing and note included, is absent.
+        unlabelled = normalize_handover(
+            {
+                "projectId": "unlabelled",
+                "title": "No labels anywhere",
+                "createdAt": "2026-07-22T10:00:00Z",
+                "sections": {
+                    "executiveSummary": "One line of state, labelled by nobody."
+                },
+            }
+        )
+        rendered = build_restore_prompt(unlabelled, TOKEN)
+        assert "WHERE THE CLAIMS CAME FROM" not in rendered
+        assert "These are the provenance labels" not in rendered
+        assert "These labels describe" not in rendered
+
     def test_is_deterministic_for_a_given_boundary_token(self):
         assert build_restore_prompt(EXAMPLE, TOKEN) == PROMPT
 
