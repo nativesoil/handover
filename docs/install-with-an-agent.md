@@ -268,12 +268,14 @@ soil save "$SOIL_HOME/soil-install-test.json"
 ```
 
 Expected: a "handover saved" card reporting `4 / 17 sections carrying
-content` and a load code (`#001` in a fresh scratch store), exit 0.
+content` and a load code (`#001` in a fresh scratch store), followed by a
+`checked at save` line reporting grade `strong`, exit 0.
 
 Four, because exactly four sections of the document above carry a summary:
 project identity, executive summary, current task and restore instructions.
 The count is structural content presence, never a measure of how good the
-capture is.
+capture is, and the grade is the deterministic document check run at save:
+the same rules step 5 prints in full, informing and never blocking a save.
 
 **Step 5: check.** Node CLI only; with the Go binary, skip and report the
 skip.

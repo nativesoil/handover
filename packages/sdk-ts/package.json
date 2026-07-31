@@ -1,6 +1,6 @@
 {
   "name": "@nativesoil/handover-sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "TypeScript SDK for the Soil Handover Specification: types, validation, the extraction recipe, the local store, and the rail-card renderer.",
   "license": "Apache-2.0",
   "repository": {

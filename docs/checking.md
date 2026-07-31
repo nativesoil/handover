@@ -4,6 +4,13 @@
 what that means, every rule it runs, the exact grade mapping, and the line the
 checker never crosses.
 
+Every save runs the same rules on the document it just stored, and the save
+receipt (the CLI's and the MCP tool's alike) reports the grade band and the
+finding counts. That is the whole of it at save time: the grade informs and
+never blocks a save, because an honest gap is worth more than a tidy
+handover, and the full report, finding by finding, stays one `soil check`
+away.
+
 ## What the checker is, and is not
 
 The baseline checker is deterministic analysis of the document itself. Whether

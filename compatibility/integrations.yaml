@@ -53,11 +53,12 @@ integrations:
     evidence: reproducible-in-repo
     reproducible_in_repo: "yes"
     hosted_dependency: "no"
-    evidence_date: "2026-07-29"
-    limitation: The documented commands run on every test run; no agent has been observed following the files, and the client wiring they describe is not exercised.
+    evidence_date: "2026-07-31"
+    limitation: The documented commands run on every test run, and one agent has now been recorded installing from the files and wiring the two clients it configured; that is one agent on one machine, at versions matching this repository's own documented run, and that run carried no save in one live model session followed by a load in another.
     evidence_source:
       - "The save and load commands in AGENTS.md and [docs/install-with-an-agent.md](docs/install-with-an-agent.md) are taken from those files' own fenced blocks and run against the real command-line tool and the real local server by the root test suite, on every run, in [the CI workflow](.github/workflows/ci.yml). Each step is asserted against the outcome its own prose states, so the files cannot drift from the behaviour they describe."
-      - "Not covered: the client wiring in section 3 of AGENTS.md is not executed, and no agent has been recorded doing the install from these files. What is proven is the flow, not the teaching."
+      - "Install run on 2026-07-31 by an agent that had not seen the project before, working only from the public repository at the v0.1.0 tag: it followed the files, wired the local server into two clients, and ran the documented smoke test end to end against an isolated temporary store; [session report](compatibility/reports/agents-md-codex.md)."
+      - "Not covered: no automated check exercises the client wiring in section 3 of AGENTS.md, and the recorded install run ended at the rendered restore prompt rather than at a model continuing the work from it."
 
   - integration: GitHub Actions
     what: This repository's own CI

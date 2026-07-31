@@ -212,7 +212,7 @@ describe("the MCP endpoint", () => {
         "io.modelcontextprotocol/serverInfo": {
           name: "soil-handover-server",
           title: "Soil Handover (self-hosted server)",
-          version: "0.1.0",
+          version: "0.2.0",
         },
       },
     });
@@ -243,6 +243,85 @@ describe("the MCP endpoint", () => {
     const loadedOut = toolText(loaded.json);
     expect(loadedOut.isError).toBe(false);
     expect(loadedOut.text).toContain("outbox pattern");
+  });
+
+  it("reads @team-x and team-x as the same reference", async () => {
+    // The product's one command grammar: @ says where, # says which. The
+    // leading @ is the grammar's marker, never part of the name, so a client
+    // taught `@team-x` by the local tools says the same thing here.
+    const saved = await rpc(ts, tokens.alice, "tools/call", {
+      name: "soil_save",
+      arguments: { ...SAVE_ARGS, project: "@team-x" },
+    });
+    const savedOut = toolText(saved.json);
+    expect(savedOut.isError).toBe(false);
+    expect(savedOut.text).toContain("project team-x");
+
+    const loaded = await rpc(ts, tokens.bob, "tools/call", {
+      name: "soil_load",
+      arguments: { code: "#001", project: "@team-x" },
+    });
+    expect(toolText(loaded.json).isError).toBe(false);
+
+    // A bare @ names nothing and is refused, never read as personal.
+    const refused = await rpc(ts, tokens.alice, "tools/call", {
+      name: "soil_save",
+      arguments: { ...SAVE_ARGS, project: "@" },
+    });
+    const refusedOut = toolText(refused.json);
+    expect(refusedOut.isError).toBe(true);
+    expect(refusedOut.text).toContain("/project must be");
+  });
+
+  it("reports the checked-at-save line in the local receipt's own words", async () => {
+    // One capability level: a member saving through this endpoint is owed the
+    // same receipt as the same person saving locally. The line is not held to
+    // prose but to the other surface: the same save arguments go through the
+    // local stdio server, and the two receipts' check lines must be one
+    // string. The grade never turns a save into a refusal.
+    const saved = await rpc(ts, tokens.alice, "tools/call", {
+      name: "soil_save",
+      arguments: SAVE_ARGS,
+    });
+    const savedOut = toolText(saved.json);
+    expect(savedOut.isError).toBe(false);
+    const line = /^Checked at save: .*$/m.exec(savedOut.text)?.[0];
+    expect(line).toBeDefined();
+    expect(line).toMatch(
+      /^Checked at save: (strong|adequate|thin|failing) · \d+ problems? · \d+ cautions? · \d+ advice\. The deterministic document check informs and never blocks a save; only a real load proves restore\.$/,
+    );
+
+    const local = callTool(
+      "soil_save",
+      SAVE_ARGS,
+      new HandoverStore(join(home, "local-door")),
+    );
+    const localLine = /^Checked at save: .*$/m.exec(
+      local.content[0]?.text ?? "",
+    )?.[0];
+    expect(localLine).toBe(line);
+
+    // A thin capture is still stored and still answered as a result, with the
+    // poor grade on the receipt rather than in a refusal.
+    const thin = await rpc(
+      ts,
+      tokens.alice,
+      "tools/call",
+      {
+        name: "soil_save",
+        arguments: {
+          projectId: "thin",
+          title: "A thin capture",
+          sections: { executiveSummary: "Some work happened." },
+        },
+      },
+      2,
+    );
+    expect(thin.status).toBe(200);
+    const thinOut = toolText(thin.json);
+    expect(thinOut.isError).toBe(false);
+    expect(thinOut.text).toMatch(/Checked at save: (thin|failing)/);
+    expect(thinOut.text).toContain("#002");
   });
 
   it("never prints a bare section ratio", async () => {
@@ -489,7 +568,7 @@ describe("the MCP endpoint", () => {
       note: "A producer this reader postdates.",
     });
     expect(stored.observations?.[0]?.producedBy).toBe(
-      "@nativesoil/handover-server 0.1.0",
+      "@nativesoil/handover-server 0.2.0",
     );
 
     // And what a reader gets: the withheld fact travels, the withheld value
@@ -569,7 +648,7 @@ describe("the MCP endpoint", () => {
     expect(stored.observations).toHaveLength(1);
     expect(stored.observations?.[0]?.kind).toBe("working.style");
     expect(stored.observations?.[0]?.producedBy).toBe(
-      "@nativesoil/handover-server 0.1.0",
+      "@nativesoil/handover-server 0.2.0",
     );
     expect(validateHandover(stored).valid).toBe(true);
 
@@ -581,7 +660,7 @@ describe("the MCP endpoint", () => {
     expect(text).toMatch(
       /^=== soil:[0-9a-f]{32} WORKING STYLE, RECORDED INSTANCES ===$/m,
     );
-    expect(text).toContain("Evidence from @nativesoil/handover-server 0.1.0");
+    expect(text).toContain("Evidence from @nativesoil/handover-server 0.2.0");
     expect(text).toContain(ANSWERS.assumption);
     expect(text).toContain("the section wins");
     // Sections first: the evidence follows the prompt, never replaces it.
@@ -1615,7 +1694,7 @@ describe("the status the MCP endpoint answers with", () => {
       "io.modelcontextprotocol/serverInfo": {
         "name": "soil-handover-server",
         "title": "Soil Handover (self-hosted server)",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     }
   }

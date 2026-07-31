@@ -89,15 +89,28 @@ implementation on every build and is the definition of "Soil Compatible".
   handovers/
     001.json
     002.json
+  projects/        the project containers, one store each, same layout again
+    acme/
+      index.json
+      handovers/
+        001.json
   .locks/          runtime only: the single-writer lock, empty between writes
 ```
 
 `SOIL_HOME` overrides the root.
 
-`index.json`, `handovers/` and nothing else is the content. `.locks/` is runtime
-state: it exists while a write is in flight and is empty otherwise. Copy a
-`handovers/NNN.json` file anywhere and it is still a complete, readable
-handover.
+`index.json`, `handovers/` and `projects/` is the content, and nothing else.
+`.locks/` is runtime state: it exists while a write is in flight and is empty
+otherwise. Copy a `handovers/NNN.json` file anywhere and it is still a
+complete, readable handover.
+
+A project container under `projects/<name>` is a whole store of this same
+shape, with its own index and its own codes, created by `soil project add` and
+addressed with `@<name>`. It is byte for byte the layout the self-hostable
+server serves for a shared project, which is deliberate: a container written
+locally is served by `soil-server` unchanged, once the operator registers the
+project and its members. The store is the unification; the server adds only
+membership.
 
 ### One writer at a time
 

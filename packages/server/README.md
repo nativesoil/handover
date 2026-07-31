@@ -24,6 +24,9 @@ security posture are in [`docs/server.md`](../../docs/server.md).
 - Every write is serialised by a lock, so two processes on one volume cannot
   lose each other's saves; a contended write is refused with `503`, never
   acknowledged.
+- A save reports the open deterministic check's grade beside the section
+  counts, the same baseline a local save reports; the grade informs, never
+  blocks a save, and is never written onto the handover.
 - One JSON log line per request, with no token and no handover content.
 - Every handover is a plain JSON file in the same layout as `~/.soil`.
 - The server never makes an outbound connection.

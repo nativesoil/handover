@@ -12,14 +12,18 @@
  * capabilities in each request's `_meta` and expects no handshake at all. Which
  * era a request gets is decided from that request alone.
  *
- * The tools are `soil_save`, `soil_load` and `soil_list`, each with one
- * addition over the local server: an optional `project` argument that
- * addresses a shared project store instead of the caller's personal store.
- * One addition, and no omission: that sentence was false for a while, because
- * this endpoint's save took no working-style input and its load rendered no
- * working-style evidence, so the same stored document read differently through
- * the two surfaces. It is true again, and `mcp.test.ts` holds it true by
- * checking the two surfaces against each other rather than against prose.
+ * The tools are `soil_save`, `soil_load` and `soil_list`, the same three the
+ * local stdio server exposes, with the same surface: the `project` argument
+ * was this endpoint's one addition until the local server grew projects of
+ * its own, and now the two differ only in who answers (membership is enforced
+ * here, and locally there is one operator). No omission either: that claim
+ * was false for a while, because this endpoint's save took no working-style
+ * input and its load rendered no working-style evidence, so the same stored
+ * document read differently through the two surfaces. It is true again, and
+ * `mcp.test.ts` holds it true by checking the two surfaces against each other
+ * rather than against prose. The save's checked-at-save line is part of that
+ * parity: the receipt reports the open deterministic check's grade in the
+ * local receipt's own words.
  *
  * Schema rule, inherited from the local server: every input schema declares
  * every property and sets `additionalProperties: false`, because a client
@@ -66,11 +70,13 @@ import {
   PROVENANCE_LABELS,
   SECTION_KEYS,
   SECTION_STATUSES,
+  checkHandover,
   normalizeHandover,
   renderSaved,
   LockBusyError,
   uuidv7,
   validateHandover,
+  type CheckReport,
   type HandoverObservation,
   type SectionKey,
 } from "@nativesoil/handover-sdk";
@@ -102,7 +108,7 @@ export interface ToolDefinition {
 const PROJECT_ARG = {
   type: "string",
   description:
-    "Optional. The id of a shared project on this server. With it, the save, load or list runs against that project's shared store; without it, against your personal store. You must be a member of the project. Leaving it out is the only way to address your personal store: a project stated as anything other than a name is refused, never read as though you had left it out, because a handover written somewhere you did not ask for is worse than a call you have to make again.",
+    'Optional. A reference to a shared project on this server, e.g. "@acme" or "acme": the two name the same project, because the product\'s command grammar spells a place with a leading @ and the @ is the marker rather than part of the name. With it, the save, load or list runs against that project\'s shared store; without it, against your personal store. You must be a member of the project. Leaving it out is the only way to address your personal store: a project stated as anything other than a name is refused, never read as though you had left it out, because a handover written somewhere you did not ask for is worse than a call you have to make again.',
 } as const;
 
 function sectionProperties(): Record<string, unknown> {
@@ -228,7 +234,7 @@ export const SERVER_TOOLS: readonly ToolDefinition[] = Object.freeze([
     name: "soil_save",
     title: "Save handover",
     description:
-      "Save the working state of this project as a Soil handover on this server, personally or into a shared project, and return its load code. Fill every section you can from this conversation and the project's real state: enumerate every locked decision with its reason, and keep the project's own vocabulary word for word. Never include secrets, credentials, tokens or private absolute paths: say that the thing exists and where it is configured, never its value. A save carrying credential-shaped material is refused and nothing is stored. A section you cannot fill honestly should be left out rather than padded, and a section you withheld for safety belongs in sectionStatus as blocked, with a line saying what exists and where. Label each section's origin in sectionProvenance so a cold reader can tell what was checked from what was reported or guessed. The save reports how many of the 17 sections carry content, and does not grade what you write. Alongside the sections, answer the four working-style questions from real moments in this thread when you can: they are optional, a save without them succeeds unchanged, and the answers are recorded as evidence rather than graded.",
+      "Save the working state of this project as a Soil handover on this server, personally or into a shared project, and return its load code. Fill every section you can from this conversation and the project's real state: enumerate every locked decision with its reason, and keep the project's own vocabulary word for word. Never include secrets, credentials, tokens or private absolute paths: say that the thing exists and where it is configured, never its value. A save carrying credential-shaped material is refused and nothing is stored. A section you cannot fill honestly should be left out rather than padded, and a section you withheld for safety belongs in sectionStatus as blocked, with a line saying what exists and where. Label each section's origin in sectionProvenance so a cold reader can tell what was checked from what was reported or guessed. The save reports how many of the 17 sections carry content, and runs the open deterministic document check on what was stored, reporting its grade and findings. The grade informs and never refuses a save, and only a real load shows what a target model actually keeps. Alongside the sections, answer the four working-style questions from real moments in this thread when you can: they are optional, a save without them succeeds unchanged, and the answers are recorded as evidence rather than graded.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -353,6 +359,29 @@ function text(body: string, isError = false): ToolResult {
   };
 }
 
+/** `1 problem`, `2 problems`. The same spelling `soil check` prints. */
+function pluralize(n: number, word: string): string {
+  return `${n} ${word}${n === 1 ? "" : "s"}`;
+}
+
+/**
+ * The one line a save adds about the deterministic document check it just ran
+ * on what was stored: the grade band and the finding counts, in the vocabulary
+ * `soil check` prints, word for word the local stdio server's line, because a
+ * team member saving through this endpoint is owed the same receipt as the
+ * same person saving locally. The grade informs and never refuses a save, and
+ * nothing from the report is written onto the handover.
+ */
+function checkedAtSaveLine(report: CheckReport): string {
+  return (
+    `Checked at save: ${report.grade} · ` +
+    `${pluralize(report.counts.problems, "problem")} · ` +
+    `${pluralize(report.counts.cautions, "caution")} · ` +
+    `${report.counts.advice} advice. ` +
+    "The deterministic document check informs and never blocks a save; only a real load proves restore."
+  );
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -365,8 +394,21 @@ function isRecord(value: unknown): value is Record<string, unknown> {
  * a caller's stated destination into a different one.
  */
 function projectArg(input: Record<string, unknown>): string | undefined {
-  const value = input["project"];
-  return isName(value) ? value.trim() : undefined;
+  return projectSlug(input["project"]);
+}
+
+/**
+ * The project a stated reference names, or `undefined` when the value is not
+ * a usable reference. `@acme` and `acme` are the same reference: the grammar
+ * is `@` says where, `#` says which, and the `@` is the marker rather than
+ * part of the name. A bare `@` is unusable, and is refused by
+ * `discardedValueIssues` rather than read as personal.
+ */
+function projectSlug(value: unknown): string | undefined {
+  if (!isName(value)) return undefined;
+  const raw = value.trim();
+  const slug = raw.startsWith("@") ? raw.slice(1) : raw;
+  return slug.length > 0 ? slug : undefined;
 }
 
 /** Whether a stated project id or load code is one this endpoint can look up. */
@@ -680,7 +722,7 @@ function discardedValueIssues(
 ): StatedIssue[] {
   const issues: StatedIssue[] = [];
   const project = input["project"];
-  if (project !== undefined && !isName(project)) {
+  if (project !== undefined && projectSlug(project) === undefined) {
     issues.push({
       path: "/project",
       message: `must be ${READ_SHAPE["project"]}`,
@@ -1042,6 +1084,7 @@ export function callServerTool(
           renderSaved(outcome.handover, outcome.entry.code),
           "",
           `Saved on this server (${where}) as ${outcome.entry.code}. ${counts.withContent} of ${counts.total} sections carry content.`,
+          checkedAtSaveLine(checkHandover(outcome.handover)),
           gaps.length > 0
             ? `Sections with nothing in them: ${gaps.join(", ")}.`
             : "",
@@ -1159,7 +1202,7 @@ const META_SERVER_INFO = "io.modelcontextprotocol/serverInfo";
 const SERVER_INFO = {
   name: "soil-handover-server",
   title: "Soil Handover (self-hosted server)",
-  version: "0.1.0",
+  version: "0.2.0",
 } as const;
 
 /**

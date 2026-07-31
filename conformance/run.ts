@@ -1757,6 +1757,15 @@ const TRANSLATED_SAVE_ARGUMENTS = Object.freeze([
   "workingStyle",
 ]);
 
+/**
+ * The `soil_save` arguments that say nothing about the document at all: they
+ * address a store. `project` names which container the save lands in, exactly
+ * as it does on the self-hosted server's endpoint, and nothing from it may
+ * reach the stored document, because a handover is written to be moved and
+ * where it currently sits is not a fact about it.
+ */
+const ADDRESSING_SAVE_ARGUMENTS = Object.freeze(["project"]);
+
 /** The members above that no producer states, so the writer must supply them. */
 const WRITER_ASSIGNED = Object.freeze([
   "code",
@@ -1940,12 +1949,13 @@ function checkProducerContract(suite: Suite, saveSchema: unknown): void {
   const goNowhere = saveArguments.filter(
     (name) =>
       !documentRoots.includes(name) &&
-      !TRANSLATED_SAVE_ARGUMENTS.includes(name),
+      !TRANSLATED_SAVE_ARGUMENTS.includes(name) &&
+      !ADDRESSING_SAVE_ARGUMENTS.includes(name),
   );
   suite.check(
     "mcp",
     goNowhere.length === 0,
-    `every soil_save argument must reach the document or be translated into one; goes nowhere: ${
+    `every soil_save argument must reach the document, be translated into one, or address the store; goes nowhere: ${
       goNowhere.join(", ") || "none"
     }`,
   );

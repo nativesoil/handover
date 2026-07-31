@@ -37,11 +37,25 @@ else that reads a JSON MCP config:
 Exactly three, on purpose.
 
 **`soil_save`** takes `projectId`, `title`, and `sections` (the 17 keys, each a
-prose string), plus optional `sectionStatus`, `sectionProvenance`,
+prose string), plus optional `project`, `sectionStatus`, `sectionProvenance`,
 `soilHandover`, `quality`, `safety`, `source`, `observations` and
 `workingStyle`. It stores the handover in `~/.soil` and returns the load code
-with an honest section count. A section the model cannot fill honestly should
-be left out, and the save records it as a gap.
+with an honest section count, and the receipt carries the grade and finding
+counts from the open deterministic check of the stored document. The grade
+informs and never refuses a save, and it is never written onto the handover. A
+section the model cannot fill honestly should be left out, and the save
+records it as a gap.
+
+`project` addresses a project: a shared container of handovers inside the
+same store, in exactly the layout the self-hostable server serves for a shared
+project. The reference follows the product's one grammar, `@` says where and
+`#` says which, so `"@acme"` and `"acme"` name the same container. A save
+never creates a project and a stated reference never falls back to the
+personal store: an unknown project is refused, and the refusal names
+`soil project add <name>`, which is where containers are created. Removal is
+`soil project remove` at a terminal too; deletion is a human decision, so
+these tools deliberately cannot create or remove a project, only save into,
+load from and list one.
 
 `sectionStatus` and `sectionProvenance` are keyed by the same 17 section keys
 as `sections`, and they are what lets a model say through the tool interface
@@ -71,15 +85,18 @@ fail-soft: a save without answers is stored exactly as before, an unusable
 answer is dropped rather than failing the save, and nothing anywhere turns the
 answers into a score.
 
-**`soil_load`** takes an optional `code` and returns the restore prompt: the
-durable truth, the state as of the capture, the stated gaps, and how to read
-them. Defaults to the most recent handover. When the handover carries
+**`soil_load`** takes an optional `code` and an optional `project`, and
+returns the restore prompt: the durable truth, the state as of the capture,
+the stated gaps, and how to read them. Defaults to the most recent handover in
+the addressed store. When the handover carries
 `working.style` observations, the recorded instances come last in the prompt,
 as a labelled block of attributed evidence whose heading carries the same
 per-render marker every other heading does. Evidence, not instructions: where
 an instance disagrees with the workflow section, the section wins.
 
-**`soil_list`** takes nothing and lists what is stored.
+**`soil_list`** takes an optional `project` and lists what is stored: with a
+reference, that container; without one, the personal store and every project
+container, each row saying where it lives.
 
 ## Design notes
 
@@ -89,9 +106,13 @@ schema is free to flatten it to "no parameters", and then the model calls the
 tool with nothing and the save captures nothing.
 
 **Honest descriptions.** The tool descriptions say what the tools do, including
-what they do not do. A save is a local file write. Nothing is sent anywhere, and
-nothing checks or grades what the model wrote, because that pipeline is not in
-this release.
+what they do not do. A save is a local file write and nothing is sent
+anywhere. The save runs the open deterministic rules from
+[docs/checking.md](../../docs/checking.md) on the stored document and reports
+the grade; the grade informs, never blocks a save, and is never written onto
+the handover, because the format has no grade field and will not get one.
+Whether a handover actually restores a session is answered only by a real
+load, and nothing here claims otherwise.
 
 **Fail closed on secrets.** A save carrying credential-shaped material is
 refused, nothing is stored, and the message tells the model to say that the thing

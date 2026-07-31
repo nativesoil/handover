@@ -210,9 +210,11 @@ soil save examples/orchard-checkout.json
 ```
 
 Expected: a "handover saved" card reporting `17 / 17 sections carrying
-content` and a load code (`#001` in a fresh scratch store), exit 0. That
-count is structural content presence, never a measure of how good a capture
-is.
+content` and a load code (`#001` in a fresh scratch store), followed by a
+`checked at save` line reporting grade `adequate`, exit 0. That count is
+structural content presence, never a measure of how good a capture is, and
+the grade is the deterministic document check run at save; it informs and
+never blocks a save.
 
 **Step 4: the store lists it back.**
 
@@ -292,7 +294,7 @@ install.
 | `packages/sdk-go`     | Go SDK plus the `soil` single binary                                                                                                     |
 | `packages/sdk-jvm`    | JVM SDK: Kotlin on JVM 17, with a Java friendly API                                                                                      |
 | `packages/sdk-dotnet` | .NET SDK: C# on .NET 8                                                                                                                   |
-| `packages/cli`        | The `soil` command over the TypeScript SDK: save, load, list, validate, check, render, rescue, where                                     |
+| `packages/cli`        | The `soil` command over the TypeScript SDK: save, load, list, project, validate, check, render, rescue, where                            |
 | `packages/mcp`        | The local MCP stdio server: `soil_save`, `soil_load`, `soil_list`                                                                        |
 | `packages/server`     | The self-hostable multi-user server, a preview                                                                                           |
 | `conformance/`        | The fixtures, and the five runners that hold every implementation to them                                                                |

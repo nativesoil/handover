@@ -69,7 +69,7 @@ whether a handover actually restores a session is answered only by a real load.
 
 // cliVersion is what producedBy records on an attached report, matching the
 // Node CLI's soil-cli/<version>.
-const cliVersion = "0.1.0"
+const cliVersion = "0.2.0"
 
 const version = cliVersion + " (spec 1.0)"
 

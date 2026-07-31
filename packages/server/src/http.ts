@@ -28,7 +28,11 @@
  * may and may not carry.
  */
 
-import { LockBusyError, type LockOptions } from "@nativesoil/handover-sdk";
+import {
+  LockBusyError,
+  checkHandover,
+  type LockOptions,
+} from "@nativesoil/handover-sdk";
 import {
   createServer,
   type IncomingMessage,
@@ -401,6 +405,12 @@ async function routeAuthed(
       );
     }
     const counts = service.counts(outcome.handover);
+    // The open deterministic document check, run on what was just stored,
+    // reported in the receipt in the same vocabulary the local save prints:
+    // the grade band and the problem, caution and advice counts. Report only:
+    // the grade never touches the status code, because an honest gap never
+    // blocks a save, and nothing from it is written onto the handover.
+    const report = checkHandover(outcome.handover);
     return reply(
       201,
       {
@@ -411,6 +421,12 @@ async function routeAuthed(
         title: outcome.entry.title,
         createdAt: outcome.entry.createdAt,
         sections: counts,
+        check: {
+          grade: report.grade,
+          problems: report.counts.problems,
+          cautions: report.counts.cautions,
+          advice: report.counts.advice,
+        },
       },
       {
         logged: {

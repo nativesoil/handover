@@ -10,7 +10,7 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PackageId>Soil.Handover</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Authors>Mastodont AB</Authors>
     <Company>Mastodont AB</Company>
     <Copyright>Copyright 2026 Mastodont AB</Copyright>

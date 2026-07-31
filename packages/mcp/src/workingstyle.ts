@@ -51,7 +51,7 @@ import type { HandoverObservation } from "@nativesoil/handover-sdk";
  * names itself so a reader can weigh the claim, exactly as
  * spec/observations.md asks of a `producedBy`.
  */
-export const WORKING_STYLE_PRODUCER = "@nativesoil/handover-mcp 0.1.0";
+export const WORKING_STYLE_PRODUCER = "@nativesoil/handover-mcp 0.2.0";
 
 /**
  * An answer longer than this is dropped. Four sentences about one moment fit

@@ -110,7 +110,7 @@ func TestCheckAttachWritesAQualityCaptureObservation(t *testing.T) {
 	// itself is byte-pinned in the SDK's corpus tests.
 	serialized := handover.MarshalJSONIndent(observations[0])
 	if !strings.Contains(serialized, `"quality.capture"`) ||
-		!strings.Contains(serialized, `"producedBy": "soil-cli/0.1.0"`) {
+		!strings.Contains(serialized, `"producedBy": "soil-cli/0.2.0"`) {
 		t.Fatalf("unexpected observation:\n%s", serialized)
 	}
 	for _, band := range handover.CheckGrades {

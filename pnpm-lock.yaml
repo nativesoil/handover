@@ -8,12 +8,18 @@ importers:
 
   .:
     devDependencies:
+      '@nativesoil/handover-cli':
+        specifier: workspace:*
+        version: link:packages/cli
       '@nativesoil/handover-mcp':
         specifier: workspace:*
         version: link:packages/mcp
       '@nativesoil/handover-sdk':
         specifier: workspace:*
         version: link:packages/sdk-ts
+      '@nativesoil/handover-server':
+        specifier: workspace:*
+        version: link:packages/server
       '@types/node':
         specifier: ^20.17.10
         version: 20.19.43
