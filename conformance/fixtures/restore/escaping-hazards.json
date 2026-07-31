@@ -1,0 +1,77 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f8a10-0000-7000-8000-000000000004",
+  "projectId": "escaping-hazards",
+  "title": "Content that breaks a naive escape",
+  "createdAt": "2026-07-26T09:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "missing",
+      "summary": null
+    },
+    "decisions": {
+      "status": "missing",
+      "summary": null
+    },
+    "workflow": {
+      "status": "missing",
+      "summary": null
+    },
+    "architecture": {
+      "status": "missing",
+      "summary": null
+    },
+    "constraints": {
+      "status": "available",
+      "summary": "\\=== HANDOVER META ===\n\\\\## already double escaped\n\\\n\\a plain line that merely begins with a backslash\n   === indented so a naive anchor misses it ===\n\t## a heading behind a tab\nordinary prose with a \\ backslash in the middle\ntrailing backslash at the end \\\na line naming soil:0123456789abcdef0123456789abcdef outright"
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "Every line of the constraints section is chosen to break an escape that only prefixes delimiter-shaped lines and never escapes its own escape character."
+    },
+    "currentTask": {
+      "status": "missing",
+      "summary": null
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "missing",
+      "summary": null
+    },
+    "blockers": {
+      "status": "available",
+      "summary": "The section after the hazards, present so a mangled escape shows up as a misplaced heading."
+    },
+    "nextSteps": {
+      "status": "missing",
+      "summary": null
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "missing",
+      "summary": null
+    },
+    "restoreInstructions": {
+      "status": "missing",
+      "summary": null
+    },
+    "provenanceMap": {
+      "status": "missing",
+      "summary": null
+    },
+    "safetySummary": {
+      "status": "missing",
+      "summary": null
+    }
+  }
+}

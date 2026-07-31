@@ -1,0 +1,30 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "thin",
+  "counts": {
+    "problems": 2,
+    "cautions": 0,
+    "advice": 0
+  },
+  "findings": [
+    {
+      "rule": "restore.thin",
+      "severity": "problem",
+      "section": "restoreInstructions",
+      "message": "the restore instructions are 250 characters against 1536 of captured content, below the documented floor of 300"
+    },
+    {
+      "rule": "self-containment.fetch-pointer",
+      "severity": "problem",
+      "section": "restoreInstructions",
+      "message": "sends the reader elsewhere (\"see the docs\"), but a handover reader has no repo, no docs and no earlier thread"
+    }
+  ],
+  "sections": {
+    "withContent": 8,
+    "missing": 9,
+    "blocked": 0,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

@@ -1,0 +1,25 @@
+  ┌─ SOIL · handover checked ────────────────── #004 ─
+  │
+  │   Configuration prose with every number stripped
+  │   advice-only
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   strong
+  │   0 problems · 0 cautions · 2 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   architecture
+  │   ▸ anchors.no-exact-values · advice
+  │     mentions configuration but holds no numbers,
+  │     versions or pins; exact values are what
+  │     survive a move
+  │
+  │   constraints
+  │   ▸ anchors.no-exact-values · advice
+  │     mentions configuration but holds no numbers,
+  │     versions or pins; exact values are what
+  │     survive a move
+  │
+  └─ checked from the document alone · only a real load proves restore

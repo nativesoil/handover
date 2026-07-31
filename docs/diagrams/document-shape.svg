@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 960 660" width="960" height="660" role="img" aria-labelledby="ds-title ds-desc">
+  <title id="ds-title">The shape of a handover: seventeen sections in three tiers, four statuses, eleven provenance labels</title>
+  <desc id="ds-desc">Every handover declares all seventeen sections. Six are durable and still true later: projectIdentity, decisions, workflow, architecture, constraints, rejectedPaths. Seven are frontier and were true at the capture: executiveSummary, currentTask, latestUserIntent, sessionDelta, blockers, nextSteps, openQuestions. Four are meta, about the capture itself: sessionActivity, restoreInstructions, provenanceMap, safetySummary. A section carries exactly three fields, status, summary and provenance, and a fourth is refused. Status is one of four: available, missing, blocked, not_applicable. Provenance is optional and drawn from eleven labels: repo_verified, soil_observed, prompt_report, user_locked_memory, model_reported, inferred, owner_observed, live_verified, emulator_verified, planned_only, blocked. Both sets are closed for the whole 1.x line. Observations are the one extension point: kind is an open namespaced string and data is free-form, a reader ignores a kind it does not recognise and carries the entry forward unchanged, and observations never change how the seventeen sections are read.</desc>
+
+  <!-- The light palette rides in presentation attributes so it is the floor;
+       the style block holds only the dark override, a deliberate inversion of
+       the product's off-white surface: carbon ground, off-white ink, the same
+       greens. -->
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .page  { fill: #101010; }
+      .card  { fill: #1b1b19; stroke: #f4f2ed; stroke-opacity: 0.18; }
+      .ink   { fill: #f4f2ed; }
+      .muted { fill: #f4f2ed; }
+      .faint { fill: #f4f2ed; }
+      .hair  { stroke: #f4f2ed; stroke-opacity: 0.18; }
+      .glyph { stroke: #f4f2ed; }
+      .green { fill: #39CD75; }
+    }
+  </style>
+
+  <rect class="page" width="960" height="660" fill="#f4f2ed"/>
+
+  <rect x="40" y="24" width="9" height="9" fill="#39CD75"/>
+  <text class="ink" x="58" y="33" font-size="15" font-weight="600" fill="#101010">The shape of a handover</text>
+  <text class="muted" x="40" y="56" font-size="11" fill="#101010" fill-opacity="0.7">What the one file you save carries. All 17 sections are declared in every document, including the empty ones: durable truth outlives the session, frontier state does not.</text>
+  <line class="hair" x1="40" y1="70" x2="920" y2="70" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+
+  <!-- ============ tier A ============ -->
+  <rect class="card" x="40" y="92" width="280" height="180" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="57" y="114" font-size="12" font-weight="600" fill="#101010">Durable &#183; the project</text>
+  <text class="muted" x="57" y="130" font-size="10.5" fill="#101010" fill-opacity="0.7">still true later. 6 sections.</text>
+  <line class="hair" x1="57" y1="140" x2="304" y2="140" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="57" y="157" font-size="10.5" fill="#101010">projectIdentity</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="57" y="175" font-size="10.5" fill="#101010">decisions</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="57" y="193" font-size="10.5" fill="#101010">workflow</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="57" y="211" font-size="10.5" fill="#101010">architecture</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="57" y="229" font-size="10.5" fill="#101010">constraints</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="57" y="247" font-size="10.5" fill="#101010">rejectedPaths</text>
+  <text class="faint" x="57" y="265" font-size="10" fill="#101010" fill-opacity="0.55">a decision keeps the reason it was locked</text>
+
+  <!-- ============ tier B ============ -->
+  <rect class="card" x="340" y="92" width="280" height="180" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="357" y="114" font-size="12" font-weight="600" fill="#101010">Frontier &#183; this session</text>
+  <text class="muted" x="357" y="130" font-size="10.5" fill="#101010" fill-opacity="0.7">true at the capture. 7 sections.</text>
+  <line class="hair" x1="357" y1="140" x2="604" y2="140" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="357" y="157" font-size="10.5" fill="#101010">executiveSummary</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="357" y="175" font-size="10.5" fill="#101010">currentTask</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="357" y="193" font-size="10.5" fill="#101010">latestUserIntent</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="357" y="211" font-size="10.5" fill="#101010">sessionDelta</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="357" y="229" font-size="10.5" fill="#101010">blockers</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="357" y="247" font-size="10.5" fill="#101010">nextSteps</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="357" y="265" font-size="10.5" fill="#101010">openQuestions</text>
+
+  <!-- ============ tier C ============ -->
+  <rect class="card" x="640" y="92" width="280" height="180" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="657" y="114" font-size="12" font-weight="600" fill="#101010">Meta &#183; the handover</text>
+  <text class="muted" x="657" y="130" font-size="10.5" fill="#101010" fill-opacity="0.7">about the capture itself. 4 sections.</text>
+  <line class="hair" x1="657" y1="140" x2="904" y2="140" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="657" y="157" font-size="10.5" fill="#101010">sessionActivity</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="657" y="175" font-size="10.5" fill="#101010">restoreInstructions</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="657" y="193" font-size="10.5" fill="#101010">provenanceMap</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="657" y="211" font-size="10.5" fill="#101010">safetySummary</text>
+  <text class="faint" x="657" y="235" font-size="10" fill="#101010" fill-opacity="0.55">restoreInstructions is the boot prompt</text>
+  <text class="faint" x="657" y="248" font-size="10" fill="#101010" fill-opacity="0.55">a load hands to the next model first</text>
+
+  <!-- ============ a section ============ -->
+  <rect class="card" x="40" y="296" width="430" height="236" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="59" y="318" font-size="12" font-weight="600" fill="#101010">A section &#183; three fields, and a fourth is refused</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="59" y="340" font-size="10.5" fill="#101010">{ "status": "available",</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="68" y="356" font-size="10.5" fill="#101010">"summary": "prose",</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="68" y="372" font-size="10.5" fill="#101010">"provenance": ["model_reported"] }</text>
+  <line class="hair" x1="59" y1="384" x2="454" y2="384" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="muted" x="59" y="400" font-size="10.5" fill="#101010" fill-opacity="0.7">status &#183; one of four, and no others. The three kinds of</text>
+  <text class="muted" x="59" y="415" font-size="10.5" fill="#101010" fill-opacity="0.7">nothing are not interchangeable:</text>
+  <text class="green" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="59" y="437" font-size="10.5" fill="#0F6E56">available</text>
+  <text class="muted" x="185" y="437" font-size="10.5" fill="#101010" fill-opacity="0.7">the content is here</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="59" y="455" font-size="10.5" fill="#101010">missing</text>
+  <text class="muted" x="185" y="455" font-size="10.5" fill="#101010" fill-opacity="0.7">not seen &#183; go and look</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="59" y="473" font-size="10.5" fill="#101010">blocked</text>
+  <text class="muted" x="185" y="473" font-size="10.5" fill="#101010" fill-opacity="0.7">withheld &#183; ask another way</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="59" y="491" font-size="10.5" fill="#101010">not_applicable</text>
+  <text class="muted" x="185" y="491" font-size="10.5" fill="#101010" fill-opacity="0.7">nothing to find &#183; stop looking</text>
+  <line class="hair" x1="59" y1="502" x2="454" y2="502" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="faint" x="59" y="517" font-size="10" fill="#101010" fill-opacity="0.55">available and not_applicable each require a summary. The one</text>
+  <text class="faint" x="59" y="528" font-size="10" fill="#101010" fill-opacity="0.55">status that tells a reader to stop looking carries its reason.</text>
+
+  <!-- ============ provenance ============ -->
+  <rect class="card" x="490" y="296" width="430" height="236" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="509" y="318" font-size="12" font-weight="600" fill="#101010">provenance &#183; optional, and closed at eleven</text>
+  <text class="muted" x="509" y="334" font-size="10.5" fill="#101010" fill-opacity="0.7">So a cold reader can tell a check from a report from a guess.</text>
+  <line class="hair" x1="509" y1="344" x2="904" y2="344" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="509" y="364" font-size="10.5" fill="#101010">repo_verified</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="509" y="384" font-size="10.5" fill="#101010">soil_observed</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="509" y="404" font-size="10.5" fill="#101010">prompt_report</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="509" y="424" font-size="10.5" fill="#101010">user_locked_memory</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="509" y="444" font-size="10.5" fill="#101010">model_reported</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="509" y="464" font-size="10.5" fill="#101010">inferred</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="712" y="364" font-size="10.5" fill="#101010">owner_observed</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="712" y="384" font-size="10.5" fill="#101010">live_verified</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="712" y="404" font-size="10.5" fill="#101010">emulator_verified</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="712" y="424" font-size="10.5" fill="#101010">planned_only</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="712" y="444" font-size="10.5" fill="#101010">blocked</text>
+  <line class="hair" x1="509" y1="478" x2="904" y2="478" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="muted" x="509" y="494" font-size="10.5" fill="#101010" fill-opacity="0.7">A label outside the eleven is refused, never rewritten to a</text>
+  <text class="muted" x="509" y="509" font-size="10.5" fill="#101010" fill-opacity="0.7">neighbour that looks close. Labels are facts about where a</text>
+  <text class="muted" x="509" y="524" font-size="10.5" fill="#101010" fill-opacity="0.7">claim came from; nothing in the format scores them.</text>
+
+  <!-- ============ observations ============ -->
+  <rect class="card" x="40" y="556" width="880" height="76" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <rect x="57" y="568" width="8" height="8" fill="#39CD75"/>
+  <text class="ink" x="74" y="578" font-size="12" font-weight="600" fill="#101010">observations &#183; the one extension point</text>
+  <text class="muted" x="57" y="595" font-size="10.5" fill="#101010" fill-opacity="0.7">Optional. <tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">kind</tspan> is an open namespaced string and <tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">data</tspan> is free-form, so evidence can travel without the format growing a field for it.</text>
+  <text class="muted" x="57" y="611" font-size="10.5" fill="#101010" fill-opacity="0.7">A reader ignores a kind it does not recognise and carries the entry forward unchanged. An observation never changes how the 17 sections are read,</text>
+  <text class="muted" x="57" y="627" font-size="10.5" fill="#101010" fill-opacity="0.7">and the safety rule applies inside <tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">data</tspan>. Three standard kinds are defined today: <tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">quality.capture</tspan>, <tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">load.outcome</tspan>, <tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">working.style</tspan>.</text>
+</svg>

@@ -1,0 +1,91 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-7e76-92a3-f4671b02fd52",
+  "projectId": "boundary-numbers",
+  "title": "Integers at and inside the safe range",
+  "createdAt": "2026-07-26T09:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "A handover whose observation payload carries the integer domain at both of its ends. Every one of these values must survive the boundary and reach the validator unchanged."
+    },
+    "decisions": {
+      "status": "missing",
+      "summary": null
+    },
+    "workflow": {
+      "status": "missing",
+      "summary": null
+    },
+    "architecture": {
+      "status": "missing",
+      "summary": null
+    },
+    "constraints": {
+      "status": "missing",
+      "summary": null
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "missing",
+      "summary": null
+    },
+    "currentTask": {
+      "status": "missing",
+      "summary": null
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "missing",
+      "summary": null
+    },
+    "blockers": {
+      "status": "missing",
+      "summary": null
+    },
+    "nextSteps": {
+      "status": "missing",
+      "summary": null
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "missing",
+      "summary": null
+    },
+    "restoreInstructions": {
+      "status": "missing",
+      "summary": null
+    },
+    "provenanceMap": {
+      "status": "missing",
+      "summary": null
+    },
+    "safetySummary": {
+      "status": "missing",
+      "summary": null
+    }
+  },
+  "observations": [
+    {
+      "kind": "com.example.numbers",
+      "data": {
+        "safeMax": 9007199254740991,
+        "oneUnderSafeMax": 9007199254740990,
+        "safeMin": -9007199254740991,
+        "oneInsideSafeMin": -9007199254740990,
+        "zero": 0,
+        "negativeZero": -0,
+        "ordinary": 42
+      }
+    }
+  ]
+}

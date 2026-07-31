@@ -1,0 +1,54 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "thin",
+  "counts": {
+    "problems": 1,
+    "cautions": 3,
+    "advice": 2
+  },
+  "findings": [
+    {
+      "rule": "decisions.entry-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "entry 2 states a decision with no recorded reason (\"2. We picked 🧭 the compass path 🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦…\")"
+    },
+    {
+      "rule": "self-containment.fetch-pointer",
+      "severity": "caution",
+      "section": "workflow",
+      "message": "sends the reader elsewhere (\"see the repo\"), but a handover reader has no repo, no docs and no earlier thread"
+    },
+    {
+      "rule": "size.one-liner",
+      "severity": "advice",
+      "section": "executiveSummary",
+      "message": "carries 17 characters in a document whose sections are otherwise substantial"
+    },
+    {
+      "rule": "time.unanchored",
+      "severity": "caution",
+      "section": "currentTask",
+      "message": "uses \"this week\" with no capture-time anchor, so a later reader cannot tell when it was true"
+    },
+    {
+      "rule": "size.one-liner",
+      "severity": "advice",
+      "section": "blockers",
+      "message": "carries 33 characters in a document whose sections are otherwise substantial"
+    },
+    {
+      "rule": "restore.thin",
+      "severity": "problem",
+      "section": "restoreInstructions",
+      "message": "the restore instructions are 154 characters against 3133 of captured content, below the documented floor of 300"
+    }
+  ],
+  "sections": {
+    "withContent": 11,
+    "missing": 6,
+    "blocked": 0,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

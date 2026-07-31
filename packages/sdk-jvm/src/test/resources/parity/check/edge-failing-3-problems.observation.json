@@ -1,0 +1,44 @@
+{
+  "kind": "quality.capture",
+  "producedBy": "soil-cli/0.1.0",
+  "producedAt": "2026-07-22T10:00:00Z",
+  "data": {
+    "checkVersion": "1.0.0",
+    "sectionsWithContent": 6,
+    "missingSections": [
+      "projectIdentity",
+      "decisions",
+      "workflow",
+      "architecture",
+      "constraints",
+      "rejectedPaths",
+      "latestUserIntent",
+      "blockers",
+      "openQuestions",
+      "provenanceMap",
+      "safetySummary"
+    ],
+    "blockedSections": [],
+    "findings": [
+      {
+        "rule": "completeness.no-durable-truth",
+        "location": "/",
+        "observed": "none of the six durable-tier sections carries content, so the project's lasting truth did not travel",
+        "severity": "problem"
+      },
+      {
+        "rule": "restore.thin",
+        "location": "/sections/restoreInstructions",
+        "observed": "the restore instructions are 60 characters against 1423 of captured content, below the documented floor of 300",
+        "severity": "problem"
+      },
+      {
+        "rule": "self-containment.fetch-pointer",
+        "location": "/sections/restoreInstructions",
+        "observed": "sends the reader elsewhere (\"see the docs\"), but a handover reader has no repo, no docs and no earlier thread",
+        "severity": "problem"
+      }
+    ],
+    "notes": "Structural examination of the document by the open deterministic baseline. Section statuses and rule outcomes only."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "soil-handover",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The Soil Handover Specification and its official implementations: save the project state, load it anywhere, see what survived.",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "tsc -b --clean",
+    "typecheck": "tsc -b --noEmit false --dry 2>/dev/null || tsc -b",
+    "test": "vitest run",
+    "test:py": "python3 -m pytest packages/sdk-py",
+    "conformance": "tsc -b && node conformance/dist/run.js && python3 conformance/run_py.py && go run -C conformance/go . && packages/sdk-jvm/gradlew -p packages/sdk-jvm :conformance:run --quiet && dotnet run --project conformance/dotnet",
+    "conformance:interop": "node conformance/interop/run.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "pnpm build && pnpm test && pnpm test:py && pnpm conformance && pnpm conformance:interop"
+  },
+  "devDependencies": {
+    "@nativesoil/handover-mcp": "workspace:*",
+    "@nativesoil/handover-sdk": "workspace:*",
+    "@types/node": "^20.17.10",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "prettier": "^3.4.2",
+    "typescript": "~5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

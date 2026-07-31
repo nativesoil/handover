@@ -1,0 +1,122 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-737d-a259-29872b6b6d31",
+  "projectId": "observed-project",
+  "title": "Carries a quality.capture observation from a named producer",
+  "createdAt": "2026-07-20T08:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "missing",
+      "summary": null
+    },
+    "decisions": {
+      "status": "missing",
+      "summary": null
+    },
+    "workflow": {
+      "status": "missing",
+      "summary": null
+    },
+    "architecture": {
+      "status": "missing",
+      "summary": null
+    },
+    "constraints": {
+      "status": "missing",
+      "summary": null
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "A handover with evidence about the capture itself attached: which sections carried content, from a producer whose name and version travel with the claim."
+    },
+    "currentTask": {
+      "status": "missing",
+      "summary": null
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "missing",
+      "summary": null
+    },
+    "blockers": {
+      "status": "missing",
+      "summary": null
+    },
+    "nextSteps": {
+      "status": "missing",
+      "summary": null
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "missing",
+      "summary": null
+    },
+    "restoreInstructions": {
+      "status": "missing",
+      "summary": null
+    },
+    "provenanceMap": {
+      "status": "missing",
+      "summary": null
+    },
+    "safetySummary": {
+      "status": "missing",
+      "summary": null
+    }
+  },
+  "observations": [
+    {
+      "kind": "quality.capture",
+      "producedBy": "example-checker 1.4",
+      "producedAt": "2026-07-20T09:00:00Z",
+      "data": {
+        "checkVersion": "1.0.0",
+        "sectionsWithContent": 1,
+        "missingSections": [
+          "projectIdentity",
+          "decisions",
+          "workflow",
+          "architecture",
+          "constraints",
+          "rejectedPaths",
+          "currentTask",
+          "latestUserIntent",
+          "sessionDelta",
+          "blockers",
+          "nextSteps",
+          "openQuestions",
+          "sessionActivity",
+          "restoreInstructions",
+          "provenanceMap",
+          "safetySummary"
+        ],
+        "blockedSections": [],
+        "findings": [
+          {
+            "rule": "completeness.no-durable-truth",
+            "location": "/",
+            "observed": "none of the six durable-tier sections carries content, so the project's lasting truth did not travel",
+            "severity": "problem"
+          },
+          {
+            "rule": "restore.absent",
+            "location": "/sections/restoreInstructions",
+            "observed": "content was captured but restoreInstructions is empty, so nothing tells the next session how to begin",
+            "severity": "problem"
+          }
+        ],
+        "notes": "Every missing section was declared rather than omitted."
+      }
+    }
+  ]
+}

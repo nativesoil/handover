@@ -1,0 +1,97 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-737d-a259-29872b6b6d32",
+  "projectId": "observed-project",
+  "title": "Carries a load.outcome observation recorded after a real load",
+  "createdAt": "2026-07-20T08:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "missing",
+      "summary": null
+    },
+    "decisions": {
+      "status": "missing",
+      "summary": null
+    },
+    "workflow": {
+      "status": "missing",
+      "summary": null
+    },
+    "architecture": {
+      "status": "missing",
+      "summary": null
+    },
+    "constraints": {
+      "status": "missing",
+      "summary": null
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "A handover that was loaded into a target session once, with what came of that load recorded by the tool that observed it. History, not a promise about the next load."
+    },
+    "currentTask": {
+      "status": "missing",
+      "summary": null
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "missing",
+      "summary": null
+    },
+    "blockers": {
+      "status": "missing",
+      "summary": null
+    },
+    "nextSteps": {
+      "status": "missing",
+      "summary": null
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "missing",
+      "summary": null
+    },
+    "restoreInstructions": {
+      "status": "missing",
+      "summary": null
+    },
+    "provenanceMap": {
+      "status": "missing",
+      "summary": null
+    },
+    "safetySummary": {
+      "status": "missing",
+      "summary": null
+    }
+  },
+  "observations": [
+    {
+      "kind": "load.outcome",
+      "producedBy": "example-runner 0.9",
+      "producedAt": "2026-07-21T08:30:00Z",
+      "data": {
+        "target": {
+          "client": "example-editor",
+          "model": "example-model"
+        },
+        "recorded": [
+          {
+            "asked": "Which decision governs the pause state?",
+            "answered": "Pause stays first-class; collapsing it caused double charges in 2024."
+          }
+        ],
+        "notes": "The target restated the locked decisions unprompted."
+      }
+    }
+  ]
+}

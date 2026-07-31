@@ -1,0 +1,8 @@
+  ┌─ SOIL · handovers ────────────────────────────────
+  │
+  │   ▸ #002  A very long title that will…  9/17
+  │   ▸ #001  Short                        17/17
+  │
+  │   the ratio counts sections carrying content
+  │
+  └─ 2 stored · load one with `soil load #NNN`

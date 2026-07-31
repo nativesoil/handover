@@ -1,0 +1,122 @@
+{
+  "kind": "quality.capture",
+  "producedBy": "soil-cli/0.1.0",
+  "producedAt": "2026-07-22T10:00:00Z",
+  "data": {
+    "checkVersion": "1.0.0",
+    "sectionsWithContent": 17,
+    "missingSections": [],
+    "blockedSections": [],
+    "findings": [
+      {
+        "rule": "decisions.entry-without-reason",
+        "location": "/sections/decisions",
+        "observed": "entry 1 states a decision with no recorded reason (\"1. We chose Postgres.\")",
+        "severity": "caution"
+      },
+      {
+        "rule": "decisions.entry-without-reason",
+        "location": "/sections/decisions",
+        "observed": "entry 10 states a decision with no recorded reason (\"- We picked the delivery partner.\")",
+        "severity": "caution"
+      },
+      {
+        "rule": "decisions.entry-without-reason",
+        "location": "/sections/decisions",
+        "observed": "entry 11 states a decision with no recorded reason (\"• We opted for one shared cutoff module.\")",
+        "severity": "caution"
+      },
+      {
+        "rule": "decisions.entry-without-reason",
+        "location": "/sections/decisions",
+        "observed": "entry 12 states a decision with no recorded reason (\"▸ Session state was migrated to the server.\")",
+        "severity": "caution"
+      },
+      {
+        "rule": "decisions.entry-without-reason",
+        "location": "/sections/decisions",
+        "observed": "entry 3 states a decision with no recorded reason (\"3. The team adopted trunk-based work.\")",
+        "severity": "caution"
+      },
+      {
+        "rule": "decisions.entry-without-reason",
+        "location": "/sections/decisions",
+        "observed": "entry 4 states a decision with no recorded reason (\"4) We locked the release train.\")",
+        "severity": "caution"
+      },
+      {
+        "rule": "decisions.entry-without-reason",
+        "location": "/sections/decisions",
+        "observed": "entry 6 states a decision with no recorded reason (\"6. We went with plain files.\")",
+        "severity": "caution"
+      },
+      {
+        "rule": "decisions.entry-without-reason",
+        "location": "/sections/decisions",
+        "observed": "entry 8 states a decision with no recorded reason (\"8. We picked the hosted widget.\")",
+        "severity": "caution"
+      },
+      {
+        "rule": "decisions.entry-without-reason",
+        "location": "/sections/decisions",
+        "observed": "entry 9 states a decision with no recorded reason (\"9. The parser was standardized.\")",
+        "severity": "caution"
+      },
+      {
+        "rule": "self-containment.fetch-pointer",
+        "location": "/sections/workflow",
+        "observed": "sends the reader elsewhere (\"Refer to\"), but a handover reader has no repo, no docs and no earlier thread",
+        "severity": "caution"
+      },
+      {
+        "rule": "anchors.no-exact-values",
+        "location": "/sections/architecture",
+        "observed": "mentions configuration but holds no numbers, versions or pins; exact values are what survive a move",
+        "severity": "advice"
+      },
+      {
+        "rule": "anchors.no-exact-values",
+        "location": "/sections/constraints",
+        "observed": "mentions configuration but holds no numbers, versions or pins; exact values are what survive a move",
+        "severity": "advice"
+      },
+      {
+        "rule": "time.unanchored",
+        "location": "/sections/currentTask",
+        "observed": "uses \"Today\" with no capture-time anchor, so a later reader cannot tell when it was true",
+        "severity": "caution"
+      },
+      {
+        "rule": "self-containment.fetch-pointer",
+        "location": "/sections/latestUserIntent",
+        "observed": "sends the reader elsewhere (\"documented at https://\"), but a handover reader has no repo, no docs and no earlier thread",
+        "severity": "caution"
+      },
+      {
+        "rule": "size.one-liner",
+        "location": "/sections/blockers",
+        "observed": "carries 5 characters in a document whose sections are otherwise substantial",
+        "severity": "advice"
+      },
+      {
+        "rule": "size.one-liner",
+        "location": "/sections/openQuestions",
+        "observed": "carries 39 characters in a document whose sections are otherwise substantial",
+        "severity": "advice"
+      },
+      {
+        "rule": "restore.thin",
+        "location": "/sections/restoreInstructions",
+        "observed": "the restore instructions are 82 characters against 3541 of captured content, below the documented floor of 300",
+        "severity": "problem"
+      },
+      {
+        "rule": "self-containment.fetch-pointer",
+        "location": "/sections/restoreInstructions",
+        "observed": "sends the reader elsewhere (\"see the docs\"), but a handover reader has no repo, no docs and no earlier thread",
+        "severity": "problem"
+      }
+    ],
+    "notes": "Structural examination of the document by the open deterministic baseline. Section statuses and rule outcomes only."
+  }
+}

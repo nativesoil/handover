@@ -1,0 +1,131 @@
+version: 2
+
+# Dependency monitoring for all five language surfaces plus the workflows.
+#
+# Every directory named below was checked to contain a manifest Dependabot
+# recognises, and every manifest in the repository is named by exactly one
+# entry. The default configuration would not have reached this: Dependabot
+# looks only where it is told, and four of the five implementations keep their
+# manifests outside the repository root.
+#
+# Four of the five implementations have no runtime dependency at all —
+# TypeScript, Python, Go and .NET each build on their standard library — and
+# that is a property worth keeping rather than an accident. They are listed
+# anyway, so the day one of them gains a dependency it is watched from the
+# first commit rather than from whenever somebody remembers.
+#
+# Grouping is by intent: patch and minor updates arrive as one pull request
+# per ecosystem, because reviewing twenty separate bumps is how bumps stop
+# being reviewed. Majors arrive alone, because they are the ones that need
+# reading.
+
+updates:
+  # ---------------------------------------------------------------------
+  # The node workspace. One pnpm-lock.yaml at the root governs the whole
+  # workspace, and the root package.json holds every external dependency
+  # the repository has: the four workspace packages (cli, mcp, server,
+  # sdk-ts) declare `workspace:*` links or nothing at all. So the root is
+  # not a shortcut here, it is the complete surface.
+  # ---------------------------------------------------------------------
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      npm-minor-and-patch:
+        update-types: ["minor", "patch"]
+
+  # ---------------------------------------------------------------------
+  # Python. The SDK's pyproject.toml declares `dependencies = []` and is
+  # listed to keep it that way visibly. The example requirements files are
+  # the ones with real pins: examples/langgraph installs a pinned LangGraph
+  # in continuous integration, and the letta and mem0 files are deliberately
+  # empty because those framework sides are in-process stand-ins.
+  # ---------------------------------------------------------------------
+  - package-ecosystem: pip
+    directories:
+      - "/packages/sdk-py"
+      - "/examples/langgraph"
+      - "/examples/letta"
+      - "/examples/mem0"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      pip-minor-and-patch:
+        update-types: ["minor", "patch"]
+
+  # ---------------------------------------------------------------------
+  # Go. Two modules: the SDK, which requires nothing, and the conformance
+  # runner, which requires the SDK through a local `replace` directive.
+  # Dependabot does not follow a replace to a path inside the repository,
+  # so neither module should produce noise until one of them takes a real
+  # dependency — which is exactly when it should.
+  # ---------------------------------------------------------------------
+  - package-ecosystem: gomod
+    directories:
+      - "/packages/sdk-go"
+      - "/conformance/go"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      gomod-minor-and-patch:
+        update-types: ["minor", "patch"]
+
+  # ---------------------------------------------------------------------
+  # The JVM build. packages/sdk-jvm is the whole Gradle build: its
+  # settings.gradle.kts pulls conformance/jvm in as the `:conformance`
+  # subproject, and that subproject declares no external coordinates of its
+  # own, only `implementation(rootProject)`. The external coordinates —
+  # the Kotlin plugin, kotlinx-serialization-json, JUnit — are all in
+  # packages/sdk-jvm/build.gradle.kts.
+  #
+  # Not covered here: the Gradle wrapper itself. Dependabot's gradle
+  # ecosystem updates dependency and plugin coordinates, not the
+  # distribution pinned in gradle/wrapper/gradle-wrapper.properties, and
+  # the wrapper jar is pinned by digest in the release manifest. Moving the
+  # wrapper stays a deliberate act.
+  # ---------------------------------------------------------------------
+  - package-ecosystem: gradle
+    directory: "/packages/sdk-jvm"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      gradle-minor-and-patch:
+        update-types: ["minor", "patch"]
+
+  # ---------------------------------------------------------------------
+  # The .NET projects. All three are listed although only the test project
+  # currently carries PackageReference entries (xunit and the test SDK):
+  # SoilHandover itself is System.Text.Json only, and the conformance
+  # runner only references SoilHandover. Listing all three means a package
+  # added to either of the other two is watched immediately.
+  # ---------------------------------------------------------------------
+  - package-ecosystem: nuget
+    directories:
+      - "/packages/sdk-dotnet/SoilHandover"
+      - "/packages/sdk-dotnet/SoilHandover.Tests"
+      - "/conformance/dotnet"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      nuget-minor-and-patch:
+        update-types: ["minor", "patch"]
+
+  # ---------------------------------------------------------------------
+  # The workflows themselves. Not one of the five language surfaces, but
+  # the actions in .github/workflows are pinned dependencies that run with
+  # repository credentials, and they age the same way.
+  # ---------------------------------------------------------------------
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      actions-minor-and-patch:
+        update-types: ["minor", "patch"]

@@ -1,0 +1,66 @@
+name: Security
+
+# A hygiene check a contributor can watch run, in a repository whose whole
+# subject is refusing to move credentials around: an outside scanner over the
+# checked-out working tree.
+#
+# It adds no dependency to any package; the scanner runs as a pinned
+# container.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  # TruffleHog OSS, pinned by image digest.
+  #
+  # Why this scanner. The repository already owns a shape-based scan: the
+  # safety module refuses credential-shaped strings in a handover, and the
+  # maintainers' release tooling runs that same scan over the release tree
+  # before publishing it. A second shape-based scanner would repeat that work
+  # and would need its own allowlist for the many files that carry adversarial
+  # shapes on purpose — the safety tests, the parity corpus, the conformance
+  # fixtures, the specification's own examples. TruffleHog verifies against
+  # the provider instead, so it answers a question the shape-based scan
+  # cannot: is anything here a credential that actually works. The two are
+  # complementary rather than duplicated, and the exceptions stay in one
+  # place.
+  #
+  # WHAT IT SCANS: the working tree at the checked-out commit, every tracked
+  # file, whenever it was introduced. It does NOT scan git history. A secret
+  # that was committed and later removed is not found by this job, and no
+  # green run here should be read as a statement about history. Scanning the
+  # history of the maintainers' repository is a separate, one-time job; the
+  # published artefact is unaffected either way, because it is built as a
+  # fresh single-commit history that inherits nothing.
+  #
+  # WHAT COUNTS AS A FINDING: a verified secret, meaning TruffleHog reached
+  # the provider and the credential authenticated. Unverified matches are not
+  # failed on, because this repository ships invented credentials by design
+  # and every one of them is unverifiable — measured on the tree at the time
+  # this job was added, the default settings reported 68 unverified matches,
+  # all of them in safety tests, the parity corpus, conformance runners and
+  # conformance fixtures, and zero verified. Verification needs network
+  # access to the providers; a run that cannot reach them can only report
+  # what it managed to check.
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The working tree only. This job makes no claim about history.
+          fetch-depth: 1
+      - name: TruffleHog, verified secrets in the working tree
+        run: |
+          set -euo pipefail
+          docker run --rm -v "$PWD:/repo:ro" \
+            ghcr.io/trufflesecurity/trufflehog@sha256:aa821cf4ace8861c7d096d83818cdf7bb9719028a52d37a52eaad44086a52577 \
+            filesystem /repo \
+            --results=verified \
+            --fail \
+            --no-update \
+            --github-actions

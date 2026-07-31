@@ -1,0 +1,23 @@
+dist/
+node_modules/
+pnpm-lock.yaml
+*.tsbuildinfo
+.venv/
+__pycache__/
+.pytest_cache/
+packages/sdk-dotnet/SoilHandover.Tests/golden/
+packages/sdk-jvm/src/test/resources/parity/
+packages/sdk-go/testdata/
+.gradle/
+build/
+bin/
+obj/
+
+# Byte fixtures for the ingestion boundary. Reformatting changes the bytes
+# under test, and several of them are not valid UTF-8 to begin with.
+conformance/fixtures/boundary/
+
+# Shared check-parity corpus documents: byte-exact inputs to the parity
+# tests, emitted by scripts/generate-check-parity.mjs; reformatting would
+# change the bytes under test.
+packages/sdk-py/tests/check_corpus/

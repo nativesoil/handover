@@ -1,0 +1,35 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "failing",
+  "counts": {
+    "problems": 3,
+    "cautions": 0,
+    "advice": 0
+  },
+  "findings": [
+    {
+      "rule": "completeness.no-durable-truth",
+      "severity": "problem",
+      "message": "none of the six durable-tier sections carries content, so the project's lasting truth did not travel"
+    },
+    {
+      "rule": "restore.thin",
+      "severity": "problem",
+      "section": "restoreInstructions",
+      "message": "the restore instructions are 60 characters against 1423 of captured content, below the documented floor of 300"
+    },
+    {
+      "rule": "self-containment.fetch-pointer",
+      "severity": "problem",
+      "section": "restoreInstructions",
+      "message": "sends the reader elsewhere (\"see the docs\"), but a handover reader has no repo, no docs and no earlier thread"
+    }
+  ],
+  "sections": {
+    "withContent": 6,
+    "missing": 11,
+    "blocked": 0,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

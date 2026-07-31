@@ -1,0 +1,78 @@
+  ┌─ SOIL · handover checked ────────────────── #903 ─
+  │
+  │   Credential store migration, details withheld
+  │   vault-migration
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   thin
+  │   0 problems · 13 cautions · 0 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   decisions
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   workflow
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   constraints
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   rejected paths
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   executive summary
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   current task
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   latest user intent
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   session delta
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   blockers
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   next steps
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   open questions
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   session activity
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   provenance map
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  └─ checked from the document alone · only a real load proves restore

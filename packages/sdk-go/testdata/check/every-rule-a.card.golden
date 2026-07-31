@@ -1,0 +1,81 @@
+  ┌─ SOIL · handover checked ────────────────── #001 ─
+  │
+  │   A capture that failed at the durable tier
+  │   rule-storm-a
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   thin
+  │   2 problems · 10 cautions · 1 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   the document
+  │   ▸ completeness.no-durable-truth · problem
+  │     none of the six durable-tier sections
+  │     carries content, so the project's lasting
+  │     truth did not travel
+  │
+  │   project identity
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   decisions
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   workflow
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   architecture
+  │   ▸ gaps.blocked-without-omission-note · caution
+  │     withheld for safety, but
+  │     safety.unsafeOmissions does not name what
+  │     exists or where it is configured
+  │
+  │   constraints
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   rejected paths
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   current task
+  │   ▸ time.unanchored · caution
+  │     uses "Right Now" with no capture-time
+  │     anchor, so a later reader cannot tell when
+  │     it was true
+  │
+  │   latest user intent
+  │   ▸ self-containment.fetch-pointer · caution
+  │     sends the reader elsewhere ("see the repo"),
+  │     but a handover reader has no repo, no docs
+  │     and no earlier thread
+  │
+  │   blockers
+  │   ▸ size.one-liner · advice
+  │     carries 11 characters in a document whose
+  │     sections are otherwise substantial
+  │
+  │   open questions
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   restore instructions
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │   ▸ restore.absent · problem
+  │     content was captured but restoreInstructions
+  │     is empty, so nothing tells the next session
+  │     how to begin
+  │
+  └─ checked from the document alone · only a real load proves restore

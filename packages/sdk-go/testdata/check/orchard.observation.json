@@ -1,0 +1,20 @@
+{
+  "kind": "quality.capture",
+  "producedBy": "soil-cli/0.1.0",
+  "producedAt": "2026-07-22T10:00:00Z",
+  "data": {
+    "checkVersion": "1.0.0",
+    "sectionsWithContent": 17,
+    "missingSections": [],
+    "blockedSections": [],
+    "findings": [
+      {
+        "rule": "time.unanchored",
+        "location": "/sections/blockers",
+        "observed": "uses \"now\" with no capture-time anchor, so a later reader cannot tell when it was true",
+        "severity": "caution"
+      }
+    ],
+    "notes": "Structural examination of the document by the open deterministic baseline. Section statuses and rule outcomes only."
+  }
+}

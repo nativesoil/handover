@@ -1,0 +1,18 @@
+# Byte parity across operating systems.
+#
+# The conformance suite compares rendered recipe text against the canonical
+# files in recipes/ byte for byte, and the Go SDK embeds copies of those
+# files at compile time. A CRLF-converting checkout (the default on Windows
+# runners) would corrupt those comparisons, so every text file checks out
+# with LF everywhere.
+* text=auto eol=lf
+
+# The Gradle wrapper batch script is consumed by cmd.exe and keeps its
+# committed bytes untouched.
+*.bat -text
+
+# The pre-schema ingestion boundary's fixtures are byte fixtures: byte order
+# marks, UTF-16 and UTF-32 documents, deliberately malformed UTF-8, and
+# documents whose exact byte length is the thing under test. Line-ending
+# normalisation would rewrite the bytes these fixtures exist to pin.
+conformance/fixtures/boundary/** -text

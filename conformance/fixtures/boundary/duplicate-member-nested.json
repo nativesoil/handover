@@ -1,0 +1,8 @@
+{
+  "soilHandover": "1.0",
+  "sections": {
+    "decisions": { "status": "available", "summary": "The retry policy is settled." },
+    "workflow": { "status": "missing", "summary": null },
+    "decisions": { "status": "missing", "summary": null }
+  }
+}

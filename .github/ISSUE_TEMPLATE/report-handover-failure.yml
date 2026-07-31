@@ -1,0 +1,65 @@
+name: Report a handover failure
+description:
+  A reproducible case where a handover lost or misread important state
+  between a save and a load.
+title: "[handover-failure] "
+labels: [handover-failure]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is the report we learn the most from. A failure here means the
+        round trip ran, but something important did not survive it: a
+        decision lost its reason, frontier state was read as current truth,
+        a stated gap disappeared, a section was silently dropped.
+  - type: input
+    id: source
+    attributes:
+      label: Source client
+      description: Where the handover was saved, and roughly which model.
+      placeholder: e.g. Claude Code with Opus, ChatGPT web
+    validations:
+      required: true
+  - type: input
+    id: target
+    attributes:
+      label: Target client
+      description: Where the handover was loaded.
+      placeholder: e.g. Codex CLI, Cursor
+    validations:
+      required: true
+  - type: dropdown
+    id: integration
+    attributes:
+      label: Integration
+      options:
+        - local-cli
+        - local-mcp
+        - hosted-remote-mcp
+        - mixed (describe below)
+    validations:
+      required: true
+  - type: textarea
+    id: lost
+    attributes:
+      label: What was lost or misread
+      description:
+        What the target session got wrong that the source session knew.
+        Concrete beats complete.
+    validations:
+      required: true
+  - type: textarea
+    id: file
+    attributes:
+      label: The handover file, minus content
+      description:
+        If shareable, the document with every summary string replaced by a
+        placeholder, so the structure and the section statuses survive but
+        nothing private travels. Never paste a real handover, and never paste
+        credentials.
+      render: json
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      description: The steps, as exactly as you can state them.

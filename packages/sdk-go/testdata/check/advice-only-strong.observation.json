@@ -1,0 +1,34 @@
+{
+  "kind": "quality.capture",
+  "producedBy": "soil-cli/0.1.0",
+  "producedAt": "2026-07-22T10:00:00Z",
+  "data": {
+    "checkVersion": "1.0.0",
+    "sectionsWithContent": 10,
+    "missingSections": [
+      "rejectedPaths",
+      "latestUserIntent",
+      "sessionDelta",
+      "blockers",
+      "openQuestions",
+      "provenanceMap",
+      "safetySummary"
+    ],
+    "blockedSections": [],
+    "findings": [
+      {
+        "rule": "anchors.no-exact-values",
+        "location": "/sections/architecture",
+        "observed": "mentions configuration but holds no numbers, versions or pins; exact values are what survive a move",
+        "severity": "advice"
+      },
+      {
+        "rule": "anchors.no-exact-values",
+        "location": "/sections/constraints",
+        "observed": "mentions configuration but holds no numbers, versions or pins; exact values are what survive a move",
+        "severity": "advice"
+      }
+    ],
+    "notes": "Structural examination of the document by the open deterministic baseline. Section statuses and rule outcomes only."
+  }
+}

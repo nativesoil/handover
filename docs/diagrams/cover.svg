@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 1280 640" width="1280" height="640" role="img" aria-labelledby="cv-title cv-desc">
+  <title id="cv-title">Soil Handover: when the tool changes, one file crosses the break</title>
+  <desc id="cv-desc">The cover of the Soil Handover repository. On an off-white ground, the Native Soil wordmark sits top left and the words an open format, Apache 2.0, plain text on your disk sit top right. Beneath them the tagline pair: your AI knows your project, until you change tools. The lower half draws continuity across a break. Two carbon terminal panels stand on layered ground that is split and dropped between them: in the left panel the command soil save stores handover 001, checked on save and scanned for secrets; in the right panel the command soil load brings it back in another tool or another model, and the session continues from there. The layers of the ground stop at the break. One deep green seam is the only layer that crosses it, marked by small green seed blocks, and where it crosses it carries a white card stamped handover.json.</desc>
+
+  <!-- WHY THIS ONE IS DRAWN DIFFERENTLY FROM THE FIGURES IN THE PAGES.
+       The other drawings in this directory are read inside a document, in
+       whichever theme the reader has chosen, so they hold their colour in
+       presentation attributes and keep a dark override in a style block. This
+       one is not read inside a document. It is the source a maintainer renders
+       to a raster for the forge's social-preview field, and a raster adapts to
+       nothing, so this file commits to a single look and there is no media
+       query in it. The look it commits to is the product's own: off-white
+       ground, carbon ink, hairline borders, carbon terminal panels, green
+       reserved for the seed and the one seam that crosses.
+
+       What it draws: two sessions as terminal panels, ground in layers under
+       them, a break where the tool changes. Every layer stops at the break.
+       One seam crosses, and it is the file. Nothing here counts anything the
+       tree holds, and no client, provider or protocol is named or marked:
+       what this repository ships is the format, and a mark would be a claim
+       of endorsement nothing here can support. -->
+
+  <!-- ============ the field ============ -->
+  <rect width="1280" height="640" fill="#f4f2ed"/>
+
+  <!-- ============ the wordmark ============ -->
+  <!-- Symbol geometry byte for byte from docs/brand/soil-symbol.svg; only the
+       placement transform belongs to this file. -->
+  <g transform="translate(72 40) scale(0.045)">
+    <g transform="matrix(8.29103e-17,-1.35403,0.983178,6.02023e-17,-37549.3,24198)">
+      <path d="M17421.4,38488.7L17871.2,38488.7L17871.2,39095.2L17646.3,39095.2L17646.3,38798.4L17196.5,38798.4L17196.5,38191.8L17421.4,38191.8L17421.4,38488.7Z" fill="#101010"/>
+    </g>
+    <g transform="matrix(3.16287e-17,0.516535,-4.34472,2.66038e-16,233975,-12287.1)">
+      <rect x="24966.6" y="53578.2" width="589.504" height="70.085" fill="#39CD75"/>
+    </g>
+  </g>
+  <text x="142" y="72" font-size="32" font-weight="600" letter-spacing="-0.8" fill="#101010">Native Soil<tspan font-size="15" dy="-13" font-weight="400" letter-spacing="0">&#174;</tspan></text>
+
+  <text x="1208" y="66" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" letter-spacing="2.2" fill="#101010" fill-opacity="0.55">AN OPEN FORMAT &#183; APACHE 2.0 &#183; PLAIN TEXT ON YOUR DISK</text>
+
+  <!-- ============ the line ============ -->
+  <text x="72" y="180" font-size="34" font-weight="500" fill="#101010" fill-opacity="0.7">Your AI knows your project.</text>
+  <text x="72" y="254" font-size="74" font-weight="800" letter-spacing="-2.2" fill="#101010">Until you change tools.</text>
+
+  <!-- ============ the ground, and the break ============ -->
+  <!-- The left mass holds what a project accumulates. The break drops the far
+       side. Every layer stops at the break; only the seam crosses it. -->
+  <path d="M 0 470 L 612 470 L 612 640 L 0 640 Z" fill="#101010" fill-opacity="0.05"/>
+  <path d="M 668 506 L 1280 506 L 1280 640 L 668 640 Z" fill="#101010" fill-opacity="0.03"/>
+  <path d="M 0 470 L 612 470" stroke="#101010" stroke-opacity="0.35" stroke-width="1.6" fill="none"/>
+  <path d="M 668 506 L 1280 506" stroke="#101010" stroke-opacity="0.25" stroke-width="1.6" fill="none"/>
+  <!-- the two cut faces of the break -->
+  <path d="M 612 470 L 612 640" stroke="#101010" stroke-opacity="0.3" stroke-width="1.6" fill="none"/>
+  <path d="M 668 506 L 668 640" stroke="#101010" stroke-opacity="0.2" stroke-width="1.6" fill="none"/>
+  <!-- lamination: the layers, stopping dead at the break -->
+  <g stroke="#101010" stroke-opacity="0.16" stroke-width="1.3" fill="none">
+    <path stroke-dasharray="34 22" d="M 0 508 L 612 508"/>
+    <path stroke-dasharray="22 30" d="M 0 616 L 612 616"/>
+  </g>
+  <!-- the far side has accumulated less, so its layers are fainter -->
+  <g stroke="#101010" stroke-opacity="0.11" stroke-width="1.3" fill="none">
+    <path stroke-dasharray="34 22" d="M 668 544 L 1280 544"/>
+    <path stroke-dasharray="22 30" d="M 668 630 L 1280 630"/>
+  </g>
+
+  <!-- ============ one session ============ -->
+  <rect x="72" y="316" width="406" height="190" rx="2" fill="#161512" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
+  <circle cx="96" cy="340" r="4.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="112" cy="340" r="4.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="128" cy="340" r="4.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <text x="146" y="344" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#f4f2ed" fill-opacity="0.5">one session &#183; any client</text>
+  <line x1="72" y1="356" x2="478" y2="356" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">
+    <text xml:space="preserve" x="94" y="386"><tspan fill="#39CD75">&#10095;</tspan><tspan fill="#f4f2ed"> soil save</tspan></text>
+    <text x="94" y="414" fill="#f4f2ed" fill-opacity="0.62">&#9484;&#9472; SOIL &#183; handover saved &#9472;&#9472; <tspan fill="#39CD75" fill-opacity="1">#001</tspan></text>
+    <text x="94" y="438" fill="#f4f2ed" fill-opacity="0.62">&#9474;  decisions kept with their reasons</text>
+    <text x="94" y="462" fill="#f4f2ed" fill-opacity="0.62">&#9474;  checked on save &#183; scanned for secrets</text>
+    <text x="94" y="486" fill="#f4f2ed" fill-opacity="0.62">&#9492;&#9472; 17 / 17 sections declared</text>
+  </g>
+
+  <!-- ============ another session ============ -->
+  <rect x="802" y="316" width="406" height="190" rx="2" fill="#161512" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
+  <circle cx="826" cy="340" r="4.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="842" cy="340" r="4.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="858" cy="340" r="4.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <text x="876" y="344" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#f4f2ed" fill-opacity="0.5">another session &#183; another tool or model</text>
+  <line x1="802" y1="356" x2="1208" y2="356" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">
+    <text xml:space="preserve" x="824" y="386"><tspan fill="#39CD75">&#10095;</tspan><tspan fill="#f4f2ed"> soil load '#001'</tspan></text>
+    <text x="824" y="414" fill="#f4f2ed" fill-opacity="0.62">&#9484;&#9472; SOIL &#183; handover loaded &#9472; <tspan fill="#39CD75" fill-opacity="1">#001</tspan></text>
+    <text x="824" y="438" fill="#f4f2ed" fill-opacity="0.62">&#9474;  the work, the decisions, the plan</text>
+    <text x="824" y="462" fill="#f4f2ed" fill-opacity="0.62">&#9474;  nothing to re-explain</text>
+    <text x="824" y="486" fill="#f4f2ed" fill-opacity="0.62">&#9492;&#9472; it continues from here</text>
+  </g>
+
+  <!-- ============ the one seam that crosses ============ -->
+  <path d="M 0 560 L 612 560 L 668 596 L 1280 596" stroke="#0F6E56" stroke-width="5" fill="none"/>
+  <!-- seed blocks along the seam, the symbol's green block as a motif -->
+  <rect x="180" y="550" width="11" height="11" fill="#39CD75"/>
+  <rect x="400" y="550" width="11" height="11" fill="#39CD75"/>
+  <rect x="880" y="586" width="11" height="11" fill="#39CD75"/>
+  <rect x="1100" y="586" width="11" height="11" fill="#39CD75"/>
+
+  <!-- ============ the artifact that crosses ============ -->
+  <rect x="530" y="548" width="220" height="48" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <rect x="548" y="566" width="12" height="12" fill="#39CD75"/>
+  <text x="572" y="581" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" fill="#101010">handover.json</text>
+</svg>

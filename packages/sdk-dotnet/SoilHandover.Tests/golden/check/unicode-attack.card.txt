@@ -1,0 +1,48 @@
+  ┌─ SOIL · handover checked ────────────────── #010 ─
+  │
+  │   Innehåll utanför grundplanet 🌍 med smala
+  │   mellanslag
+  │   unicode-attack
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   thin
+  │   1 problem · 3 cautions · 2 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   decisions
+  │   ▸ decisions.entry-without-reason · caution
+  │     entry 2 states a decision with no recorded
+  │     reason ("2. We picked 🧭 the compass path
+  │     🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦…")
+  │
+  │   workflow
+  │   ▸ self-containment.fetch-pointer · caution
+  │     sends the reader elsewhere ("see the repo"),
+  │     but a handover reader has no repo, no docs
+  │     and no earlier thread
+  │
+  │   executive summary
+  │   ▸ size.one-liner · advice
+  │     carries 17 characters in a document whose
+  │     sections are otherwise substantial
+  │
+  │   current task
+  │   ▸ time.unanchored · caution
+  │     uses "this week" with no capture-time
+  │     anchor, so a later reader cannot tell when
+  │     it was true
+  │
+  │   blockers
+  │   ▸ size.one-liner · advice
+  │     carries 33 characters in a document whose
+  │     sections are otherwise substantial
+  │
+  │   restore instructions
+  │   ▸ restore.thin · problem
+  │     the restore instructions are 154 characters
+  │     against 3133 of captured content, below the
+  │     documented floor of 300
+  │
+  └─ checked from the document alone · only a real load proves restore

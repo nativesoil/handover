@@ -1,0 +1,19 @@
+  ┌─ SOIL · handover checked ────────────────── #011 ─
+  │
+  │   One unit under the documented restore floor
+  │   restore-floor-under
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   thin
+  │   1 problem · 0 cautions · 0 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   restore instructions
+  │   ▸ restore.thin · problem
+  │     the restore instructions are 399 characters
+  │     against 8000 of captured content, below the
+  │     documented floor of 400
+  │
+  └─ checked from the document alone · only a real load proves restore

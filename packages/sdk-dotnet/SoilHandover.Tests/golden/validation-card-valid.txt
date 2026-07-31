@@ -1,0 +1,10 @@
+  ┌─ SOIL · valid handover ───────────────────────────
+  │
+  │   the document
+  │
+  ├─ shape ───────────────────────────────────────────
+  │
+  │   every required field is present and well
+  │   formed
+  │
+  └─ structure only · this says nothing about how good the content is

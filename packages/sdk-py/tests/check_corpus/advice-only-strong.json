@@ -1,0 +1,83 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-7000-8000-000000000004",
+  "projectId": "advice-only",
+  "title": "Configuration prose with every number stripped",
+  "createdAt": "2026-07-22T10:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files, and each section of."
+    },
+    "decisions": {
+      "status": "available",
+      "summary": "We chose the hosted widget because card data must never touch our servers."
+    },
+    "workflow": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its la."
+    },
+    "architecture": {
+      "status": "available",
+      "summary": "The service reads its configuration from the environment and honours a request timeout."
+    },
+    "constraints": {
+      "status": "available",
+      "summary": "The mobile bundle has a ceiling and the deploy window is a hard limit."
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files, and each section of."
+    },
+    "currentTask": {
+      "status": "available",
+      "summary": "At capture, the design was mid-review. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "missing",
+      "summary": null
+    },
+    "blockers": {
+      "status": "missing",
+      "summary": null
+    },
+    "nextSteps": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without a."
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The."
+    },
+    "restoreInstructions": {
+      "status": "available",
+      "summary": "You are continuing this project cold. Read the durable sections first, hold every locked decision with its reason, and begin from the next steps exactly as written. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "provenanceMap": {
+      "status": "missing",
+      "summary": null
+    },
+    "safetySummary": {
+      "status": "missing",
+      "summary": null
+    }
+  },
+  "quality": {
+    "missingInputs": [
+      "The thread held no material for the remaining sections."
+    ]
+  },
+  "code": "#004"
+}

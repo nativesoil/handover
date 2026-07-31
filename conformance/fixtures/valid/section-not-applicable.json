@@ -1,0 +1,97 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-7c41-90d2-3a5f1b7e0044",
+  "projectId": "harvest-almanac",
+  "title": "Almanac chapter three, with two sections that have no subject here",
+  "createdAt": "2026-07-29T09:30:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "A printed almanac for smallholders in the eastern valleys, written by one author and edited by one editor. The house words are fixed: a 'panel' is one facing pair of pages, a 'stub' is a paragraph the editor has marked for expansion, and 'the run' is the print run of eight thousand copies scheduled for the autumn.",
+      "provenance": ["model_reported"]
+    },
+    "decisions": {
+      "status": "available",
+      "summary": "Chapter order was locked to the growing season rather than to crop type, because a reader consults the almanac by the month in front of them and never by taxonomy. The frontispiece was locked as a woodcut rather than a photograph, because the run is one colour and a halftone reproduces badly at this paper weight.",
+      "provenance": ["user_locked_memory"]
+    },
+    "workflow": {
+      "status": "available",
+      "summary": "The author drafts a panel, the editor marks stubs, the author expands every stub before the panel is called done. Nothing goes to the typesetter with an open stub in it.",
+      "provenance": ["model_reported"]
+    },
+    "architecture": {
+      "status": "not_applicable",
+      "summary": "This project is a printed book written by one author. There is no system, no service and no process model for this section to describe, and the physical structure of the book is already covered under decisions as the chapter order.",
+      "provenance": ["model_reported"]
+    },
+    "constraints": {
+      "status": "available",
+      "summary": "The run is eight thousand copies at one colour, and the chapter must fit sixteen panels exactly, because the binder folds in signatures of thirty-two pages.",
+      "provenance": ["user_locked_memory"]
+    },
+    "rejectedPaths": {
+      "status": "available",
+      "summary": "A month-by-month index was drafted and abandoned: it duplicated the chapter order it was meant to help a reader navigate, and it cost two panels the chapter does not have.",
+      "provenance": ["model_reported"]
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "Chapter three of a printed almanac, at capture eleven of sixteen panels drafted with four stubs open. The single most important next thing is expanding the stub on overwintering, which the editor marked twice.",
+      "provenance": ["model_reported"]
+    },
+    "currentTask": {
+      "status": "available",
+      "summary": "At capture, expanding the four open stubs in panels seven through eleven. Done means no open stub remains in the chapter and the editor has read it once end to end.",
+      "provenance": ["model_reported"]
+    },
+    "latestUserIntent": {
+      "status": "available",
+      "summary": "The author asked, in their own words, to 'stop polishing the early panels and go clear the stubs', which supersedes the earlier plan of a second pass over panels one to six.",
+      "provenance": ["model_reported"]
+    },
+    "sessionDelta": {
+      "status": "available",
+      "summary": "Two stubs were cleared this session and the month-by-month index was rejected, which is a new durable fact under rejected paths.",
+      "provenance": ["model_reported"]
+    },
+    "blockers": {
+      "status": "available",
+      "summary": "None at capture.",
+      "provenance": ["model_reported"]
+    },
+    "nextSteps": {
+      "status": "available",
+      "summary": "First, expand the overwintering stub in panel nine. Then clear the remaining three stubs in panel order. Then hand the chapter to the editor for the end-to-end read. Governed by the workflow rule that no panel is done with an open stub, and by the sixteen-panel ceiling.",
+      "provenance": ["model_reported"]
+    },
+    "openQuestions": {
+      "status": "available",
+      "summary": "Whether the overwintering material is one panel or two is still undecided; at stake is one of the five remaining panels in the sixteen-panel budget.",
+      "provenance": ["model_reported"]
+    },
+    "sessionActivity": {
+      "status": "available",
+      "summary": "Two stubs expanded and read back to the editor, and one index draft discarded.",
+      "provenance": ["model_reported"]
+    },
+    "restoreInstructions": {
+      "status": "available",
+      "summary": "You are continuing chapter three of a printed almanac for smallholders in the eastern valleys, written by one author with one editor. The house words are fixed and you must use them: a panel is one facing pair of pages, a stub is a paragraph the editor marked for expansion, and the run is the autumn print run of eight thousand copies. Two decisions are locked. Chapter order follows the growing season rather than crop type, because a reader consults the almanac by the month in front of them. The frontispiece is a woodcut rather than a photograph, because the run is one colour and a halftone reproduces badly at this paper weight. Two constraints bind: the run is eight thousand copies at one colour, and the chapter must fit sixteen panels exactly, because the binder folds in signatures of thirty-two pages. The workflow is that the author drafts a panel, the editor marks stubs, and the author expands every stub before the panel is called done; nothing reaches the typesetter with an open stub in it. A month-by-month index was drafted and abandoned, because it duplicated the chapter order it was meant to help a reader navigate and cost two panels the chapter does not have; do not propose it again. At the capture, eleven of sixteen panels were drafted with four stubs open, and the author had just asked to stop polishing the early panels and go clear the stubs. Start by expanding the overwintering stub in panel nine, then clear the remaining three stubs in panel order, then hand the chapter to the editor for an end-to-end read. One question is open: whether the overwintering material takes one panel or two, which spends one of the five remaining panels either way.",
+      "provenance": ["model_reported"]
+    },
+    "provenanceMap": {
+      "status": "available",
+      "summary": "The locked decisions and the constraints are reported from the author directly. The panel counts and the stub count are reported from the conversation as of the capture and were not checked against the manuscript file.",
+      "provenance": ["model_reported", "inferred"]
+    },
+    "safetySummary": {
+      "status": "not_applicable",
+      "summary": "Nothing in this project has a secret, a credential or a private path to withhold: it is a manuscript and an editorial process, and no system holds a value that could be omitted here.",
+      "provenance": ["model_reported"]
+    }
+  },
+  "source": {
+    "recipeVersion": "1.1.0"
+  }
+}

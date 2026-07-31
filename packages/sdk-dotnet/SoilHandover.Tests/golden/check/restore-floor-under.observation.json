@@ -1,0 +1,34 @@
+{
+  "kind": "quality.capture",
+  "producedBy": "soil-cli/0.1.0",
+  "producedAt": "2026-07-22T10:00:00Z",
+  "data": {
+    "checkVersion": "1.0.0",
+    "sectionsWithContent": 4,
+    "missingSections": [
+      "architecture",
+      "constraints",
+      "rejectedPaths",
+      "executiveSummary",
+      "currentTask",
+      "latestUserIntent",
+      "sessionDelta",
+      "blockers",
+      "nextSteps",
+      "openQuestions",
+      "sessionActivity",
+      "provenanceMap",
+      "safetySummary"
+    ],
+    "blockedSections": [],
+    "findings": [
+      {
+        "rule": "restore.thin",
+        "location": "/sections/restoreInstructions",
+        "observed": "the restore instructions are 399 characters against 8000 of captured content, below the documented floor of 400",
+        "severity": "problem"
+      }
+    ],
+    "notes": "Structural examination of the document by the open deterministic baseline. Section statuses and rule outcomes only."
+  }
+}

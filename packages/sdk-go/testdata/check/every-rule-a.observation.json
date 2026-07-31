@@ -1,0 +1,102 @@
+{
+  "kind": "quality.capture",
+  "producedBy": "soil-cli/0.1.0",
+  "producedAt": "2026-07-22T10:00:00Z",
+  "data": {
+    "checkVersion": "1.0.0",
+    "sectionsWithContent": 9,
+    "missingSections": [
+      "projectIdentity",
+      "decisions",
+      "workflow",
+      "constraints",
+      "rejectedPaths",
+      "openQuestions",
+      "restoreInstructions"
+    ],
+    "blockedSections": [
+      "architecture"
+    ],
+    "findings": [
+      {
+        "rule": "completeness.no-durable-truth",
+        "location": "/",
+        "observed": "none of the six durable-tier sections carries content, so the project's lasting truth did not travel",
+        "severity": "problem"
+      },
+      {
+        "rule": "completeness.missing-without-reason",
+        "location": "/sections/projectIdentity",
+        "observed": "declared missing, with no note here and nothing in quality.missingInputs saying why",
+        "severity": "caution"
+      },
+      {
+        "rule": "completeness.missing-without-reason",
+        "location": "/sections/decisions",
+        "observed": "declared missing, with no note here and nothing in quality.missingInputs saying why",
+        "severity": "caution"
+      },
+      {
+        "rule": "completeness.missing-without-reason",
+        "location": "/sections/workflow",
+        "observed": "declared missing, with no note here and nothing in quality.missingInputs saying why",
+        "severity": "caution"
+      },
+      {
+        "rule": "gaps.blocked-without-omission-note",
+        "location": "/sections/architecture",
+        "observed": "withheld for safety, but safety.unsafeOmissions does not name what exists or where it is configured",
+        "severity": "caution"
+      },
+      {
+        "rule": "completeness.missing-without-reason",
+        "location": "/sections/constraints",
+        "observed": "declared missing, with no note here and nothing in quality.missingInputs saying why",
+        "severity": "caution"
+      },
+      {
+        "rule": "completeness.missing-without-reason",
+        "location": "/sections/rejectedPaths",
+        "observed": "declared missing, with no note here and nothing in quality.missingInputs saying why",
+        "severity": "caution"
+      },
+      {
+        "rule": "time.unanchored",
+        "location": "/sections/currentTask",
+        "observed": "uses \"Right Now\" with no capture-time anchor, so a later reader cannot tell when it was true",
+        "severity": "caution"
+      },
+      {
+        "rule": "self-containment.fetch-pointer",
+        "location": "/sections/latestUserIntent",
+        "observed": "sends the reader elsewhere (\"see the repo\"), but a handover reader has no repo, no docs and no earlier thread",
+        "severity": "caution"
+      },
+      {
+        "rule": "size.one-liner",
+        "location": "/sections/blockers",
+        "observed": "carries 11 characters in a document whose sections are otherwise substantial",
+        "severity": "advice"
+      },
+      {
+        "rule": "completeness.missing-without-reason",
+        "location": "/sections/openQuestions",
+        "observed": "declared missing, with no note here and nothing in quality.missingInputs saying why",
+        "severity": "caution"
+      },
+      {
+        "rule": "completeness.missing-without-reason",
+        "location": "/sections/restoreInstructions",
+        "observed": "declared missing, with no note here and nothing in quality.missingInputs saying why",
+        "severity": "caution"
+      },
+      {
+        "rule": "restore.absent",
+        "location": "/sections/restoreInstructions",
+        "observed": "content was captured but restoreInstructions is empty, so nothing tells the next session how to begin",
+        "severity": "problem"
+      }
+    ],
+    "notes": "Structural examination of the document by the open deterministic baseline. Section statuses and rule outcomes only."
+  }
+}

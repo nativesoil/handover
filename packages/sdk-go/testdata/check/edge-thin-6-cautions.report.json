@@ -1,0 +1,54 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "thin",
+  "counts": {
+    "problems": 0,
+    "cautions": 6,
+    "advice": 0
+  },
+  "findings": [
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "blockers",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "nextSteps",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "openQuestions",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "sessionActivity",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "provenanceMap",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "safetySummary",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    }
+  ],
+  "sections": {
+    "withContent": 11,
+    "missing": 6,
+    "blocked": 0,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

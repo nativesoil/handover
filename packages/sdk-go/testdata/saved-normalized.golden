@@ -1,0 +1,38 @@
+  ┌─ SOIL · handover saved ──────────────────── #004 ─
+  │
+  │   A short title
+  │   render-test
+  │
+  ├─ written by ──────────────────────────────────────
+  │
+  │   client      claude-code
+  │   model       opus-4.8
+  │
+  ├─ what this document carries ──────────────────────
+  │
+  │   2 / 17 sections carrying content
+  │   no content  project identity, workflow,
+  │               constraints, rejected paths,
+  │               current task, latest user intent,
+  │               session delta, blockers, next
+  │               steps, open questions, session
+  │               activity, restore instructions,
+  │               provenance map, safety summary
+  │   held back   architecture
+  │
+  ├─ stated gaps ─────────────────────────────────────
+  │
+  │   ▸ the deploy logs were not available
+  │
+  ├─ held back · by design ───────────────────────────
+  │
+  │   ▸ an API key exists in the platform config
+  │
+  ├─ local ───────────────────────────────────────────
+  │
+  │   stored on this machine · no account · no
+  │   network
+  │
+  └─ load it in another thread, model, or tool
+
+          ❯ soil load #004

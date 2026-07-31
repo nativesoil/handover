@@ -1,0 +1,5 @@
+# Intentionally empty. The framework side of this example is a clearly
+# labeled in-process stand-in (mem0ai 2.0.13 requires an embedder and a
+# language model provider at Memory() initialisation, so it cannot run
+# keyless in continuous integration), and the Soil SDK in packages/sdk-py
+# has no dependencies.

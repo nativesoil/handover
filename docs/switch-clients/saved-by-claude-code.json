@@ -1,0 +1,111 @@
+{
+  "soilHandover": "1.0",
+  "projectId": "tern-tripsheets",
+  "title": "tern: elevation profile SVG in progress, RDP downsample next",
+  "createdAt": "2026-07-30T03:42:18.010Z",
+  "source": {
+    "client": "claude-code",
+    "model": "claude-sonnet-5",
+    "provider": "anthropic"
+  },
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "tern is a small CLI (package.json name \"tern\", version 0.3.0) that turns GPX hiking tracks into printable trip sheets: one A5 page per leg, monochrome, meant to be carried on the trail. Source lives under src/, currently two files: gpx.js (track reading and distance) and sheet.js (sheet rendering).",
+      "provenance": ["repo_verified"]
+    },
+    "decisions": {
+      "status": "available",
+      "summary": "1. All distances are integer meters end to end; kilometers exist only at render time. Reason: accumulating floating-point kilometers made long-track totals disagree with the GPS device readout by tens of meters, and hikers noticed. Confirmed in code: src/gpx.js's legDistanceMeters rounds each haversine segment to whole meters before summing, and src/sheet.js only converts to km (toFixed(1)) at the point of building the printed line. 2. Trip sheets are rendered with plain template strings, no template engine. Reason: the engine considered would have been the project's only heavy dependency, for two pages of monospaced text. Confirmed in code: src/sheet.js is a single template-literal array joined with newlines, and package.json lists no dependencies at all.",
+      "provenance": ["prompt_report", "repo_verified"]
+    },
+    "workflow": {
+      "status": "not_applicable",
+      "summary": "Not applicable: the conversation available to me was the single turn asking for this save, carrying a summary of prior sessions rather than their turn-by-turn history, so there is no observed workflow pattern (how changes get reviewed, tested, or merged) to report honestly.",
+      "provenance": ["inferred"]
+    },
+    "architecture": {
+      "status": "available",
+      "summary": "Two source files exist under src/: gpx.js (readTrack for parsing trkpt lat/lon out of GPX XML text, legDistanceMeters and haversineMeters for integer-meter distance) and sheet.js (renderSheet, the plain-template-string sheet layout). package.json's bin field points to src/cli.js, but that file does not exist in the repository - unchecked whether it was removed, never committed, or is planned but not yet started. Vocabulary: a \"leg\" is the stretch between two named waypoints; the \"book\" is the set of sheets for one trip.",
+      "provenance": ["repo_verified"]
+    },
+    "constraints": {
+      "status": "available",
+      "summary": "A trip sheet must stay legible on A5 monochrome paper, because it is carried on the trail. Nothing that only reads in color. This bears directly on the elevation-profile SVG: it needs to read at A5 size in black and white (line weight and fill pattern, not color, for any distinction it needs to draw).",
+      "provenance": ["prompt_report"]
+    },
+    "rejectedPaths": {
+      "status": "available",
+      "summary": "Parsing GPX with regular expressions was rejected as the long-term approach: it misread Garmin's namespaced extension elements (gpxtpx:*), so a small streaming XML tokenizer is the plan instead. The regex is still in place today as an explicit placeholder (src/gpx.js line 6, commented \"placeholder until tokenizer lands\") and matches only trkpt lat/lon attributes - it has not yet been swapped for the tokenizer.",
+      "provenance": ["prompt_report", "repo_verified"]
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "The project is early: two source files, one commit (\"wip\"), working tree clean. GPX parsing and leg distance in meters both work with a placeholder regex tokenizer. Sheet rendering emits plain-text template output with a spot reserved for an inline elevation-profile SVG (leg.profileSvg), but that SVG is not generated anywhere yet: sheet.js falls back to the literal string \"(elevation profile pending)\" when it is absent. The immediate task is building that per-leg elevation profile, and the agreed next step before drawing it is Ramer-Douglas-Peucker downsampling.",
+      "provenance": ["repo_verified", "prompt_report"]
+    },
+    "currentTask": {
+      "status": "available",
+      "summary": "Build the per-leg elevation profile as inline SVG on the trip sheet. In code today, sheet.js's renderSheet expects a leg.profileSvg string and falls back to a placeholder line if it is missing (src/sheet.js line 11: leg.profileSvg ?? \"(elevation profile pending)\"). No function that produces profileSvg exists yet in either src/gpx.js or src/sheet.js: the profile generator and the SVG-drawing code have not been written. This confirms the profile work is at the start of implementation, not partway through.",
+      "provenance": ["repo_verified", "prompt_report"]
+    },
+    "latestUserIntent": {
+      "status": "available",
+      "summary": "The user asked to save the project's working state now via soil_save under projectId tern-tripsheets, and asked that every section be filled honestly from the session summary and the repository's actual files, in the project's house style (plain ASCII punctuation, no em dashes, no absolute filesystem paths, unconfirmed items called out as unchecked).",
+      "provenance": ["prompt_report"]
+    },
+    "sessionDelta": {
+      "status": "not_applicable",
+      "summary": "Not applicable: this is the first Soil handover saved for tern-tripsheets, so there is no prior save to diff against.",
+      "provenance": ["inferred"]
+    },
+    "blockers": {
+      "status": "available",
+      "summary": "No active blocker on the elevation-profile work itself. Two gaps worth surfacing before the next session leans on them: (1) package.json's bin entry (src/cli.js) has no corresponding file in the repo - there is currently no runnable CLI entry point, unchecked why. (2) package.json defines a \"test\" script (node --test) but no test files exist anywhere in the repository - unchecked whether tests were planned and not yet written, or intentionally deferred.",
+      "provenance": ["repo_verified"]
+    },
+    "nextSteps": {
+      "status": "available",
+      "summary": "1. Downsample track points with Ramer-Douglas-Peucker at epsilon 5 meters before drawing the elevation profile, because full-resolution tracks make the profile SVG several megabytes. 2. Write the SVG generation itself (not started). 3. Replace the placeholder regex tokenizer in src/gpx.js with the planned small streaming XML tokenizer, since Garmin's namespaced gpxtpx:* extension elements defeat the regex. Unchecked: whether elevation (ele) values are being read from the GPX at all right now - src/gpx.js's current tokenizer only captures lat/lon, not ele, so that capture will need to be added as part of the profile work.",
+      "provenance": ["prompt_report", "repo_verified"]
+    },
+    "openQuestions": {
+      "status": "not_applicable",
+      "summary": "Not applicable in the sense that no open design question was raised this session; the two concrete unknowns worth chasing (the missing src/cli.js entry point and the absent test files) are recorded under blockers instead, since they are gaps in the repo rather than undecided questions.",
+      "provenance": ["inferred"]
+    },
+    "sessionActivity": {
+      "status": "missing",
+      "summary": null
+    },
+    "restoreInstructions": {
+      "status": "available",
+      "summary": "Read src/gpx.js and src/sheet.js first - both carry header comments that restate the locked decisions and point back to \"the project decisions.\" Then pick up at the elevation-profile task: no profile-generating or SVG-drawing code exists yet, so the next work is additive, not a fix. Before trusting package.json's bin field, check whether src/cli.js has been added since this save.",
+      "provenance": ["repo_verified", "inferred"]
+    },
+    "provenanceMap": {
+      "status": "available",
+      "summary": "Decisions, rejectedPaths, constraints, and vocabulary were reported by the user as this session's carried-over context, then cross-checked directly against src/gpx.js and src/sheet.js, where the same reasoning appears in the code's own comments almost verbatim - so those sections carry both an origin and a confirmation. currentTask, blockers, and the architecture's cli.js/test gaps were found by reading the repository directly (Glob and Read over src/, package.json, README.md, git log/status) rather than told by the user. nextSteps mixes a user-reported plan (RDP epsilon 5) with one repo-verified gap (ele values not yet parsed).",
+      "provenance": ["inferred"]
+    },
+    "safetySummary": {
+      "status": "available",
+      "summary": "Nothing in this repository or conversation looked credential-shaped; no secrets, tokens, or private paths were found or withheld. The one path-like reference worth flagging is package.json's bin field naming a project-relative file, src/cli.js, which does not exist - that is a code gap, not a safety withholding.",
+      "provenance": ["repo_verified"]
+    }
+  },
+  "quality": {
+    "missingInputs": [
+      "src/cli.js is named as package.json's bin entry but does not exist in the repo - unchecked whether it was never committed or is simply not yet written",
+      "no test files exist anywhere despite a \"test\": \"node --test\" script in package.json - unchecked whether tests are planned",
+      "src/gpx.js's current tokenizer only captures lat and lon, not elevation (ele) - unchecked whether elevation reading exists anywhere, which the profile task will need",
+      "this session's own turn-by-turn history (what was tried, discussed, or discarded before the summary handed to me) was not observed directly - everything under decisions/rejectedPaths/constraints is a report carried from a prior session, only cross-checked against the current repo state, not watched happen"
+    ],
+    "contradictions": []
+  },
+  "safety": {
+    "unsafeOmissions": []
+  },
+  "handoverId": "019fb11d-a59a-7c68-9ef1-44468e32e580",
+  "code": "#001"
+}

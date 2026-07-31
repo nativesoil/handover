@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 960 516" width="960" height="516" role="img" aria-labelledby="cm-title cm-desc">
+  <title id="cm-title">How context moves: save in one client, load in another, the work continues</title>
+  <desc id="cm-desc">The move across a tool switch, left to right. On the left, one session in one client, on one model: the command soil save captures the work, the decisions and the reasons behind them, and stores handover 001. In the centre, what crosses: handover.json, a document that declares all 17 sections, even the empty ones. Among them, decisions with their reasons, constraints and why they bind, rejected paths and what failed, the current task and the next step, and the restore instructions, the boot prompt the next model reads first. On save the document is validated against the schema and scanned for credential-shaped values and private paths; a document that fails either gate is not stored. Secrets are held back by design, and gaps are declared rather than hidden. On the right, another session in another client, on another model: the command soil load brings handover 001 back as the restore prompt, nothing has to be re-explained, and the work continues from there. What crosses is the working state, not the transcript.</desc>
+
+  <!-- The light palette rides in presentation attributes so it is the floor;
+       the style block holds only the dark override, a deliberate inversion of
+       the product's off-white surface: carbon ground, off-white ink, the same
+       greens. The terminal panels are carbon in both themes, like the
+       product's own full-carbon sections, so they carry no override. -->
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .page  { fill: #101010; }
+      .card  { fill: #1b1b19; stroke: #f4f2ed; stroke-opacity: 0.18; }
+      .ink   { fill: #f4f2ed; }
+      .muted { fill: #f4f2ed; }
+      .faint { fill: #f4f2ed; }
+      .hair  { stroke: #f4f2ed; stroke-opacity: 0.18; }
+      .flow  { stroke: #f4f2ed; }
+      .head  { fill: #f4f2ed; }
+    }
+  </style>
+
+  <defs>
+    <marker id="cm-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0.5 L8 4 L0 7.5 Z" fill="#101010"/>
+    </marker>
+  </defs>
+
+  <rect class="page" width="960" height="516" fill="#f4f2ed"/>
+
+  <rect x="40" y="24" width="9" height="9" fill="#39CD75"/>
+  <text class="ink" x="58" y="33" font-size="15" font-weight="600" fill="#101010">How context moves</text>
+  <text class="muted" x="40" y="56" font-size="11" fill="#101010" fill-opacity="0.7">One session saves, the working state crosses as a document, another session continues. The tools and the models on the two sides can differ.</text>
+  <line class="hair" x1="40" y1="70" x2="920" y2="70" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+
+  <!-- ============ one session ============ -->
+  <rect x="40" y="104" width="240" height="176" rx="2" fill="#161512" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
+  <circle cx="58" cy="122" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="70" cy="122" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="82" cy="122" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <text x="94" y="126" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#f4f2ed" fill-opacity="0.5">one client &#183; one model</text>
+  <line x1="40" y1="134" x2="280" y2="134" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">
+    <text xml:space="preserve" x="57" y="162"><tspan fill="#39CD75">&#10095;</tspan><tspan fill="#f4f2ed"> soil save</tspan></text>
+    <text x="57" y="188" fill="#f4f2ed" fill-opacity="0.62">the work, the decisions,</text>
+    <text x="57" y="206" fill="#f4f2ed" fill-opacity="0.62">the reasons behind them</text>
+    <text x="57" y="232" fill="#f4f2ed" fill-opacity="0.62">handover saved &#183; <tspan fill="#39CD75" fill-opacity="1">#001</tspan></text>
+  </g>
+  <text class="ink" x="40" y="310" font-size="15" font-weight="700" fill="#101010">One session</text>
+  <text class="muted" x="40" y="329" font-size="11.5" fill="#101010" fill-opacity="0.7">it fills up, compacts, or the tool changes</text>
+
+  <!-- ============ soil save ============ -->
+  <text class="muted" x="320" y="172" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" fill="#101010" fill-opacity="0.7">soil save</text>
+  <line class="flow" x1="286" y1="190" x2="354" y2="190" stroke="#101010" stroke-width="1.5" marker-end="url(#cm-arrow)"/>
+  <text class="faint" x="320" y="212" font-size="10" text-anchor="middle" fill="#101010" fill-opacity="0.55">the model</text>
+  <text class="faint" x="320" y="225" font-size="10" text-anchor="middle" fill="#101010" fill-opacity="0.55">extracts it</text>
+
+  <!-- ============ the document ============ -->
+  <rect class="card" x="360" y="90" width="240" height="310" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <rect x="377" y="102" width="8" height="8" fill="#39CD75"/>
+  <text class="ink" x="393" y="111" font-size="12" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#101010">handover.json</text>
+  <text class="muted" x="377" y="130" font-size="10.5" fill="#101010" fill-opacity="0.7">all 17 sections declared,</text>
+  <text class="muted" x="377" y="145" font-size="10.5" fill="#101010" fill-opacity="0.7">even the empty ones</text>
+  <line class="hair" x1="377" y1="157" x2="583" y2="157" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="377" y="176" font-size="10.5" fill="#101010">decisions</text>
+  <text class="faint" x="470" y="176" font-size="9.5" fill="#101010" fill-opacity="0.55">with their reasons</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="377" y="194" font-size="10.5" fill="#101010">constraints</text>
+  <text class="faint" x="470" y="194" font-size="9.5" fill="#101010" fill-opacity="0.55">why they bind</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="377" y="212" font-size="10.5" fill="#101010">rejectedPaths</text>
+  <text class="faint" x="470" y="212" font-size="9.5" fill="#101010" fill-opacity="0.55">what failed</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="377" y="230" font-size="10.5" fill="#101010">currentTask</text>
+  <text class="faint" x="470" y="230" font-size="9.5" fill="#101010" fill-opacity="0.55">and the next step</text>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="377" y="248" font-size="10.5" fill="#101010">restoreInstructions</text>
+  <text class="faint" x="389" y="262" font-size="9.5" fill="#101010" fill-opacity="0.55">the boot prompt the next model reads first</text>
+  <text class="faint" x="377" y="280" font-size="9.5" fill="#101010" fill-opacity="0.55">&#8230; and the rest, each one declared</text>
+  <line class="hair" x1="377" y1="292" x2="583" y2="292" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="muted" x="377" y="310" font-size="10.5" fill="#101010" fill-opacity="0.7">validated and scanned for secrets</text>
+  <text class="muted" x="377" y="325" font-size="10.5" fill="#101010" fill-opacity="0.7">on save; a failing one is not stored</text>
+  <text class="muted" x="377" y="345" font-size="10.5" fill="#101010" fill-opacity="0.7">secrets held back &#183; gaps declared,</text>
+  <text class="muted" x="377" y="360" font-size="10.5" fill="#101010" fill-opacity="0.7">never hidden</text>
+  <text class="muted" x="377" y="380" font-size="10.5" fill="#101010" fill-opacity="0.7">plain text on your own disk</text>
+
+  <!-- ============ soil load ============ -->
+  <text class="muted" x="640" y="172" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" fill="#101010" fill-opacity="0.7">soil load</text>
+  <line class="flow" x1="606" y1="190" x2="674" y2="190" stroke="#101010" stroke-width="1.5" marker-end="url(#cm-arrow)"/>
+  <text class="faint" x="640" y="212" font-size="10" text-anchor="middle" fill="#101010" fill-opacity="0.55">it returns as the</text>
+  <text class="faint" x="640" y="225" font-size="10" text-anchor="middle" fill="#101010" fill-opacity="0.55">restore prompt</text>
+
+  <!-- ============ another session ============ -->
+  <rect x="680" y="104" width="240" height="176" rx="2" fill="#161512" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
+  <circle cx="698" cy="122" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="710" cy="122" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="722" cy="122" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <text x="734" y="126" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#f4f2ed" fill-opacity="0.5">another client &#183; another model</text>
+  <line x1="680" y1="134" x2="920" y2="134" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">
+    <text xml:space="preserve" x="697" y="162"><tspan fill="#39CD75">&#10095;</tspan><tspan fill="#f4f2ed"> soil load '#001'</tspan></text>
+    <text x="697" y="188" fill="#f4f2ed" fill-opacity="0.62">handover loaded &#183; <tspan fill="#39CD75" fill-opacity="1">#001</tspan></text>
+    <text x="697" y="206" fill="#f4f2ed" fill-opacity="0.62">nothing to re-explain</text>
+    <text x="697" y="232" fill="#f4f2ed" fill-opacity="0.62">it continues from here</text>
+  </g>
+  <text class="ink" x="680" y="310" font-size="15" font-weight="700" fill="#101010">Another session</text>
+  <text class="muted" x="680" y="329" font-size="11.5" fill="#101010" fill-opacity="0.7">another tool, another model. It continues.</text>
+
+  <!-- ============ what crosses ============ -->
+  <rect class="card" x="40" y="424" width="880" height="72" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="57" y="446" font-size="12" font-weight="600" fill="#101010">What crosses is the working state, not the transcript</text>
+  <text class="muted" x="57" y="464" font-size="10.5" fill="#101010" fill-opacity="0.7">Decisions keep their reasons, rejected approaches keep what failed, and gaps are declared rather than hidden. The restore prompt is the</text>
+  <text class="muted" x="57" y="480" font-size="10.5" fill="#101010" fill-opacity="0.7">first thing the next session reads, so the work continues without being re-explained.</text>
+</svg>

@@ -1,0 +1,106 @@
+name: Examples
+
+# The integration examples in examples/, one job each, end to end. Every job
+# is keyless: no API keys, no network model calls, no accounts. Each example
+# script exits non-zero unless the whole round trip holds: framework state
+# in, handover built with the Python SDK, stored, then `soil validate`,
+# `soil check` (exit 0 required) and `soil load` through the reference CLI,
+# with facts asserted inside the restore prompt.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # The framework side is real: a checkpointed LangGraph StateGraph with no
+  # model call, pinned in examples/langgraph/requirements.txt.
+  langgraph:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: python -m pip install -r examples/langgraph/requirements.txt
+      - run: python examples/langgraph/main.py
+
+  # The framework side is a labeled in-process stand-in (Mem0 initialisation
+  # requires a model provider), so this job proves the Soil side only. No
+  # Python dependencies: the stand-in and the SDK are standard library.
+  mem0:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: python examples/mem0/main.py
+
+  # The framework side is a labeled in-process stand-in (a Letta agent needs
+  # a server and a model provider), so this job proves the Soil side only.
+  # No Python dependencies: the stand-in and the SDK are standard library.
+  letta:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: python examples/letta/main.py
+
+  # The buzz side is real: buzz-agent, the ACP agent crate from block/buzz,
+  # is built from a pinned commit and driven over stdio with the soil MCP
+  # server attached in session/new. One session saves through soil_save, a
+  # fresh process loads through soil_load. The model is a scripted local
+  # stand-in so the job stays keyless; examples/buzz/README.md states
+  # exactly what is real and what is arranged.
+  buzz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Check out block/buzz at the pinned commit
+        uses: actions/checkout@v4
+        with:
+          repository: block/buzz
+          ref: cfdea818dbd0a38ca6077de2bfafba755a6c7853
+          path: .buzz-src
+      - name: Cache the cargo registry and build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            .buzz-src/target
+          key: buzz-agent-${{ runner.os }}-cfdea818dbd0a38ca6077de2bfafba755a6c7853
+      - run: cargo build --release -p buzz-agent
+        working-directory: .buzz-src
+      - run: node examples/buzz/acp-driver.mjs --agent .buzz-src/target/release/buzz-agent --model stand-in

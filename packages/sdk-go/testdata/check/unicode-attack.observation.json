@@ -1,0 +1,57 @@
+{
+  "kind": "quality.capture",
+  "producedBy": "soil-cli/0.1.0",
+  "producedAt": "2026-07-22T10:00:00Z",
+  "data": {
+    "checkVersion": "1.0.0",
+    "sectionsWithContent": 11,
+    "missingSections": [
+      "architecture",
+      "constraints",
+      "rejectedPaths",
+      "latestUserIntent",
+      "openQuestions",
+      "safetySummary"
+    ],
+    "blockedSections": [],
+    "findings": [
+      {
+        "rule": "decisions.entry-without-reason",
+        "location": "/sections/decisions",
+        "observed": "entry 2 states a decision with no recorded reason (\"2. We picked 🧭 the compass path 🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦…\")",
+        "severity": "caution"
+      },
+      {
+        "rule": "self-containment.fetch-pointer",
+        "location": "/sections/workflow",
+        "observed": "sends the reader elsewhere (\"see the repo\"), but a handover reader has no repo, no docs and no earlier thread",
+        "severity": "caution"
+      },
+      {
+        "rule": "size.one-liner",
+        "location": "/sections/executiveSummary",
+        "observed": "carries 17 characters in a document whose sections are otherwise substantial",
+        "severity": "advice"
+      },
+      {
+        "rule": "time.unanchored",
+        "location": "/sections/currentTask",
+        "observed": "uses \"this week\" with no capture-time anchor, so a later reader cannot tell when it was true",
+        "severity": "caution"
+      },
+      {
+        "rule": "size.one-liner",
+        "location": "/sections/blockers",
+        "observed": "carries 33 characters in a document whose sections are otherwise substantial",
+        "severity": "advice"
+      },
+      {
+        "rule": "restore.thin",
+        "location": "/sections/restoreInstructions",
+        "observed": "the restore instructions are 154 characters against 3133 of captured content, below the documented floor of 300",
+        "severity": "problem"
+      }
+    ],
+    "notes": "Structural examination of the document by the open deterministic baseline. Section statuses and rule outcomes only."
+  }
+}

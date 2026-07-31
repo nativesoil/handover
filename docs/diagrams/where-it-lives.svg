@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 960 592" width="960" height="592" role="img" aria-labelledby="wl-title wl-desc">
+  <title id="wl-title">Where a handover lives: your computer, your team's server, or the hosted service</title>
+  <desc id="wl-desc">The topology of Soil Handover, left to right. On the left, the AI clients, as plain text names on a layered ground, because behind every client runs a model, from any provider. One panel holds the clients that run on your machine: Claude Code, Codex CLI, Cursor and VS Code. Another holds the clients that live in a browser or a phone app: ChatGPT, Claude, Lovable and v0. In the centre, your computer, the default place a handover lives: the soil command line and a local MCP server your client starts as a process, writing one plain JSON file, handover.json, under a home directory, readable with cat. After install this route needs no account, no network and no telemetry. On the right, the two optional servers. A server your team runs: the self-hostable preview from this repository, on hardware you own, with bearer tokens your operator hands out and shared projects. And Native Soil Cloud: the hosted service with accounts, which is how the browser and phone clients connect, and which nothing in this repository calls or needs. Three numbered routes connect them: route one, the local round trip between a client on your machine and your own disk; route two, from your machine to your team's server over HTTP; route three, from the browser and phone clients to the hosted service. A client in a browser or on a phone has only route three. A client on your machine is not limited to route one. Every route reads and writes the same document.</desc>
+
+  <!-- The light palette rides in presentation attributes so it is the floor;
+       the style block holds only the dark override, a deliberate inversion of
+       the product's off-white surface: carbon ground, off-white ink, the same
+       greens. The terminal panels are carbon in both themes, like the
+       product's own full-carbon sections, so they carry no override. -->
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .page  { fill: #101010; }
+      .card  { fill: #1b1b19; stroke: #f4f2ed; stroke-opacity: 0.18; }
+      .ink   { fill: #f4f2ed; }
+      .muted { fill: #f4f2ed; }
+      .faint { fill: #f4f2ed; }
+      .hair  { stroke: #f4f2ed; stroke-opacity: 0.18; }
+      .flow  { stroke: #f4f2ed; }
+      .head  { fill: #f4f2ed; }
+      .layer { fill: #f4f2ed; }
+      .green { fill: #39CD75; }
+    }
+  </style>
+
+  <defs>
+    <marker id="wl-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0.5 L8 4 L0 7.5 Z" fill="#101010"/>
+    </marker>
+  </defs>
+
+  <rect class="page" width="960" height="592" fill="#f4f2ed"/>
+
+  <rect x="40" y="24" width="9" height="9" fill="#39CD75"/>
+  <text class="ink" x="58" y="33" font-size="15" font-weight="600" fill="#101010">Where a handover lives</text>
+  <text class="muted" x="40" y="56" font-size="11" fill="#101010" fill-opacity="0.7">Two kinds of client, three routes, one document. Your own computer is the default place.</text>
+  <line class="hair" x1="40" y1="70" x2="920" y2="70" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+
+  <!-- ============ the clients, on the model layer ============ -->
+  <!-- The offset ground behind the client band is the model layer: a client
+       is a surface, and behind every one of them runs a model. No provider is
+       named or marked; the caption at the band's foot is the label. -->
+  <rect class="layer" x="42" y="98" width="270" height="336" fill="#101010" fill-opacity="0.03"/>
+  <rect class="layer" x="32" y="88" width="270" height="336" fill="#101010" fill-opacity="0.05"/>
+  <text class="ink" x="46" y="110" font-size="12" font-weight="600" fill="#101010">AI clients</text>
+
+  <rect x="46" y="138" width="242" height="118" rx="2" fill="#161512" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
+  <circle cx="64" cy="156" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="76" cy="156" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="88" cy="156" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <text x="100" y="160" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#f4f2ed" fill-opacity="0.5">on your machine</text>
+  <line x1="46" y1="168" x2="288" y2="168" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5" fill="#f4f2ed">
+    <text x="63" y="192">Claude Code</text>
+    <text x="63" y="212">Codex CLI</text>
+    <text x="63" y="232">Cursor &#183; VS Code</text>
+  </g>
+
+  <rect x="46" y="272" width="242" height="118" rx="2" fill="#161512" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
+  <circle cx="64" cy="290" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="76" cy="290" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="88" cy="290" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <text x="100" y="294" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#f4f2ed" fill-opacity="0.5">in a browser or a phone app</text>
+  <line x1="46" y1="302" x2="288" y2="302" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5" fill="#f4f2ed">
+    <text x="63" y="326">ChatGPT</text>
+    <text x="63" y="346">Claude</text>
+    <text x="63" y="366">Lovable &#183; v0</text>
+  </g>
+
+  <text class="faint" x="46" y="414" font-size="10" fill="#101010" fill-opacity="0.55">behind every client, a model &#183; any provider</text>
+
+  <!-- ============ your computer ============ -->
+  <rect class="card" x="372" y="88" width="276" height="336" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <rect x="390" y="101" width="9" height="9" fill="#39CD75"/>
+  <text class="ink" x="406" y="110" font-size="13" font-weight="700" fill="#101010">Your computer</text>
+  <text class="muted" x="390" y="130" font-size="10.5" fill="#101010" fill-opacity="0.7">the default place. Route 1 stays entirely here.</text>
+  <line class="hair" x1="390" y1="142" x2="630" y2="142" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+
+  <rect x="390" y="156" width="240" height="62" rx="2" fill="#161512" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
+  <circle cx="406" cy="172" r="3" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="417" cy="172" r="3" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="428" cy="172" r="3" fill="#f4f2ed" fill-opacity="0.22"/>
+  <line x1="390" y1="184" x2="630" y2="184" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <text xml:space="preserve" x="404" y="206" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11"><tspan fill="#39CD75">&#10095;</tspan><tspan fill="#f4f2ed"> soil save &#183; load &#183; list</tspan></text>
+  <text class="muted" x="390" y="236" font-size="10" fill="#101010" fill-opacity="0.7">the soil CLI, and a local MCP server your</text>
+  <text class="muted" x="390" y="250" font-size="10" fill="#101010" fill-opacity="0.7">client starts as a process</text>
+
+  <rect class="card" x="390" y="264" width="240" height="48" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <rect x="406" y="282" width="11" height="11" fill="#39CD75"/>
+  <text class="ink" x="427" y="293" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#101010">handover.json</text>
+  <text class="ink" x="390" y="332" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="9.5" fill="#101010">~/.soil/handovers/NNN.json</text>
+  <text class="muted" x="390" y="348" font-size="10" fill="#101010" fill-opacity="0.7">plain text, readable with cat, diffable in git</text>
+  <line class="hair" x1="390" y1="362" x2="630" y2="362" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="muted" x="390" y="382" font-size="10" fill="#101010" fill-opacity="0.7">after install: no account, no network,</text>
+  <text class="muted" x="390" y="396" font-size="10" fill="#101010" fill-opacity="0.7">no telemetry</text>
+
+  <!-- ============ the two optional servers ============ -->
+  <rect class="card" x="700" y="88" width="220" height="150" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="717" y="110" font-size="12" font-weight="600" fill="#101010">A server your team runs</text>
+  <line class="hair" x1="717" y1="120" x2="903" y2="120" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="muted" x="717" y="138" font-size="10" fill="#101010" fill-opacity="0.7">the self-hostable server preview,</text>
+  <text class="muted" x="717" y="152" font-size="10" fill="#101010" fill-opacity="0.7">in this repository</text>
+  <text class="muted" x="717" y="172" font-size="10" fill="#101010" fill-opacity="0.7">hardware you own &#183; shared projects</text>
+  <text class="muted" x="717" y="192" font-size="10" fill="#101010" fill-opacity="0.7">bearer tokens your operator</text>
+  <text class="muted" x="717" y="206" font-size="10" fill="#101010" fill-opacity="0.7">hands out</text>
+
+  <rect class="card" x="700" y="274" width="220" height="150" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="717" y="296" font-size="12" font-weight="600" fill="#101010">Native Soil Cloud</text>
+  <line class="hair" x1="717" y1="306" x2="903" y2="306" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="muted" x="717" y="324" font-size="10" fill="#101010" fill-opacity="0.7">the hosted service, with accounts</text>
+  <text class="muted" x="717" y="344" font-size="10" fill="#101010" fill-opacity="0.7">how the browser and phone</text>
+  <text class="muted" x="717" y="358" font-size="10" fill="#101010" fill-opacity="0.7">clients connect</text>
+  <text class="muted" x="717" y="378" font-size="10" fill="#101010" fill-opacity="0.7">nothing in this repository calls it,</text>
+  <text class="muted" x="717" y="392" font-size="10" fill="#101010" fill-opacity="0.7">needs it, or degrades without it</text>
+
+  <!-- ============ the three routes ============ -->
+  <text class="green" x="338" y="186" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="600" fill="#0F6E56">1</text>
+  <line class="flow" x1="318" y1="196" x2="366" y2="196" stroke="#101010" stroke-width="1.5" marker-start="url(#wl-arrow)" marker-end="url(#wl-arrow)"/>
+
+  <text class="green" x="671" y="153" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="600" fill="#0F6E56">2</text>
+  <line class="flow" x1="654" y1="163" x2="694" y2="163" stroke="#101010" stroke-width="1.5" marker-start="url(#wl-arrow)" marker-end="url(#wl-arrow)"/>
+
+  <text class="green" x="556" y="438" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" font-weight="600" fill="#0F6E56">3</text>
+  <polyline class="flow" points="289,331 330,331 330,444 810,444 810,430" fill="none" stroke="#101010" stroke-width="1.5" marker-end="url(#wl-arrow)"/>
+
+  <!-- ============ the legend ============ -->
+  <rect class="card" x="40" y="460" width="880" height="92" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="57" y="482" font-size="12" font-weight="600" fill="#101010">Three routes, one document</text>
+  <text class="green" x="57" y="502" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10.5" font-weight="600" fill="#0F6E56">1</text>
+  <text class="muted" x="75" y="502" font-size="10.5" fill="#101010" fill-opacity="0.7">the local round trip: a client on your machine starts the local server, or you run the CLI yourself. No account, no network.</text>
+  <text class="green" x="57" y="520" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10.5" font-weight="600" fill="#0F6E56">2</text>
+  <text class="muted" x="75" y="520" font-size="10.5" fill="#101010" fill-opacity="0.7">your team's server: the self-hostable preview on hardware you own. Your machine talks to it over HTTP, with a bearer token.</text>
+  <text class="green" x="57" y="538" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10.5" font-weight="600" fill="#0F6E56">3</text>
+  <text class="muted" x="75" y="538" font-size="10.5" fill="#101010" fill-opacity="0.7">the hosted route: Native Soil Cloud, a separate service with accounts. It is how ChatGPT and Claude in a browser or a phone connect.</text>
+
+  <text class="muted" x="40" y="576" font-size="10.5" fill="#101010" fill-opacity="0.7">A client in a browser or on a phone has only route 3. A client on your machine is not limited to route 1. Every route reads and writes the same document.</text>
+</svg>

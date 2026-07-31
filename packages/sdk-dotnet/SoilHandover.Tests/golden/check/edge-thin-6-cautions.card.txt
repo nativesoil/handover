@@ -1,0 +1,43 @@
+  ┌─ SOIL · handover checked ────────────────── #006 ─
+  │
+  │   Six unexplained gaps tip the band
+  │   edge-thin-cautions
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   thin
+  │   0 problems · 6 cautions · 0 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   blockers
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   next steps
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   open questions
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   session activity
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   provenance map
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  │   safety summary
+  │   ▸ completeness.missing-without-reason · caution
+  │     declared missing, with no note here and
+  │     nothing in quality.missingInputs saying why
+  │
+  └─ checked from the document alone · only a real load proves restore

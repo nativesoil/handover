@@ -1,0 +1,134 @@
+{
+  "soilHandover": "1.0",
+  "projectId": "tern-tripsheets",
+  "title": "tern: adaptive profile simplification done, water markers next",
+  "createdAt": "2026-07-30T03:59:19.424Z",
+  "source": {
+    "client": "codex",
+    "model": "gpt-5",
+    "provider": "openai"
+  },
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "tern is a small CLI, package name tern and version 0.3.0 at handover #001, that turns GPX hiking tracks into printable trip sheets. A book is the set of sheets for one trip, with one A5 monochrome page per leg. A leg is the stretch between two named waypoints.",
+      "provenance": ["soil_observed"]
+    },
+    "decisions": {
+      "status": "available",
+      "summary": "1. Store all distances as integer meters end to end, converting to kilometers only at render time. Reason: floating-point kilometer accumulation caused long-track totals to disagree with GPS device readouts by tens of meters, which hikers noticed. 2. Render trip sheets with plain template strings and no template engine. Reason: the considered engine would be the only heavy dependency for two pages of monospaced text. 3. Scale the Ramer-Douglas-Peucker simplification epsilon with leg length: 5 meters for legs under 10 km and 10 meters for legs above. Reason: a fixed 5 meter epsilon retained too many points on long alpine legs, leaving profile SVGs heavy.",
+      "provenance": ["soil_observed", "user_locked_memory"]
+    },
+    "workflow": {
+      "status": "available",
+      "summary": "Use the project vocabulary \"leg\" and \"book\". Preserve integer-meter calculations until final rendering. For profile changes, prioritize faithful grade representation and A5 monochrome readability. Record rejected visual approaches and their safety or usability reason. Verify current repository state before relying on capture-time gaps.",
+      "provenance": ["soil_observed", "inferred"]
+    },
+    "architecture": {
+      "status": "available",
+      "summary": "At handover #001, source code was organized around GPX track reading and integer-meter distance in src/gpx.js and trip-sheet rendering in src/sheet.js. renderSheet accepted a leg.profileSvg string. Ramer-Douglas-Peucker profile downsampling is now implemented, but its exact code location and the current broader source layout are unchecked. The package bin entry previously named src/cli.js while that file was absent; its current status is unchecked.",
+      "provenance": ["soil_observed"]
+    },
+    "constraints": {
+      "status": "available",
+      "summary": "Trip sheets must remain legible on A5 monochrome paper because they are carried on the trail. Profile distinctions must work without color. Profile geometry must not understate climbs or misrepresent steep-section grade. Distances remain integer meters until rendering. House style for project handovers is plain ASCII punctuation, no em dashes, no absolute filesystem paths, and unconfirmed items labeled unchecked.",
+      "provenance": ["soil_observed", "prompt_report"]
+    },
+    "rejectedPaths": {
+      "status": "available",
+      "summary": "1. Long-term GPX parsing with regular expressions was rejected because it misread Garmin namespaced extension elements such as gpxtpx:*. A small streaming XML tokenizer is the planned replacement; whether that replacement is now implemented is unchecked. 2. Smoothing the profile line with cubic Bezier curves was rejected. It looked better on paper but misdrew grade on steep sections, and a trip sheet that understates a climb is worse than an ugly one.",
+      "provenance": ["soil_observed", "user_locked_memory"]
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "The elevation-profile work has advanced since handover #001. Ramer-Douglas-Peucker downsampling for the profile is implemented. Profile simplification now uses an epsilon that scales with leg length: 5 meters for legs under 10 km and 10 meters for legs above that threshold. The next step is to mark water sources on the profile using waypoints typed \"water\", because refill planning is the main on-trail use of the profile. The status of SVG generation beyond these user-reported facts is unchecked.",
+      "provenance": ["soil_observed", "user_locked_memory"]
+    },
+    "currentTask": {
+      "status": "available",
+      "summary": "Continue the elevation-profile work. Ramer-Douglas-Peucker downsampling is complete. The immediate task is to mark water sources on the profile, taking them from waypoints typed \"water\".",
+      "provenance": ["user_locked_memory"]
+    },
+    "latestUserIntent": {
+      "status": "available",
+      "summary": "Persist the continued project state under projectId tern-tripsheets after recording the completed downsampling, adaptive epsilon decision, rejected cubic Bezier smoothing, and water-source marker next step. Maintain plain ASCII punctuation, use no em dashes or absolute filesystem paths, and label unconfirmed facts unchecked.",
+      "provenance": ["prompt_report"]
+    },
+    "sessionDelta": {
+      "status": "available",
+      "summary": "Since handover #001, Ramer-Douglas-Peucker downsampling for the elevation profile was implemented. The fixed 5 meter epsilon plan was superseded by a length-scaled rule: 5 meters under 10 km and 10 meters above. Cubic Bezier smoothing was evaluated and rejected because it misrepresented grade on steep sections. The immediate next step changed from downsampling to marking water sources from waypoints typed \"water\".",
+      "provenance": ["soil_observed", "user_locked_memory"]
+    },
+    "blockers": {
+      "status": "available",
+      "summary": "No active blocker was reported for water-source markers. From handover #001, src/cli.js was missing despite being named by the package bin entry, no test files existed despite a node --test script, and elevation parsing was not present in the then-current GPX reader. All three current statuses are unchecked.",
+      "provenance": ["soil_observed"]
+    },
+    "nextSteps": {
+      "status": "available",
+      "summary": "1. Mark water sources on the elevation profile. Source the markers from waypoints typed \"water\". This is next because refill planning is the main reason people use the profile on the trail. 2. After adding markers, verify that they remain clear at A5 size in monochrome. 3. The status of elevation value parsing, SVG generation, the streaming XML tokenizer, the CLI entry point, and tests is unchecked.",
+      "provenance": ["user_locked_memory", "inferred"]
+    },
+    "openQuestions": {
+      "status": "available",
+      "summary": "Unchecked: whether waypoints typed \"water\" already reach the per-leg profile data model, how markers should be positioned when a waypoint is slightly off-track, and whether multiple nearby water waypoints should be merged visually. Unchecked: whether the 10 km boundary itself uses the 5 meter or 10 meter epsilon, because the decision states under 10 km and above without defining exactly 10 km.",
+      "provenance": ["inferred"]
+    },
+    "sessionActivity": {
+      "status": "available",
+      "summary": "Loaded handover #001. Extracted its reasons for integer-meter storage and rejecting regex GPX parsing, plus its then-next profile step. Recorded the user's report that Ramer-Douglas-Peucker downsampling is now implemented, along with the adaptive epsilon decision, rejected cubic Bezier smoothing, and water-marker next step.",
+      "provenance": ["live_verified"]
+    },
+    "restoreInstructions": {
+      "status": "available",
+      "summary": "Continue tern's elevation-profile work from this state. Treat Ramer-Douglas-Peucker downsampling as implemented. Keep the locked adaptive simplification rule: 5 meter epsilon for legs under 10 km and 10 meter epsilon for legs above, chosen because fixed 5 meter simplification left long alpine profile SVGs too heavy. Do not smooth the line with cubic Bezier curves because that misdrew steep-section grade and could understate climbs. Next, add water-source markers to the profile from waypoints typed \"water\", prioritizing refill planning and A5 monochrome readability. Before changing code, inspect the current repository because exact implementation locations and several capture-time gaps are unchecked. Preserve integer-meter distance calculations and plain template rendering unless the user changes those decisions.",
+      "provenance": ["soil_observed", "user_locked_memory"]
+    },
+    "provenanceMap": {
+      "status": "available",
+      "summary": "Durable identity, architecture history, integer-meter decision, plain-template decision, monochrome constraint, regex rejection, and prior gaps came from loaded handover #001 and are soil_observed. Ramer-Douglas-Peucker completion, adaptive epsilon, cubic Bezier rejection, and water-marker next step were directly reported by the user in this session and are user_locked_memory. Any present repository status not explicitly reported is labeled unchecked.",
+      "provenance": ["soil_observed", "prompt_report"]
+    },
+    "safetySummary": {
+      "status": "available",
+      "summary": "No secrets, credentials, tokens, or private absolute paths are included. Water-source rendering is navigationally relevant, so markers should not imply more location precision or availability certainty than the waypoint data provides; exact data semantics are unchecked.",
+      "provenance": ["live_verified", "inferred"]
+    }
+  },
+  "quality": {
+    "contradictions": [],
+    "missingInputs": [
+      "Current repository state was not inspected, so exact code locations and the broader SVG implementation status are unchecked.",
+      "The epsilon at exactly 10 km is not defined by the supplied under/above rule.",
+      "Waypoint-to-profile mapping behavior and water waypoint availability semantics are unchecked."
+    ]
+  },
+  "safety": {
+    "unsafeOmissions": []
+  },
+  "handoverId": "019fb12d-3b80-730d-96f6-389378b713ea",
+  "observations": [
+    {
+      "kind": "working.style",
+      "producedBy": "@nativesoil/handover-mcp 0.1.0",
+      "producedAt": "2026-07-30T03:59:19.424Z",
+      "data": {
+        "instances": [
+          {
+            "situation": "How conflicting instructions were resolved",
+            "response": "The phrase under 10 km and above leaves exactly 10 km undefined, so the handover records that boundary as unchecked."
+          },
+          {
+            "situation": "How new work was checked before it was trusted",
+            "response": "I preserved durable decisions from handover #001 and superseded only the profile-specific capture state with the user's explicit continuation."
+          },
+          {
+            "situation": "An assumption this thread made and how it was caught",
+            "response": "I did not infer that all SVG generation is complete merely from the reported completion of downsampling; I labeled the broader status unchecked."
+          }
+        ]
+      }
+    }
+  ],
+  "code": "#002"
+}

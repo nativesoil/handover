@@ -1,0 +1,30 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "strong",
+  "counts": {
+    "problems": 0,
+    "cautions": 0,
+    "advice": 2
+  },
+  "findings": [
+    {
+      "rule": "anchors.no-exact-values",
+      "severity": "advice",
+      "section": "architecture",
+      "message": "mentions configuration but holds no numbers, versions or pins; exact values are what survive a move"
+    },
+    {
+      "rule": "anchors.no-exact-values",
+      "severity": "advice",
+      "section": "constraints",
+      "message": "mentions configuration but holds no numbers, versions or pins; exact values are what survive a move"
+    }
+  ],
+  "sections": {
+    "withContent": 10,
+    "missing": 7,
+    "blocked": 0,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

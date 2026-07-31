@@ -1,0 +1,34 @@
+name: Compatibility
+
+# The compatibility map is generated, never hand-written twice. This job
+# reruns the generator and fails when any committed output drifts from the
+# source data in compatibility/*.yaml.
+#
+# Three outputs, one dataset, and the check binds all three: the generated
+# page, the generated snippet, and README.md's actual bytes. The README copy
+# used to be hand-pasted and was never compared, which is how it came to drop
+# the column that reveals which rows depend on a hosted service.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # The generator has no dependencies, so no install step.
+      - run: node scripts/generate-compatibility.mjs
+      - name: Generated files match the committed versions
+        run: |
+          git diff --exit-code -- docs/compatibility.md compatibility/readme-snippet.md README.md || {
+            echo "docs/compatibility.md, compatibility/readme-snippet.md or the"
+            echo "generated block in README.md is out of sync with compatibility/*.yaml."
+            echo "Run: node scripts/generate-compatibility.mjs, then commit the result."
+            exit 1
+          }

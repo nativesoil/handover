@@ -1,0 +1,278 @@
+name: CI
+
+# Every branch, tiered by what the push touches.
+#
+# This repository is merged into by hand, from a checkout, without a pull
+# request, so `pull_request` never fires for most of what lands. With the push
+# trigger limited to `main`, the first time any commit met a Windows runner was
+# after it was already on the main line, and a platform-specific defect could
+# only ever be found downstream of the merge that introduced it. It was: a
+# night of merges, each verified on macOS, put a Windows failure on main and
+# left it there.
+#
+# Running the matrix on the branch is what makes a branch provable before it is
+# merged. But every platform defect so far has lived in a small set of
+# surfaces: the lock implementations, the store and the CLI spawn paths, the
+# concurrency tests and their workers, and these workflows. So the matrix is
+# tiered: every branch push runs the Ubuntu verify leg; pushes to main, pull
+# requests, manual dispatch, and branch pushes that touch those surfaces run
+# the full matrix. The `tier` job below makes the call. The macOS leg bills at
+# ten times the Ubuntu rate and Windows at twice, so they are what the branch
+# tier drops.
+#
+# This tiering is the private mirror economy mode: at launch the repository is
+# public, where Actions minutes are free.
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  # Starts the `rate` job below, and the full matrix with it.
+  workflow_dispatch:
+  # Starts only the `rate` job, as its weekly sample.
+  schedule:
+    - cron: "0 5 * * 1"
+
+# A branch and its pull request are the same commits, and a force-push
+# supersedes what came before. One run per ref and event, and cancel the run
+# it replaces; the event in the group keeps a dispatched or scheduled rate
+# run from being cancelled by an unrelated push.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Which tier this run gets. Main, pull requests and manual dispatch always
+  # take the full matrix. A branch push takes it only when the branch, against
+  # its merge base with main, touches a platform-sensitive surface; anything
+  # else on a branch gets the Ubuntu verify leg alone. When the merge base
+  # cannot be found the answer is the full matrix, never less.
+  tier:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    outputs:
+      full: ${{ steps.decide.outputs.full }}
+      verify-os: ${{ steps.decide.outputs.verify-os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: decide
+        shell: bash
+        run: |
+          set -euo pipefail
+          full=false
+          if [ "${{ github.event_name }}" != "push" ] || [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            full=true
+          elif ! base="$(git merge-base origin/main HEAD)"; then
+            full=true
+          else
+            while IFS= read -r f; do
+              case "$f" in
+                .github/workflows/*) full=true ;;
+                */lock.*|*/lock_test.go|*/test_lock.py|*/Lock.kt|*/Lock.cs|*/LockTest.kt|*/LockTests.cs) full=true ;;
+                */store.*|*/store_test.go|*/test_store.py|*/Store.kt|*/Store.cs|*/StoreTest.kt|*/StoreTests.cs) full=true ;;
+                packages/cli/bin/*|packages/cli/src/*|packages/server/src/cli.*) full=true ;;
+                */test-workers/*|*/test_concurrency.py|*/concurrency.test.ts|*/concurrency_test.go|*Concurren*) full=true ;;
+              esac
+            done < <(git diff --name-only "$base" HEAD)
+          fi
+          if [ "$full" = true ]; then
+            echo 'verify-os=["ubuntu-latest", "macos-latest", "windows-latest"]' >> "$GITHUB_OUTPUT"
+          else
+            echo 'verify-os=["ubuntu-latest"]' >> "$GITHUB_OUTPUT"
+          fi
+          echo "full=$full" >> "$GITHUB_OUTPUT"
+
+  # The portable core: TypeScript, Python and Go build, test and pass their
+  # conformance runners on all three operating systems, or on Ubuntu alone
+  # when the `tier` job says the push stays in the cheap tier. The
+  # .gitattributes LF rule keeps the byte-parity recipe checks honest on
+  # Windows.
+  verify:
+    needs: tier
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ${{ fromJSON(needs.tier.outputs.verify-os) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - run: pnpm install --frozen-lockfile
+      - run: python -m pip install pytest
+      - run: pnpm -r build
+      # The root build also compiles conformance/dist for the TS runner.
+      - run: pnpm build
+      # The vitest suite lives at the workspace root, which `pnpm -r` skips.
+      - run: pnpm test
+      # `python`, not `python3`: setup-python guarantees the former on every
+      # OS, while Windows runners resolve `python3` unreliably.
+      - run: python -m pytest packages/sdk-py
+      - run: go vet ./...
+        working-directory: packages/sdk-go
+      - run: go test ./...
+        working-directory: packages/sdk-go
+      - run: go build ./cmd/soil
+        working-directory: packages/sdk-go
+      - run: node conformance/dist/run.js
+      - run: python conformance/run_py.py
+      - run: go run -C conformance/go .
+
+  # The JVM and .NET suites are the slowest in the repository and their code
+  # is pure managed runtime, so one operating system carries them. Prettier
+  # rides here too: formatting has one answer, not one per OS. Full tier only;
+  # main and every merge get it, a plain branch push does not.
+  managed:
+    needs: tier
+    if: needs.tier.outputs.full == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - run: pnpm install --frozen-lockfile
+      - run: ./gradlew build :conformance:run --quiet
+        working-directory: packages/sdk-jvm
+      - run: dotnet test packages/sdk-dotnet/SoilHandover.Tests
+      - run: dotnet run --project conformance/dotnet
+      - run: pnpm exec prettier --check .
+
+  # The cross-language store harness. It is the only job that needs all five
+  # runtimes at once, which is why it is its own: the `verify` job has no JDK
+  # and no .NET, and `managed` has no Go and no Python, so neither of them
+  # could run this without pretending. The harness refuses to start when a
+  # runtime is missing rather than covering four and reporting in the words
+  # of five, so a runtime that fails to install here fails the job.
+  # Full tier only, like `managed`.
+  interop:
+    needs: tier
+    if: needs.tier.outputs.full == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - run: pnpm install --frozen-lockfile
+      # The TypeScript writer runs the built CLI, and the harness builds the
+      # other four itself.
+      - run: pnpm build
+      - run: pnpm conformance:interop
+
+  # How often the single-writer races fail on Windows, as a number.
+  #
+  # Green once is not green. Two lock defects in a row passed a Windows run and
+  # failed a later one with nothing relevant changed in between, because each
+  # fired a few times in a hundred rather than every time. A single green run
+  # cannot tell a low rate from a fixed one, and twice it was read as though it
+  # could.
+  #
+  # So the races can be run in bulk: ten shards, fifteen repetitions of each
+  # race per shard, counting the failures. Started by hand or by the weekly
+  # schedule, never by a push, because it is an instrument for when a race is
+  # suspected or a fix for one needs a number, not something every branch pays
+  # for. The weekly run keeps a baseline number coming while the mirror is
+  # private and paid; on the public repository the minutes are free.
+  rate:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - run: python -m pip install pytest
+
+      - name: The Go race, fifteen times
+        shell: bash
+        working-directory: packages/sdk-go
+        run: |
+          set +e
+          go test ./cmd/soil -run TestFourSaveProcessesLoseNothing -count=15 -v > out.txt 2>&1
+          echo "go test exit: $?"
+          echo "GO_PASS=$(grep -c '^--- PASS' out.txt)"
+          echo "GO_FAIL=$(grep -c '^--- FAIL' out.txt)"
+          # No failures means this grep matches nothing and says so with a
+          # non-zero status, which would fail the step for the good outcome.
+          grep -A8 '^--- FAIL' out.txt | head -60 || true
+
+      - name: The Python race, fifteen times
+        if: always()
+        shell: bash
+        run: |
+          pass=0
+          fail=0
+          for i in $(seq 1 15); do
+            if python -m pytest packages/sdk-py/tests/test_concurrency.py -q > py-$i.txt 2>&1; then
+              pass=$((pass+1))
+            else
+              fail=$((fail+1))
+              echo "--- repetition $i ---"
+              grep -E "LockBusy|Error|assert" py-$i.txt | head -10 || true
+            fi
+          done
+          echo "PY_PASS=$pass"
+          echo "PY_FAIL=$fail"
+
+  dco:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Every commit in the PR carries a Signed-off-by line
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+          missing=0
+          while read -r sha; do
+            if ! git log -1 --format=%B "$sha" | grep -qi '^Signed-off-by: '; then
+              echo "missing Signed-off-by: $sha"
+              missing=1
+            fi
+          done < <(git rev-list "$base".."$head")
+          exit "$missing"

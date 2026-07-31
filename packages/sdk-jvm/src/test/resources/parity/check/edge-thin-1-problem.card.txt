@@ -1,0 +1,20 @@
+  ┌─ SOIL · handover checked ────────────────── #007 ─
+  │
+  │   A rich capture with a boot prompt far too
+  │   small
+  │   edge-thin-problem
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   thin
+  │   1 problem · 0 cautions · 0 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   restore instructions
+  │   ▸ restore.thin · problem
+  │     the restore instructions are 250 characters
+  │     against 1536 of captured content, below the
+  │     documented floor of 300
+  │
+  └─ checked from the document alone · only a real load proves restore

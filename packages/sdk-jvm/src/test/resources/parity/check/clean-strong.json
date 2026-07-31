@@ -1,0 +1,78 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-7000-8000-000000000003",
+  "projectId": "clean-strong",
+  "title": "A capture every rule passes",
+  "createdAt": "2026-07-22T10:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the w."
+    },
+    "decisions": {
+      "status": "available",
+      "summary": "1. We chose plain files because they outlive databases.\n\n2. We locked the cutoff module, since two implementations drifted apart across a season boundary.\n\n3. We adopted small reviewable steps because attribution needs one change per deploy."
+    },
+    "workflow": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files, and each section of."
+    },
+    "architecture": {
+      "status": "available",
+      "summary": "Node is pinned at 20, the app listens on 3000 and the cutoff logic lives in one module. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "constraints": {
+      "status": "available",
+      "summary": "The bundle stays under 180 KB and nothing deploys after the weekly cutoff. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "rejectedPaths": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The."
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold r."
+    },
+    "currentTask": {
+      "status": "available",
+      "summary": "At capture, the retry path was half designed and the re-mount step was not written. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "latestUserIntent": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick t."
+    },
+    "sessionDelta": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without a."
+    },
+    "blockers": {
+      "status": "available",
+      "summary": "Nothing is blocked at capture. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "nextSteps": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader."
+    },
+    "openQuestions": {
+      "status": "available",
+      "summary": "Whether the effect can be measured this early. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "sessionActivity": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anyt."
+    },
+    "restoreInstructions": {
+      "status": "available",
+      "summary": "You are continuing this project cold. Read the durable sections first, hold every locked decision with its reason, and begin from the next steps exactly as written. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "provenanceMap": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up."
+    },
+    "safetySummary": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader."
+    }
+  },
+  "code": "#003"
+}

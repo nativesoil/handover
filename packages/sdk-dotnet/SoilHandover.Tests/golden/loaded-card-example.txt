@@ -1,0 +1,27 @@
+  ┌─ SOIL · handover loaded ─────────────────── #004 ─
+  │
+  │   Checkout rework: address step split, payment
+  │   retry pending
+  │   orchard-checkout · saved 2026-07-19T14:12:00Z
+  │
+  ├─ written by ──────────────────────────────────────
+  │
+  │   client      claude-code
+  │   model       opus-4.8
+  │   provider    anthropic
+  │   recipe      1.0.0
+  │
+  ├─ what this document carries ──────────────────────
+  │
+  │   17 / 17 sections carrying content
+  │   provenance  repo_verified, user_locked_memory,
+  │               model_reported, owner_observed
+  │
+  ├─ read it this way ────────────────────────────────
+  │
+  │   durable sections still hold · frontier
+  │   sections describe the moment of capture, not
+  │   now · check fast-moving state before trusting
+  │   it
+  │
+  └─ the restore prompt follows · paste it into the new session

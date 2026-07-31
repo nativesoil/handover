@@ -1,0 +1,95 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "thin",
+  "counts": {
+    "problems": 2,
+    "cautions": 10,
+    "advice": 1
+  },
+  "findings": [
+    {
+      "rule": "completeness.no-durable-truth",
+      "severity": "problem",
+      "message": "none of the six durable-tier sections carries content, so the project's lasting truth did not travel"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "projectIdentity",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "workflow",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "gaps.blocked-without-omission-note",
+      "severity": "caution",
+      "section": "architecture",
+      "message": "withheld for safety, but safety.unsafeOmissions does not name what exists or where it is configured"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "constraints",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "rejectedPaths",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "time.unanchored",
+      "severity": "caution",
+      "section": "currentTask",
+      "message": "uses \"Right Now\" with no capture-time anchor, so a later reader cannot tell when it was true"
+    },
+    {
+      "rule": "self-containment.fetch-pointer",
+      "severity": "caution",
+      "section": "latestUserIntent",
+      "message": "sends the reader elsewhere (\"see the repo\"), but a handover reader has no repo, no docs and no earlier thread"
+    },
+    {
+      "rule": "size.one-liner",
+      "severity": "advice",
+      "section": "blockers",
+      "message": "carries 11 characters in a document whose sections are otherwise substantial"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "openQuestions",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "restoreInstructions",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "restore.absent",
+      "severity": "problem",
+      "section": "restoreInstructions",
+      "message": "content was captured but restoreInstructions is empty, so nothing tells the next session how to begin"
+    }
+  ],
+  "sections": {
+    "withContent": 9,
+    "missing": 7,
+    "blocked": 1,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7ab8-3380-73f2-8ae7-c99b6d964841",
+  "projectId": "orchard-checkout",
+  "title": "Checkout rework: address step split, payment retry pending",
+  "createdAt": "2026-07-19T14:12:00Z",
+  "source": {
+    "client": "claude-code",
+    "model": "opus-4.8",
+    "provider": "anthropic",
+    "recipeVersion": "1.0.0"
+  },
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "Orchard is a direct-to-consumer fruit box subscription in Sweden, roughly 4000 active subscribers. This project is the checkout rework: the last two years of patches left a single 900-line checkout component that nobody wants to touch, and conversion on mobile is the worst number in the business.\n\nThe project's own vocabulary, used exactly this way in every discussion and in the code:\n- \"the box\": one subscription delivery, never called an order.\n- \"a pause\": a subscriber skipping deliveries without cancelling. Pausing is a first-class state, not a cancellation with a flag.\n- \"the window\": the cutoff each Wednesday 23:59 Europe/Stockholm after which the coming week's boxes are locked and cannot be changed.\n- \"soft address\": an address a subscriber has entered but that the delivery partner has not confirmed as routable yet.\n\nThe person leading it is the founder, who reviews every user-facing string herself and prefers small reviewable steps over large rewrites. She has pushed back twice on work that changed copy and logic in the same commit, so those are kept separate.",
+      "provenance": ["model_reported", "user_locked_memory"]
+    },
+    "decisions": {
+      "status": "available",
+      "summary": "Every decision locked so far, with why it was locked:\n\n1. Rework in place, no rewrite. The checkout is refactored step by step behind the existing routes. Locked because the previous team attempted a parallel rewrite in 2025 and abandoned it after four months with nothing shipped.\n\n2. The address step is split from the payment step. Two screens, two commits, two deploys. Locked because mobile drop-off is concentrated where the combined form is longest, and because a single deploy carrying both changes cannot be attributed if conversion moves.\n\n3. A soft address is allowed to proceed to payment. The subscriber is not blocked while the delivery partner confirms routability; an unroutable address is resolved by support after the fact. Locked after the founder pushed back on a proposal to block: blocking loses a paying subscriber to save a support email.\n\n4. Pause stays a first-class state. It is not modelled as a cancellation with a resume flag. Locked because the 2024 attempt to collapse them produced billing runs that charged paused subscribers twice.\n\n5. The window logic lives in one module and is imported everywhere, never re-implemented. Locked because two different cutoff implementations disagreed by one hour across a DST boundary and a week of boxes shipped wrong.\n\n6. No new dependencies in the checkout path without the founder agreeing first. Locked as a standing rule after a date library added 40 KB to the mobile bundle for one format call.\n\n7. Copy changes ship in their own commits, separate from logic. Locked by the founder, who reviews every user-facing string and cannot review a string buried in a logic diff.",
+      "provenance": ["user_locked_memory", "model_reported"]
+    },
+    "workflow": {
+      "status": "available",
+      "summary": "How the work is run:\n- Small steps. One reviewable change per commit, and a commit that touches both copy and logic is split before review.\n- The founder reviews every user-facing string. Nothing with new copy merges without that review, even when the logic is trivial.\n- Done means: the change is behind the existing route, the checkout smoke test passes on a real mobile viewport, and the conversion dashboard has a marker at the deploy so a movement can be attributed.\n- Deploys go out Monday to Thursday, never Friday and never after the Wednesday window closes, because a bad checkout deploy during the lock is unrecoverable for that week's boxes.\n- Standing correction from the founder: do not batch. She asked for the address step and the payment step to ship as separate deploys specifically so the conversion effect of each can be read. This is about attribution, not about commit size in general.",
+      "provenance": ["user_locked_memory"]
+    },
+    "architecture": {
+      "status": "available",
+      "summary": "A Remix app on Node 20 in front of a Postgres database, with the subscription engine as a separate service.\n\n- checkout route: was one component holding address, payment and confirmation. The address step has been extracted into its own route and component; payment and confirmation are still in the original component.\n- window module: the single source of truth for the Wednesday 23:59 Europe/Stockholm cutoff. Exports a next-window function and an is-locked check. Everything imports it; nothing re-implements it.\n- subscription engine: separate service, owns pause state and the weekly billing run. The checkout talks to it over an internal HTTP API. It is the authority on whether a subscriber is paused; the checkout never infers pause state from its own tables.\n- delivery partner integration: asynchronous address confirmation. An address is stored as soft until a webhook confirms routability, so the checkout must handle a subscriber who is mid-confirmation.\n- Payments go through a hosted provider widget. Card data never touches Orchard's servers, which is why the payment step cannot simply be re-rendered client-side without re-mounting the widget.\n\nEnvironment values that matter and are safe to state: the app runs on port 3000 locally, Node is pinned at 20, and the timezone for all window logic is Europe/Stockholm and is set explicitly rather than inherited from the host.",
+      "provenance": ["repo_verified", "model_reported"]
+    },
+    "constraints": {
+      "status": "available",
+      "summary": "Hard invariants:\n- The Wednesday 23:59 Europe/Stockholm window is absolute. Nothing may allow a change to a box after the window closes for that week. Breaking this ships wrong food to real people.\n- Card data never touches Orchard's servers. The hosted widget stays the only place card details are entered. This is a compliance boundary, not a preference.\n- A paused subscriber is never charged. The billing run reads pause state from the subscription engine, and no code path may bypass that check.\n- The mobile checkout bundle must not grow. It is at 180 KB gzipped and the founder has set that as a ceiling, not a target.\n- No deploys after the window closes on Wednesday, and none on Friday.",
+      "provenance": ["user_locked_memory", "repo_verified"]
+    },
+    "rejectedPaths": {
+      "status": "available",
+      "summary": "Tried and abandoned, do not retry:\n- Parallel rewrite of checkout, 2025. Four months, nothing shipped, abandoned. The reason the current work is a rework in place.\n- Collapsing pause into cancellation with a resume flag, 2024. Produced double charges for paused subscribers. Reverted, and pause has been first-class since.\n- Blocking checkout on address confirmation. Proposed early in this project and rejected by the founder: it loses a paying subscriber to save a support email.\n- A date library for one format call. Added 40 KB to the mobile bundle and was removed the same day. The bundle ceiling rule comes from this.\n- Client-side re-render of the payment step without re-mounting the hosted widget. Attempted, and the widget lost its session, so the subscriber saw an empty card form. Any payment step change has to re-mount the widget deliberately.",
+      "provenance": ["model_reported", "owner_observed"]
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "Orchard is a fruit box subscription. This project reworks its checkout in place to fix mobile conversion, in small attributable steps. As of this capture the address step has been split out and deployed, and the payment step is next: it needs a retry path for a declined card that does not lose the subscriber's entered address. The single most important next thing is the payment retry design, because the current behaviour drops the subscriber back to an empty checkout and that is very likely where the remaining mobile drop-off is."
+    },
+    "currentTask": {
+      "status": "available",
+      "summary": "At capture: designing the payment retry path. When a card is declined the hosted widget reports the failure, and the current code returns the subscriber to the start of checkout with an empty form, losing the address they just entered. The chosen approach is to keep the address in the session on the server, so a retry re-mounts the widget with the address already resolved, rather than storing anything card-related. About half done: the session shape is agreed, the re-mount behaviour is not written yet.\n\nDone looks like: a declined card leaves the subscriber on the payment step with their address intact, the widget re-mounted cleanly, and a second attempt possible without re-entering anything. The founder has asked that the decline message be written before the logic lands, because she wants to review that string on its own."
+    },
+    "latestUserIntent": {
+      "status": "available",
+      "summary": "The last substantive direction, in the founder's framing: \"Get the retry right before you touch anything else in checkout. If a card fails and they have to type their address again, we have lost them, and I would rather ship nothing else this month than ship that.\" She was explicit that this outranks the confirmation-step cleanup that was previously next in line."
+    },
+    "sessionDelta": {
+      "status": "available",
+      "summary": "This session: the address step went out on Monday and the conversion dashboard has a marker at the deploy, though there is not enough data yet to read the effect. The payment retry problem was found while testing that deploy on a real phone. The session-based approach to retry was agreed, and the confirmation-step cleanup was pushed behind it. No new locked decisions beyond the retry priority; nothing was reversed."
+    },
+    "blockers": {
+      "status": "available",
+      "summary": "One: the hosted widget's behaviour on re-mount after a decline is not documented clearly, and testing it needs the provider's sandbox, which has been returning intermittent errors since Thursday. The provider's status page shows nothing. Tried already: a local mock of the decline path, which is enough to build against but not enough to trust, so the re-mount has to be confirmed against the real sandbox before the change ships. This sequences the work: build against the mock now, verify in the sandbox before deploy."
+    },
+    "nextSteps": {
+      "status": "available",
+      "summary": "1. Write the decline message copy and send it to the founder for review on its own, before any logic. Governed by the copy-separate-from-logic decision and the standing review rule.\n2. Implement server-side session retention of the resolved address across a declined payment, storing nothing card-related. Governed by the constraint that card data never touches Orchard's servers.\n3. Re-mount the hosted widget deliberately on retry rather than re-rendering it. Governed by the rejected client-side re-render path.\n4. Confirm the re-mount against the provider sandbox once it is stable. Governed by the blocker above; do not deploy on the mock alone.\n5. Deploy Monday to Thursday, before the Wednesday window closes, with a dashboard marker. Governed by the deploy-window constraint and the attribution rule.\n6. Only then return to the confirmation-step cleanup."
+    },
+    "openQuestions": {
+      "status": "available",
+      "summary": "- Whether a retry after a decline should keep the same box selection or re-confirm it. Not decided. At stake: a subscriber who changed their mind mid-checkout versus one who simply mistyped a card.\n- Whether the decline message should name the reason the provider gives. The provider's reasons are sometimes wrong and always terse, and the founder has not seen the list yet.\n- Whether the address step deploy actually moved conversion. Genuinely unknown until roughly a week of data is in."
+    },
+    "sessionActivity": {
+      "status": "available",
+      "summary": "Deployed the address step split on Monday and placed a marker on the conversion dashboard. Tested the deployed checkout on a real mobile device and found the decline behaviour that lost the entered address. Wrote a local mock of the provider's decline path and confirmed the address loss reproduces. Attempted to reach the provider sandbox three times over two days; it returned intermittent errors each time. No database changes were made this session."
+    },
+    "restoreInstructions": {
+      "status": "available",
+      "summary": "You are continuing work on Orchard's checkout rework. Orchard is a Swedish direct-to-consumer fruit box subscription with roughly 4000 subscribers. This project fixes mobile checkout conversion by reworking the existing checkout in place, in small attributable steps, never as a rewrite.\n\nSpeak the project's language exactly: a delivery is \"the box\", skipping deliveries is \"a pause\" and is a first-class state, the Wednesday 23:59 Europe/Stockholm cutoff is \"the window\", and an address the delivery partner has not confirmed as routable is a \"soft address\".\n\nThe decisions that are settled and must not be relitigated: rework in place rather than rewrite, because a 2025 parallel rewrite failed after four months; the address step and the payment step are split into separate screens and separate deploys, so each one's conversion effect can be attributed; a soft address may proceed to payment, because blocking loses a paying subscriber to save a support email; pause stays first-class, because collapsing it into cancellation caused double charges in 2024; the window cutoff lives in exactly one module that everything imports, because two implementations once disagreed across a DST boundary and a week of boxes shipped wrong; no new dependencies in the checkout path without the founder agreeing, after a date library cost 40 KB of mobile bundle; and copy changes ship in their own commits, separate from logic, because the founder reviews every user-facing string herself.\n\nThe hard constraints: nothing may change a box after the window closes; card data never touches Orchard's servers, since payments run through a hosted widget; a paused subscriber is never charged, and pause state is read from the subscription engine rather than inferred; the mobile checkout bundle stays at or under 180 KB gzipped; and deploys happen Monday to Thursday only, before the Wednesday window closes, never on Friday.\n\nThe system: a Remix app on Node 20 over Postgres, with a separate subscription engine that owns pause state and the weekly billing run, an asynchronous delivery-partner integration that confirms address routability by webhook, and a hosted payment widget that must be re-mounted rather than re-rendered.\n\nWhere it stood at the capture: the address step had been split out and deployed on Monday with a dashboard marker, too recently to read the conversion effect. Testing that deploy on a real phone surfaced the live problem: a declined card returns the subscriber to an empty checkout and loses the address they just entered. The agreed approach is to hold the resolved address in the server session across a decline so a retry re-mounts the widget with the address intact, storing nothing card-related. The session shape was agreed; the re-mount was not written.\n\nDo this next, in order: write the decline message copy and send it for review on its own before any logic; implement server-side session retention of the address across a decline; re-mount the widget deliberately on retry; confirm the re-mount against the provider sandbox once it is reachable; deploy Monday to Thursday with a dashboard marker; and only then return to the confirmation-step cleanup.\n\nWHAT NOT TO IMPORT: the confirmation-step cleanup was explicitly pushed behind the retry work and is not the current priority. Blocking checkout on address confirmation was proposed and rejected. A client-side re-render of the payment step was tried and lost the widget session.\n\nWHAT TO CHECK FIRST: whether the provider sandbox is reachable again, since it was failing intermittently at capture, and whether a week of conversion data now exists for the address-step deploy."
+    },
+    "provenanceMap": {
+      "status": "available",
+      "summary": "Repo-checked: the architecture description, the single window module, and the 180 KB bundle figure, all read from the project itself. Stated by the founder and locked: every decision in the decisions section, the workflow rules, and the retry priority. Reported from this conversation: the current task state, the blocker, and the session activity. Inferred and not confirmed: that the remaining mobile drop-off is concentrated at the decline path. That is a hypothesis behind the current priority, and it is not measured. Not seen at all: the actual conversion numbers since Monday's deploy, which had not accumulated at capture."
+    },
+    "safetySummary": {
+      "status": "available",
+      "summary": "Withheld: the payment provider's API credentials, which are set as environment variables in the deployment platform rather than in the repository. Withheld: the delivery partner's webhook signing secret, configured in the same place. Both exist and are in use; their values are not in this handover. No subscriber data of any kind is included."
+    }
+  },
+  "quality": {
+    "missingInputs": [
+      "Conversion numbers since Monday's address-step deploy had not accumulated at capture, so the effect of that deploy is unknown.",
+      "The payment provider's documented behaviour on widget re-mount after a decline could not be confirmed, because the sandbox was returning intermittent errors."
+    ],
+    "contradictions": [
+      "The bundle ceiling is described as 180 KB gzipped in the project notes and as 'about 175' in an earlier conversation. The stricter figure is used here; the exact number was not re-confirmed."
+    ]
+  },
+  "safety": {
+    "unsafeOmissions": [
+      "Payment provider API credentials exist and are set as environment variables in the deployment platform. Values withheld.",
+      "The delivery partner webhook signing secret exists and is configured in the deployment platform. Value withheld."
+    ]
+  }
+}

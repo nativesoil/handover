@@ -1,0 +1,482 @@
+{
+  "specVersion": "1.0",
+  "description": "Golden handovers. Every valid fixture must validate, and every invalid fixture must fail for the stated reason at the stated location. An implementation that passes all of these reads and rejects the same documents this one does. Fixtures marked \"schemaExpressible\": false are rejected by a spec rule the JSON Schema cannot state, which is the whole reason the suite exists alongside the schema.",
+  "locationDescription": "`location` is an ABSTRACT SEMANTIC LOCATION: an ordered sequence of object member names and array indices, from the root of the document to the offending value, with the empty sequence meaning the document itself. It replaced an exact JSON Pointer string, which bound a contract the specification never defined: an independent implementation that is semantically correct could be failed by this suite for formatting a location differently, or for reporting it as anything other than a slash-joined string. What every runner compares is the SEQUENCE, the expected validation outcome, and the coarse error category where the entry states one (`kind`). What no runner compares is the message text, the pointer serialization, the exception type, or any implementation's internal representation. A pointer syntax remains a perfectly good external or internal representation; a runner that uses one parses it into segments before comparing, which is exactly what the five official runners do. This is a contract for this harness. It binds neither the document format nor any SDK's public error API, and it needs no rule-identifier vocabulary.",
+  "valid": [
+    {
+      "file": "../../examples/orchard-checkout.json",
+      "note": "The worked example. All 17 sections carry content, with stated gaps, an unresolved contradiction and two safety omissions. Doubles as the example in examples/README.md, so the documentation cannot drift from the format."
+    },
+    {
+      "file": "valid/thin-but-honest.json",
+      "note": "Sixteen sections missing and one honest sentence explaining why. Valid on purpose: a handover that captures little is still a handover, and pretending otherwise is what teaches models to pad."
+    },
+    {
+      "file": "valid/observations-unknown-kinds.json",
+      "note": "Carries three observations, none of whose kinds this implementation knows. It must validate, load, and round trip with the entries intact: an older reader meeting a newer producer is the case the extension point exists for."
+    },
+    {
+      "file": "valid/blocked-and-safe.json",
+      "note": "Uses blocked status, provenance labels, an offset timestamp rather than Z, and a safety record. The withheld facts travel; the withheld values do not."
+    },
+    {
+      "file": "valid/observation-quality-capture.json",
+      "note": "Carries the standard kind quality.capture: a named producer's statement about which sections the capture carries. It validates and round trips like any observation, and nothing in it is a score."
+    },
+    {
+      "file": "valid/observation-load-outcome.json",
+      "note": "Carries the standard kind load.outcome: what one real load into one target produced, recorded by the tool that observed it. History that travels with the document, never a promise about the next load."
+    },
+    {
+      "file": "valid/observation-working-style.json",
+      "note": "Carries the standard kind working.style: recorded instances of how the project works, attached as evidence alongside the workflow section rather than replacing it."
+    },
+    {
+      "file": "valid/version-exactly-supported.json",
+      "note": "A document at exactly the version this reader supports. Support is a set of exact versions rather than a pattern, so the one version that is actually implemented gets its own fixture instead of being implied by every other document in the suite. Its four neighbours — an older version, a higher minor, a higher major and a version that is not a version — are all in the invalid list."
+    },
+    {
+      "file": "valid/section-not-applicable.json",
+      "note": "The fourth section status, used as intended. A printed book declares architecture and safetySummary not_applicable, each with the reason the format requires, because neither section has a subject in a one-author manuscript. Valid on purpose: this is the case the status exists for, and it must be told apart from the same two sections declared missing, which would say the extractor failed to see something that exists."
+    },
+    {
+      "file": "valid/text-unit-at-the-limit.json",
+      "note": "Every individually bounded string in this document sits EXACTLY on its limit when the limit is counted in Unicode code points, and OVER it when counted in UTF-16 code units or in UTF-8 bytes: a 200-code-point title that is 400 UTF-16 units and 800 bytes, an observation kind of 200 code points that is 388 units and 764 bytes, and a stated gap of 1000 code points built from combining sequences, which is about five hundred perceived characters. It is valid, and that is what fixes the unit: an implementation counting UTF-16 units or bytes refuses it, and an implementation counting grapheme clusters would accept a document with twice the text. See spec/value-domain.md."
+    },
+    {
+      "file": "valid/safety-near-neighbours.json",
+      "note": "The safe near-neighbour of every mandatory detection class, in one document: an Authorization header named without a value, bearer credentials named without a token, a JWT named without one, a provider API key named without one, a PEM private key named without its armour, an environment variable named without a binding, a client secret stated as omitted and as a published placeholder, home paths using reserved principal names, and a URL whose password component is a published placeholder. Every one of these is what a section requirement asks for, so refusing any of them would make the format contradict itself. See spec/safety-patterns.md."
+    }
+  ],
+  "invalid": [
+    {
+      "file": "invalid/section-dropped.json",
+      "location": ["sections", "decisions"],
+      "reason": "A section was left out. All 17 are declared in every handover: a gap is stated with status missing, never by omission, because a reader cannot tell an omitted section from an overlooked one."
+    },
+    {
+      "file": "invalid/section-invented.json",
+      "location": ["sections", "vibes"],
+      "reason": "A section key that is not in the spec. The 17 keys are the contract; an extra one is content that no reader knows how to interpret."
+    },
+    {
+      "file": "invalid/available-without-content.json",
+      "location": ["sections", "decisions", "summary"],
+      "reason": "Status available with no summary. A section that claims to carry content must carry content."
+    },
+    {
+      "file": "invalid/status-outside-enum.json",
+      "location": ["sections", "decisions", "status"],
+      "reason": "Status outside the four allowed values. Available, missing, blocked and not_applicable are the whole vocabulary; a fifth word would mean something different to every reader. The set grew by one before 1.0 was published, which is the only moment at which it could grow without a major version, and it is closed again."
+    },
+    {
+      "file": "invalid/status-near-neighbour.json",
+      "location": ["sections", "architecture", "status"],
+      "reason": "A camel-case spelling of a real status value. This is the fixture that proves adding not_applicable did not widen the enumeration into \"anything that reads like not applicable\": the set is exact strings, a near miss is refused rather than repaired, and a normalizing implementation must carry the misspelling through to validation rather than quietly rewriting it into the value it resembles."
+    },
+    {
+      "file": "invalid/not-applicable-without-reason.json",
+      "location": ["sections", "architecture", "summary"],
+      "reason": "Status not_applicable with a null summary. The other two gap statuses may say nothing; this one may not. It is a positive assertion about the project rather than a report about the extractor, and it is the only status that tells the next model to stop looking, so it carries its reason on the same terms as available carries its content. Nothing honest is blocked by this: a writer that cannot say why a section does not apply has established that it could not see it, and missing says exactly that."
+    },
+    {
+      "file": "invalid/text-unit-title-over-the-limit.json",
+      "location": ["title"],
+      "reason": "A title one code point over its limit: 201 astral code points where the format allows 200. The near miss on the other side is valid/text-unit-at-the-limit.json, whose title is 200 of the same characters. Together they fix the unit from both sides, and neither of them is ASCII, because on ASCII all three candidate units agree and nothing is being tested."
+    },
+    {
+      "file": "invalid/text-unit-note-over-the-limit.json",
+      "location": ["quality", "missingInputs", 0],
+      "reason": "A stated gap one code point over its limit, built from combining sequences: 1001 code points, about five hundred perceived characters. Refused. This is the fixture that says the unit is the code point and not the grapheme cluster, and it is also why the unit is not the grapheme cluster: counting those needs a Unicode table that an independent implementation would have to ship and keep current."
+    },
+    {
+      "file": "invalid/provenance-outside-enum.json",
+      "location": ["sections", "decisions", "provenance", 0],
+      "reason": "A provenance label outside the allowed set. Labels are only useful if they mean the same thing everywhere."
+    },
+    {
+      "file": "invalid/no-project-id.json",
+      "location": ["projectId"],
+      "reason": "No project id. Handovers of the same project are related by this slug, and a handover that belongs to nothing cannot be found again."
+    },
+    {
+      "file": "invalid/created-at-not-a-timestamp.json",
+      "location": ["createdAt"],
+      "reason": "createdAt is not an ISO 8601 timestamp. Every capture-state section is anchored to this moment, so a reader that cannot parse it cannot tell how stale the state is."
+    },
+    {
+      "file": "invalid/grade-field.json",
+      "location": ["grade"],
+      "reason": "An unknown top-level field. This one is deliberate: there is no grade in the format. A handover carries state and stated gaps, and a score would be a judgement no local reader is in a position to make."
+    },
+    {
+      "file": "invalid/summary-not-text.json",
+      "location": ["sections", "decisions", "summary"],
+      "reason": "A summary that is not a string or null. Sections are prose, because prose is what survives being pasted into a model that has never seen this schema."
+    },
+    {
+      "file": "invalid/future-major-version.json",
+      "location": ["soilHandover"],
+      "reason": "A higher major version. A reader must refuse it rather than guess at what changed: a reader that silently drops what it does not understand produces a handover that looks complete and is not."
+    },
+    {
+      "file": "invalid/version-older-minor.json",
+      "location": ["soilHandover"],
+      "reason": "A version below the supported one. Nothing was ever written at 0.9, and a reader that accepts a version it never implemented is guessing. Support is a set of exact versions, and this one is not in it."
+    },
+    {
+      "file": "invalid/version-higher-minor.json",
+      "location": ["soilHandover"],
+      "reason": "One minor above the supported version. This is the fixture the old pattern rule got wrong: `^1\\.[0-9]+$` accepted it, so a reader claimed to implement a version nobody had written. Version one is a closed world, so whatever a later minor allowed would arrive here unrecognised, and the reader has no way to know what it is missing."
+    },
+    {
+      "file": "invalid/version-malformed.json",
+      "location": ["soilHandover"],
+      "reason": "A version that is not a version. Refused the same way as any other unsupported value: there is one supported set, and membership in it is the whole test."
+    },
+    {
+      "file": "invalid/section-extra-field.json",
+      "location": ["sections", "decisions", "confidence"],
+      "reason": "A field on a section that the format does not define. `status`, `summary` and `provenance` are the whole vocabulary of a section, and version one is closed: a fourth field is content no reader knows how to interpret, and adding one requires a major version. A normalizing implementation must carry it through to validation rather than deleting it, because a save that silently strips it and a validation that refuses it are two different answers about the same bytes."
+    },
+    {
+      "file": "invalid/created-at-missing.json",
+      "location": ["createdAt"],
+      "reason": "A capture with no capture time. It is the anchor every frontier section is read against and the only reference a cold reader has for judging how stale the state is. An implementation must refuse this document rather than complete it from its own clock: a stamped value is indistinguishable, to the consumer, from a time the session actually reported."
+    },
+    {
+      "file": "invalid/handover-id-missing.json",
+      "location": ["handoverId"],
+      "reason": "No handoverId. A document claiming validity must carry its globally unique id. The one place a missing id is not an error is a document being handed to a writer to store, because assigning the id is the writer's job, never the model's."
+    },
+    {
+      "file": "invalid/handover-id-not-a-uuid.json",
+      "location": ["handoverId"],
+      "reason": "A handoverId that is not a UUID. The id is opaque and carries no meaning beyond identity, but its shape is fixed so every reader can recognise one, and a malformed id is refused rather than silently replaced."
+    },
+    {
+      "file": "invalid/secret-provider-key.json",
+      "location": ["sections", "architecture", "summary"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "A provider API key in a section. Structurally this document is perfect, which is the point: a handover is written to be moved between tools and vendors, so a credential inside one has already left the machine. A conformant implementation refuses it and stores nothing."
+    },
+    {
+      "file": "invalid/secret-private-path.json",
+      "location": ["sections", "workflow", "summary"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "An absolute path inside a home directory. It names a person and a machine, it is meaningless to the reader, and it is exactly the shape that drags private structure into a shared document."
+    },
+    {
+      "file": "invalid/secret-jwt.json",
+      "location": ["sections", "sessionActivity", "summary"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "A JSON web token pasted into a section while describing a debugging session. This is how credentials actually leak: not deliberately, but as evidence."
+    },
+    {
+      "file": "invalid/secret-private-key-pem.json",
+      "location": ["sections", "safetySummary", "summary"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "A PEM private key, inside the safety summary of all places. Naming a secret is right; pasting it is not. Say that it exists and where it is configured."
+    },
+    {
+      "file": "invalid/secret-authorization-header.json",
+      "location": ["sections", "sessionActivity", "summary"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "A complete Authorization header, credential and all, pasted in while describing a failing request. Naming the header is safe and required elsewhere in the format; binding a value to it is the leak."
+    },
+    {
+      "file": "invalid/secret-client-secret.json",
+      "location": ["sections", "architecture", "summary"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "A client secret with a value bound to it. Saying that a client secret exists, or that its value was omitted, must stay valid; an assignment must not."
+    },
+    {
+      "file": "invalid/secret-google-application-credentials.json",
+      "location": ["sections", "architecture", "summary"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "Service-account material inline in a section. Naming GOOGLE_APPLICATION_CREDENTIALS is safe; carrying what it points at is not."
+    },
+    {
+      "file": "invalid/secret-url-credentials.json",
+      "location": ["sections", "architecture", "summary"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "A password inside a connection URL. A credential does not stop being a credential because it was written as part of a host name, which is exactly how connection strings leak."
+    },
+    {
+      "file": "invalid/secret-vendor-token.json",
+      "location": ["sections", "workflow", "summary"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "A vendor token in a copy-pasteable command, carried inside a URL. High-confidence vendor formats are refused on sight, wherever they appear."
+    },
+    {
+      "file": "invalid/secret-under-redaction-claim.json",
+      "location": ["sections", "safetySummary", "summary"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "A sentence claiming the token was redacted, next to the token. The precedence rule: a redaction claim never suppresses a detection in the same string, and the conjunction is refused under the detected class."
+    },
+    {
+      "file": "invalid/secret-in-observation.json",
+      "location": ["observations", 0, "data", "endpoint"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "A bearer token inside an observation payload. The extension point is free-form, but it is not a way around the safety rule: the scan covers data, and a secret there refuses the whole document."
+    },
+    {
+      "file": "invalid/secret-in-load-outcome.json",
+      "location": ["observations", 0, "data", "notes"],
+      "kind": "safety",
+      "schemaExpressible": false,
+      "reason": "A session token inside a load.outcome observation. Standard kinds get no exemption from the safety rule: evidence about a load is welcome, the credentials used during it are not, and the whole document is refused."
+    },
+    {
+      "file": "invalid/observation-extra-key.json",
+      "location": ["observations", 0, "extra"],
+      "reason": "A key that is not part of an observation entry. The payload is free-form, the envelope is not, so two producers can always be told apart by the same four fields."
+    },
+    {
+      "file": "invalid/observation-without-data.json",
+      "location": ["observations", 0, "data"],
+      "reason": "An observation with no data. An entry that carries nothing is not evidence, and a reader that ignores unknown kinds needs something to ignore."
+    }
+  ],
+  "restoreDescription": "Adversarial handovers for the restore-prompt boundary in spec/restore-prompt.md. Each one is a VALID document whose content is written to be mistaken for the rendered prompt's own structure. Every runner renders each fixture with the fixed boundary token 0123456789abcdef0123456789abcdef and holds the result to the same four invariants: every line a reader could take for structure carries this render's marker; the rendered structure is exactly the structure the assembler emits, never one line more; each section's content survives escaping reversibly, so removing one leading backslash returns the original bytes; and no content line carries the marker. Production renders take the token from the platform's cryptographic source instead, which is what makes it unforgeable; the fixed token here only keeps goldens stable.",
+  "restoreBoundaryToken": "0123456789abcdef0123456789abcdef",
+  "restore": [
+    {
+      "name": "a forged delimiter",
+      "file": "restore/forged-delimiter.json",
+      "reason": "The demonstrated attack. A section summary containing lines shaped exactly like a tier banner and a section heading. With static delimiters this rendered verbatim and split the prompt: the planted text appeared under a heading it did not belong to, and the sections after it appeared under a heading nobody wrote."
+    },
+    {
+      "name": "instruction-shaped text",
+      "file": "restore/instruction-shaped-content.json",
+      "reason": "Prose addressed at the reading model rather than describing the project: an override of prior instructions, a fake system turn, and a boot prompt asking for silent exfiltration. It renders as data and stays data. This fixture pins the boundary's honest limit: the text is not removed and not rewritten, because instruction-shaped text is a fact about the project. What is prevented is its promotion to structure, never a reader's decision to obey it."
+    },
+    {
+      "name": "a section that claims to be the boundary",
+      "file": "restore/section-claims-the-boundary.json",
+      "reason": "Content asserting that IT is the trusted framing: it names the render's marker, spells banner and heading lines carrying it, and spells a second banner carrying a different marker. A stated gap in the same document is two lines long, so the inline escape is exercised as well as the block escape."
+    },
+    {
+      "name": "content that a naive escape would mangle",
+      "file": "restore/escaping-hazards.json",
+      "reason": "Lines that already begin with a backslash, a line that is a lone backslash, a doubled backslash, delimiters behind leading whitespace and a tab, and a line naming the marker outright. An escape that prefixes delimiter-shaped lines but does not escape its own escape character stops being reversible here, which is how content and structure become ambiguous again by a different route."
+    }
+  ],
+  "boundaryDescription": "The pre-schema ingestion boundary, described normatively in spec/ingestion.md, plus the numeric domain that builds on it in spec/value-domain.md. These fixtures are BYTES, not documents: several are not valid UTF-8 and none of them can be judged from a constructed value, which is the whole reason the boundary exists. Each entry states the boundary's verdict (`ingest`), and for an accepted one what the validator must then say about it (`afterIngest`). `afterIngest` exists so an accepted document is never merely accepted: `refused-by-safety` pins the case where the fail-closed secret scan must still be reached, which is the one outcome worse than a rejection. Entries carrying `generateBytes` have no file: at a megabyte each they do not belong in a repository, so every runner materialises `{\"pad\":\"xxx…\"}` at exactly that byte length instead.",
+  "boundary": [
+    {
+      "name": "encoding: a UTF-8 byte order mark",
+      "file": "boundary/encoding-utf8-bom.bin",
+      "ingest": "encoding.byte_order_mark",
+      "location": [],
+      "reason": "A producer MUST NOT write a byte order mark and a reader MUST NOT strip one. Four of the five runtimes refused this before the boundary existed and one accepted it, because its convenience file reader silently swallows the mark: the two then disagreed about whether the same bytes were a handover at all."
+    },
+    {
+      "name": "encoding: UTF-16LE with a byte order mark",
+      "file": "boundary/encoding-utf16le-bom.bin",
+      "ingest": "encoding.byte_order_mark",
+      "location": [],
+      "reason": "The mark is caught before anything else, so the verdict is the mark rather than the encoding underneath it. A UTF-32LE mark opens with the two bytes of a UTF-16LE mark, so the four-byte forms are tested first and the reported encoding is the real one."
+    },
+    {
+      "name": "encoding: UTF-16LE, unmarked",
+      "file": "boundary/encoding-utf16le.bin",
+      "ingest": "encoding.unsupported_encoding",
+      "location": [],
+      "reason": "Nothing but the NUL padding says what these bytes are. The first-four-bytes detection rule from RFC 4627 section 3 names the encoding without decoding anything, because the first token of a JSON text is always ASCII. Some runtimes autodetect this and read it happily, which is the silent conversion the rule forbids."
+    },
+    {
+      "name": "encoding: UTF-16BE, unmarked",
+      "file": "boundary/encoding-utf16be.bin",
+      "ingest": "encoding.unsupported_encoding",
+      "location": [],
+      "reason": "The big-endian half of the same rule, so a surface cannot pass by hard-coding one byte order."
+    },
+    {
+      "name": "encoding: UTF-32LE, unmarked",
+      "file": "boundary/encoding-utf32le.bin",
+      "ingest": "encoding.unsupported_encoding",
+      "location": [],
+      "reason": "The four-byte unit width. Included because its first four bytes are the pattern most easily confused with an ASCII document followed by padding."
+    },
+    {
+      "name": "encoding: Latin-1 bytes, invalid as UTF-8",
+      "file": "boundary/encoding-latin1.bin",
+      "ingest": "encoding.invalid_utf8",
+      "location": [],
+      "reason": "The everyday transcoding accident: a title with an accented character written in the wrong encoding. Byte 0xE9 is not a legal UTF-8 start byte. Two of the five runtimes replaced it with U+FFFD and carried on, which is a repair, and a repaired document is not the document that arrived."
+    },
+    {
+      "name": "encoding: a truncated UTF-8 sequence",
+      "file": "boundary/encoding-truncated-utf8.bin",
+      "ingest": "encoding.invalid_utf8",
+      "location": [],
+      "reason": "A three-byte sequence cut short by a truncated write or a bad splice. Well-formed UTF-8 right up to the point where it stops being UTF-8. Malformed UTF-8 produces a controlled error and is never repaired."
+    },
+    {
+      "name": "encoding: valid multibyte UTF-8",
+      "file": "boundary/encoding-utf8-multibyte.json",
+      "ingest": "accepted",
+      "afterIngest": "not-a-handover",
+      "reason": "The positive control. Accented Latin, CJK and an emoji, no mark, valid UTF-8 throughout. An implementation that fails this one has implemented \"reject anything that is not ASCII\" rather than the encoding rule."
+    },
+    {
+      "name": "duplicates: a repeated member at the root",
+      "file": "boundary/duplicate-member-root.json",
+      "ingest": "structure.duplicate_member",
+      "location": ["projectId"],
+      "reason": "Two `projectId` members in one object. The decisive argument is security, not tidiness: with last-wins the fail-closed safety scan sees one value while a consumer parsing the same bytes with a different parser sees the other, so the document that was scanned is not the document that is read. The schema layer cannot observe this at all, because it is handed an already-constructed value."
+    },
+    {
+      "name": "duplicates: a repeated member one level down",
+      "file": "boundary/duplicate-member-nested.json",
+      "ingest": "structure.duplicate_member",
+      "location": ["sections", "decisions"],
+      "reason": "Two `decisions` members inside `sections`, one carrying content and one declaring the section missing. The reported location is the JSON Pointer of the repeated member, not the enclosing object."
+    },
+    {
+      "name": "duplicates: a repeated member inside an observation payload",
+      "file": "boundary/duplicate-member-in-observation.json",
+      "ingest": "structure.duplicate_member",
+      "location": ["observations", 0, "data", "note"],
+      "reason": "The extension point is free-form, but it is not a way around the rule. The check reaches through an array index into `data`, exactly as the safety scan does."
+    },
+    {
+      "name": "duplicates: the same name in two different objects",
+      "file": "boundary/duplicate-member-absent.json",
+      "ingest": "accepted",
+      "afterIngest": "not-a-handover",
+      "reason": "The near miss that must stay accepted. `status` and `summary` appear in every section object in every real handover. An implementation that rejects this has implemented \"this name occurs twice in the file\" instead of the rule."
+    },
+    {
+      "name": "acceptance: a non-object root is still scanned",
+      "file": "boundary/accepted-non-object-root-with-secret.json",
+      "ingest": "accepted",
+      "afterIngest": "refused-by-safety",
+      "reason": "The boundary judges bytes, not shape, so a document whose root is an array passes it. The validator then refuses it on shape, and the fail-closed secret scan must still reach the string inside and report a safety issue. Before this fixture the validator returned early on a non-object root and never scanned it: the document was rejected either way, so nothing was ever stored, but it was rejected without being scanned, and the two are not the same claim."
+    },
+    {
+      "name": "syntax: NaN is not a JSON value",
+      "file": "boundary/syntax-not-a-number.json",
+      "ingest": "syntax.invalid_json",
+      "location": [],
+      "reason": "One of the five runtimes accepts NaN, Infinity and -Infinity by default and the other four refuse them, so without this fixture the surfaces would disagree about what a well-formed JSON document even is. This is a syntax rule and not the numeric domain: what a handover may hold once a token is a number is decided by the other half of this work package."
+    },
+    {
+      "name": "depth: 31 levels, one under the ceiling",
+      "file": "boundary/depth-31.json",
+      "ingest": "accepted",
+      "afterIngest": "valid",
+      "reason": "The ceiling is 32 and it is derived, not observed: the deepest structure a handover needs without custom observation data is 4, the deepest real fixture in this repository is 6, and 32 is half of 64, the lowest hard parser ceiling among the five implementations. Nothing here was tuned to a crash."
+    },
+    {
+      "name": "depth: exactly 32 levels",
+      "file": "boundary/depth-32.json",
+      "ingest": "accepted",
+      "afterIngest": "valid",
+      "reason": "At the ceiling, and accepted. A limit with no fixture exactly at it is a limit nobody has tested."
+    },
+    {
+      "name": "depth: exactly 32 levels, with credential-shaped material at the floor",
+      "file": "boundary/depth-32-secret-at-the-floor.json",
+      "ingest": "accepted",
+      "afterIngest": "refused-by-safety",
+      "reason": "Accepted by the boundary AND refused by the fail-closed safety scan, whose finding sits at the deepest reachable point of the deepest document the boundary allows. This is the fixture that proves acceptance is not an escape: a document that is accepted but never scanned is the worst outcome of all."
+    },
+    {
+      "name": "depth: 33 levels, one over the ceiling",
+      "file": "boundary/depth-33.json",
+      "ingest": "structure.depth_exceeded",
+      "location": [],
+      "reason": "Refused with a structured, parity-tested error, never an uncontrolled stack or recursion failure and never a silent kill. Before the boundary existed the recursion that failed was inside the fail-closed safety scan, so a document deep enough to break it was neither accepted nor scanned."
+    },
+    {
+      "name": "numbers: the integer domain at and inside both ends",
+      "file": "boundary/number-integers-in-range.json",
+      "ingest": "accepted",
+      "afterIngest": "valid",
+      "reason": "A real handover whose observation payload carries 9007199254740991 and 9007199254740990, their negatives, zero, negative zero and an ordinary small integer. The two extremes are the domain's ends, and a limit with no fixture exactly at it is a limit nobody has tested. Accepted, and then valid: the numbers reach the validator rather than merely surviving the door."
+    },
+    {
+      "name": "numbers: one over the positive end",
+      "file": "boundary/number-above-safe-max.json",
+      "ingest": "number.out_of_range",
+      "location": ["observations", 0, "data", "count"],
+      "reason": "9007199254740992. Two of the five runtimes parse this into a double, where it is indistinguishable from 9007199254740993, so by the time a validator holds a value the evidence is gone. That is why the check reads the token text at the ingestion boundary rather than the parsed number, and it is the same reason the encoding and duplicate rules live there."
+    },
+    {
+      "name": "numbers: one under the negative end",
+      "file": "boundary/number-below-safe-min.json",
+      "ingest": "number.out_of_range",
+      "location": ["observations", 0, "data", "count"],
+      "reason": "-9007199254740992. The negative half of the same rule, so a surface cannot pass by checking only the positive end."
+    },
+    {
+      "name": "numbers: forty digits",
+      "file": "boundary/number-far-above-safe-max.json",
+      "ingest": "number.out_of_range",
+      "location": ["observations", 0, "data", "count"],
+      "reason": "Far outside anything a double can hold. Three of the five runtimes round it to a double and lose every digit after the seventeenth; one parses it to an exact arbitrary-precision integer and sees nothing unusual at all. The token text is the only representation all five read the same way."
+    },
+    {
+      "name": "numbers: an integer written with a decimal point",
+      "file": "boundary/number-integer-with-decimal-point.json",
+      "ingest": "number.not_an_integer",
+      "location": ["observations", 0, "data", "count"],
+      "reason": "100.0 is an integer mathematically and is refused anyway, because the required form is the integer form. Deciding whether an arbitrary decimal denotes an integer needs exact decimal arithmetic that the five runtimes do not share, and a rule the five cannot execute identically is not a rule. See spec/value-domain.md, which states this refusal and its cost."
+    },
+    {
+      "name": "numbers: an integer written in exponent form",
+      "file": "boundary/number-integer-in-exponent-form.json",
+      "ingest": "number.not_an_integer",
+      "location": ["observations", 0, "data", "count"],
+      "reason": "1e2 is 100, and is refused for the same reason. This is the spelling a serializer is most likely to produce without being asked, which is exactly why it needs a fixture rather than an assumption."
+    },
+    {
+      "name": "numbers: a fraction",
+      "file": "boundary/number-fraction.json",
+      "ingest": "number.not_an_integer",
+      "location": ["observations", 0, "data", "confidence"],
+      "reason": "0.92. Not an integer by any reading, and the shape a score arrives in. The format has no field for a score and its free-form payload is not a way to add one back as a float."
+    },
+    {
+      "name": "numbers: inside an array",
+      "file": "boundary/number-in-an-array.json",
+      "ingest": "number.out_of_range",
+      "location": ["observations", 0, "data", "counts", 2],
+      "reason": "The rule is about every number in the document, not about object members. The offending value is the third element of an array inside the free-form payload, and the reported location says so."
+    },
+    {
+      "name": "size: 1048575 bytes, one under the ceiling",
+      "generateBytes": 1048575,
+      "ingest": "accepted",
+      "afterIngest": "not-a-handover",
+      "reason": "The ceiling is 1048576 bytes. Derived: the largest real document in this repository is the worked example at 18719 bytes, so the ceiling leaves roughly fifty times the headroom any handover has ever needed while still bounding what a reader will decode, scan and walk."
+    },
+    {
+      "name": "size: exactly 1048576 bytes",
+      "generateBytes": 1048576,
+      "ingest": "accepted",
+      "afterIngest": "not-a-handover",
+      "reason": "At the ceiling, and accepted."
+    },
+    {
+      "name": "size: 1048577 bytes, one over the ceiling",
+      "generateBytes": 1048577,
+      "ingest": "document.too_large",
+      "location": [],
+      "reason": "Refused on the byte count alone, before decoding, before parsing and before anything walks it."
+    }
+  ]
+}

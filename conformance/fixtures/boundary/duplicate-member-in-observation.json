@@ -1,0 +1,12 @@
+{
+  "soilHandover": "1.0",
+  "observations": [
+    {
+      "kind": "com.example.note",
+      "data": {
+        "note": "the deploy is green",
+        "note": "the deploy is red"
+      }
+    }
+  ]
+}

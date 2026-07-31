@@ -1,0 +1,126 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "thin",
+  "counts": {
+    "problems": 2,
+    "cautions": 12,
+    "advice": 4
+  },
+  "findings": [
+    {
+      "rule": "decisions.entry-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "entry 1 states a decision with no recorded reason (\"1. We chose Postgres.\")"
+    },
+    {
+      "rule": "decisions.entry-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "entry 10 states a decision with no recorded reason (\"- We picked the delivery partner.\")"
+    },
+    {
+      "rule": "decisions.entry-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "entry 11 states a decision with no recorded reason (\"• We opted for one shared cutoff module.\")"
+    },
+    {
+      "rule": "decisions.entry-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "entry 12 states a decision with no recorded reason (\"▸ Session state was migrated to the server.\")"
+    },
+    {
+      "rule": "decisions.entry-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "entry 3 states a decision with no recorded reason (\"3. The team adopted trunk-based work.\")"
+    },
+    {
+      "rule": "decisions.entry-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "entry 4 states a decision with no recorded reason (\"4) We locked the release train.\")"
+    },
+    {
+      "rule": "decisions.entry-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "entry 6 states a decision with no recorded reason (\"6. We went with plain files.\")"
+    },
+    {
+      "rule": "decisions.entry-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "entry 8 states a decision with no recorded reason (\"8. We picked the hosted widget.\")"
+    },
+    {
+      "rule": "decisions.entry-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "entry 9 states a decision with no recorded reason (\"9. The parser was standardized.\")"
+    },
+    {
+      "rule": "self-containment.fetch-pointer",
+      "severity": "caution",
+      "section": "workflow",
+      "message": "sends the reader elsewhere (\"Refer to\"), but a handover reader has no repo, no docs and no earlier thread"
+    },
+    {
+      "rule": "anchors.no-exact-values",
+      "severity": "advice",
+      "section": "architecture",
+      "message": "mentions configuration but holds no numbers, versions or pins; exact values are what survive a move"
+    },
+    {
+      "rule": "anchors.no-exact-values",
+      "severity": "advice",
+      "section": "constraints",
+      "message": "mentions configuration but holds no numbers, versions or pins; exact values are what survive a move"
+    },
+    {
+      "rule": "time.unanchored",
+      "severity": "caution",
+      "section": "currentTask",
+      "message": "uses \"Today\" with no capture-time anchor, so a later reader cannot tell when it was true"
+    },
+    {
+      "rule": "self-containment.fetch-pointer",
+      "severity": "caution",
+      "section": "latestUserIntent",
+      "message": "sends the reader elsewhere (\"documented at https://\"), but a handover reader has no repo, no docs and no earlier thread"
+    },
+    {
+      "rule": "size.one-liner",
+      "severity": "advice",
+      "section": "blockers",
+      "message": "carries 5 characters in a document whose sections are otherwise substantial"
+    },
+    {
+      "rule": "size.one-liner",
+      "severity": "advice",
+      "section": "openQuestions",
+      "message": "carries 39 characters in a document whose sections are otherwise substantial"
+    },
+    {
+      "rule": "restore.thin",
+      "severity": "problem",
+      "section": "restoreInstructions",
+      "message": "the restore instructions are 82 characters against 3541 of captured content, below the documented floor of 300"
+    },
+    {
+      "rule": "self-containment.fetch-pointer",
+      "severity": "problem",
+      "section": "restoreInstructions",
+      "message": "sends the reader elsewhere (\"see the docs\"), but a handover reader has no repo, no docs and no earlier thread"
+    }
+  ],
+  "sections": {
+    "withContent": 17,
+    "missing": 0,
+    "blocked": 0,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

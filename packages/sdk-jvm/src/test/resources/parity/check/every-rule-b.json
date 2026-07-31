@@ -1,0 +1,78 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-7000-8000-000000000002",
+  "projectId": "rule-storm-b",
+  "title": "A rich capture that keeps pointing elsewhere",
+  "createdAt": "2026-07-22T10:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the w."
+    },
+    "decisions": {
+      "status": "available",
+      "summary": "1. We chose Postgres.\n2. We chose Redis because reads dominate the load.\n3. The team adopted trunk-based work.\n4) We locked the release train.\n5. Copy ships alone, since the founder reviews every string.\n6. We went with plain files.\n7. We settled on weekly deploys, so that the window stays safe.\n8. We picked the hosted widget.\n9. The parser was standardized.\n- We picked the delivery partner.\n• We opted for one shared cutoff module.\n▸ Session state was migrated to the server.\n\nThe remaining storage question is still open on both sides."
+    },
+    "workflow": {
+      "status": "available",
+      "summary": "Refer to the wiki for the full release checklist and keep it open while deploying. The steps are ordered. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "architecture": {
+      "status": "available",
+      "summary": "The service reads its configuration from the environment and honours a request timeout and a memory ceiling."
+    },
+    "constraints": {
+      "status": "available",
+      "summary": "The bundle budget is a hard limit and the request quota is pinned by the platform flag."
+    },
+    "rejectedPaths": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its la."
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "As of 2026-07-22 the address step is deployed and recently the retry work started. The effect is unread. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "currentTask": {
+      "status": "available",
+      "summary": "Today the decline message is being drafted for review. The logic waits on it. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "latestUserIntent": {
+      "status": "available",
+      "summary": "The direction is documented at https://example.com/wiki and was restated in the thread. It outranks cleanup. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "sessionDelta": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files, and each section of."
+    },
+    "blockers": {
+      "status": "available",
+      "summary": "None."
+    },
+    "nextSteps": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written."
+    },
+    "openQuestions": {
+      "status": "available",
+      "summary": "Which store wins? xxxxxxxxxxxxxxxxxxxxx"
+    },
+    "sessionActivity": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files,."
+    },
+    "restoreInstructions": {
+      "status": "available",
+      "summary": "Start from the setup, see the docs, then continue the retry work where it stopped."
+    },
+    "provenanceMap": {
+      "status": "available",
+      "summary": "Sections map to sources. xxxxxxxxxxxxxxx"
+    },
+    "safetySummary": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The."
+    }
+  },
+  "code": "#002"
+}

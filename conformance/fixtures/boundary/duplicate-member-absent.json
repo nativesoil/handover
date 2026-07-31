@@ -1,0 +1,7 @@
+{
+  "soilHandover": "1.0",
+  "sections": {
+    "decisions": { "status": "missing", "summary": null },
+    "workflow": { "status": "missing", "summary": null }
+  }
+}

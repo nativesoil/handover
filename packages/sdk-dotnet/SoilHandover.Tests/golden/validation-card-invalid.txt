@@ -1,0 +1,19 @@
+  ┌─ SOIL · not a handover ───────────────────────────
+  │
+  │   x
+  │
+  ├─ 5 problem(s) ────────────────────────────────────
+  │
+  │   ✗ /handoverId is required: the globally unique
+  │     id a writer assigns when the handover is
+  │     stored
+  │   ✗ /projectId is required and must be a
+  │     non-empty string
+  │   ✗ /title is required and must be a non-empty
+  │     string
+  │   ✗ /createdAt is required and must be an ISO
+  │     8601 timestamp
+  │   ✗ /sections must be an object holding all 17
+  │     sections
+  │
+  └─ fix these and validate again

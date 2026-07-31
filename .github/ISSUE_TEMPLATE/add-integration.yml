@@ -1,0 +1,53 @@
+name: Propose an integration example
+description:
+  Propose an example showing Soil next to a framework, a memory system or a
+  standard.
+title: "[integration] "
+labels: [integration]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Examples live in [examples/](../../tree/main/examples). The boundary
+        that makes a proposal easy to evaluate: memory systems help an agent
+        remember inside a system, Soil moves the current working state
+        between systems. The best examples show the two side by side rather
+        than replacing one with the other.
+  - type: input
+    id: what
+    attributes:
+      label: Framework, memory system or standard
+      placeholder: e.g. LangGraph, Letta, mem0, AGENTS.md
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - agent framework
+        - memory system
+        - standard or protocol
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: shows
+    attributes:
+      label: What the example would show
+      description:
+        The concrete flow. Where does the handover get written, where does it
+        get loaded, and what does the reader learn?
+    validations:
+      required: true
+  - type: textarea
+    id: links
+    attributes:
+      label: Links
+      description: Docs or repos for the thing being integrated.
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contribution
+      options:
+        - label: I am willing to write this example myself.

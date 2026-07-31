@@ -1,0 +1,14 @@
+{
+  "indexVersion": 1,
+  "nextCode": 2,
+  "entries": [
+    {
+      "code": "#001",
+      "projectId": "orchard-checkout",
+      "title": "Checkout rework: address step split, payment retry pending",
+      "createdAt": "2026-07-19T14:12:00Z",
+      "sectionsWithContent": 17,
+      "file": "001.json"
+    }
+  ]
+}

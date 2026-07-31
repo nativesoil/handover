@@ -1,0 +1,117 @@
+# Integration surfaces: the machine-readable source of truth.
+#
+# One entry per integration surface the format plugs into. Same generated
+# outputs, same YAML subset and the same maturity and evidence vocabularies as
+# compatibility/environments.yaml; see the header there.
+#
+# Framework rows (LangGraph, Mem0, Letta, and friends) are added only when a
+# reproducible example under examples/ passes CI: add the row together with a
+# link to the green CI run, never before.
+#
+# One integration path per row. Where a surface has both a local and a hosted
+# path, they are separate rows, because they are proven in different ways and
+# blending them is exactly what hides the difference.
+
+integrations:
+  - integration: JSON Schema
+    what: The published document schema in spec/handover.schema.json
+    maturity: works
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: The schema cannot express the safety rule; the suite covers that separately.
+    evidence_source:
+      - "Cross-checked in [the CI workflow](.github/workflows/ci.yml) on every push: the conformance runner requires the schema and the SDK validators to agree on every shared fixture."
+
+  - integration: MCP, local stdio server
+    what: The local server in packages/mcp, over stdio
+    maturity: works
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: The published client session is one run, not an automated check.
+    evidence_source:
+      - "Protocol round trip in the root test suite, run by [the CI workflow](.github/workflows/ci.yml) on every push."
+      - "Headless Claude Code session against the local server on 2026-07-24: [session report](compatibility/reports/local-mcp-claude-code.md)."
+
+  - integration: MCP, hosted remote connector
+    what: The hosted Native Soil connector, which is how published chat clients reach the format
+    maturity: works
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-07"
+    limitation: No artefact in this repository reproduces the hosted path.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07, covering connector flows in published clients. Nothing in this repository reproduces it."
+
+  - integration: AGENTS.md
+    what: Instruction files teaching agents the save and load flow
+    maturity: partial
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-29"
+    limitation: The documented commands run on every test run; no agent has been observed following the files, and the client wiring they describe is not exercised.
+    evidence_source:
+      - "The save and load commands in AGENTS.md and [docs/install-with-an-agent.md](docs/install-with-an-agent.md) are taken from those files' own fenced blocks and run against the real command-line tool and the real local server by the root test suite, on every run, in [the CI workflow](.github/workflows/ci.yml). Each step is asserted against the outcome its own prose states, so the files cannot drift from the behaviour they describe."
+      - "Not covered: the client wiring in section 3 of AGENTS.md is not executed, and no agent has been recorded doing the install from these files. What is proven is the flow, not the teaching."
+
+  - integration: GitHub Actions
+    what: This repository's own CI
+    maturity: works
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: Proves this repository's own pipeline, nothing about anyone else's.
+    evidence_source:
+      - "[The CI workflow](.github/workflows/ci.yml) builds, tests and runs conformance on every push and pull request; green on main."
+
+  - integration: LangGraph
+    what: Exporting checkpointed graph state as a portable handover
+    maturity: works
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: The handover text is assembled by the script from live state, not written by a model.
+    evidence_source:
+      - "Reproducible keyless example under [examples/langgraph](examples/langgraph): a real checkpointed StateGraph, the handover derived from live state, checked and loaded by the reference CLI in [the examples workflow](.github/workflows/examples.yml)."
+
+  - integration: Mem0
+    what: A bounded project handover beside user and agent memory
+    maturity: partial
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "partial"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: The Soil side is real; the framework side is a labelled stand-in.
+    evidence_source:
+      - "Runnable example under [examples/mem0](examples/mem0): the Soil side is real, the framework side is a clearly labeled stand-in because Memory() requires a model provider at initialisation; documented in the example README."
+
+  - integration: Letta
+    what: A portable handover for a cold agent beside a stateful one
+    maturity: partial
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "partial"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: The Soil side is real; the framework side is a labelled stand-in.
+    evidence_source:
+      - "Runnable example under [examples/letta](examples/letta): the Soil side is real, the framework side is a clearly labeled stand-in because a Letta agent needs a server and a model provider; documented in the example README."
+
+  - integration: buzz
+    what: The soil MCP server attached to a buzz agent session over ACP
+    maturity: works
+    evidence: open-integration-observed
+    reproducible_in_repo: "partial"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: The run with a real model is a committed report, not an automated check; CI runs a stand-in.
+    evidence_source:
+      - "Live session on 2026-07-24: a real buzz-agent binary built from block/buzz, a real model choosing the tools, a save in one session and a load in a fresh process; [session report](compatibility/reports/buzz-agent.md)."
+      - "Reproducible keyless example under [examples/buzz](examples/buzz): the same driver runs the pinned buzz-agent with a scripted model stand-in in [the examples workflow](.github/workflows/examples.yml)."
+      - "The buzz-acp harness itself was not run: it needs a running relay, and its single MCP slot is documented from source in the example README."

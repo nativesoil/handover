@@ -1,0 +1,77 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-7420-8b20-3c4d5e6f7081",
+  "projectId": "safety-near-neighbours",
+  "title": "The sentences the safety rule must accept",
+  "createdAt": "2026-07-20T08:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "A service that talks to three providers and holds none of their credentials in this document."
+    },
+    "decisions": {
+      "status": "missing",
+      "summary": null
+    },
+    "workflow": {
+      "status": "available",
+      "summary": "Run `soil save --project orchard`; SOIL_HOME selects the store. The server prints its data directory, for example /home/ada/.soil-server, and the agent container mounts /home/agent/.soil."
+    },
+    "architecture": {
+      "status": "available",
+      "summary": "The service uses an Authorization header. The endpoint expects bearer credentials, sent as `Authorization: Bearer <token>`. Login returns a JWT. A provider API key exists and is set in the deployment platform."
+    },
+    "constraints": {
+      "status": "available",
+      "summary": "GOOGLE_APPLICATION_CREDENTIALS is set outside the handover. The signing key is a PEM private key held in the platform's secret manager. Public documentation links such as https://example.com/docs are fine."
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "Every sentence here names a credential, a header, an environment variable or a path without carrying transferable authentication material. All of it must be accepted."
+    },
+    "currentTask": {
+      "status": "missing",
+      "summary": null
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "missing",
+      "summary": null
+    },
+    "blockers": {
+      "status": "missing",
+      "summary": null
+    },
+    "nextSteps": {
+      "status": "missing",
+      "summary": null
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "missing",
+      "summary": null
+    },
+    "restoreInstructions": {
+      "status": "missing",
+      "summary": null
+    },
+    "provenanceMap": {
+      "status": "missing",
+      "summary": null
+    },
+    "safetySummary": {
+      "status": "available",
+      "summary": "The client_secret value was intentionally omitted. The database URL is documented as postgres://app:password@db.internal:5432/app with the real password left in the platform. The OAuth app config shows client_secret=YOUR_CLIENT_SECRET."
+    }
+  }
+}

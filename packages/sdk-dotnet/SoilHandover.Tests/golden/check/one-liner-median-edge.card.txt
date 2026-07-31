@@ -1,0 +1,19 @@
+  ┌─ SOIL · handover checked ────────────────── #014 ─
+  │
+  │   A lower median exactly at the one-liner
+  │   threshold
+  │   one-liner-edge
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   strong
+  │   0 problems · 0 cautions · 1 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   blockers
+  │   ▸ size.one-liner · advice
+  │     carries 39 characters in a document whose
+  │     sections are otherwise substantial
+  │
+  └─ checked from the document alone · only a real load proves restore

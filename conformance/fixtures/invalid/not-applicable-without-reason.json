@@ -1,0 +1,77 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-7d52-a1e3-4b6f2c8f1155",
+  "projectId": "harvest-almanac",
+  "title": "A section that does not apply, with no reason given",
+  "createdAt": "2026-07-29T09:30:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "missing",
+      "summary": null
+    },
+    "decisions": {
+      "status": "missing",
+      "summary": null
+    },
+    "workflow": {
+      "status": "missing",
+      "summary": null
+    },
+    "architecture": {
+      "status": "not_applicable",
+      "summary": null
+    },
+    "constraints": {
+      "status": "missing",
+      "summary": null
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "A printed almanac. The architecture section has no subject here, but nothing says why."
+    },
+    "currentTask": {
+      "status": "missing",
+      "summary": null
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "missing",
+      "summary": null
+    },
+    "blockers": {
+      "status": "missing",
+      "summary": null
+    },
+    "nextSteps": {
+      "status": "missing",
+      "summary": null
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "missing",
+      "summary": null
+    },
+    "restoreInstructions": {
+      "status": "missing",
+      "summary": null
+    },
+    "provenanceMap": {
+      "status": "missing",
+      "summary": null
+    },
+    "safetySummary": {
+      "status": "missing",
+      "summary": null
+    }
+  }
+}

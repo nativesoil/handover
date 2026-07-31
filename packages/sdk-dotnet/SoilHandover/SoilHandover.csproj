@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Soil.Handover</RootNamespace>
+    <AssemblyName>Soil.Handover</AssemblyName>
+    <Description>The .NET SDK for the Soil Handover format: validate, normalize, store, restore and render handovers. System.Text.Json only, zero external packages.</Description>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageId>Soil.Handover</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Mastodont AB</Authors>
+    <Company>Mastodont AB</Company>
+    <Copyright>Copyright 2026 Mastodont AB</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/nativesoil/handover</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nativesoil/handover.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>soil;handover;ai;context;mcp</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      The recipe texts are BYTE-NORMATIVE. The canonical files live in
+      `recipes/` at the repo root; they are embedded here at build time so the
+      SDK ships the exact bytes, and a test holds the embedded copies to byte
+      identity with the repo files.
+    -->
+    <EmbeddedResource Include="../../../recipes/handover-recipe-v1.txt" LogicalName="Soil.Handover.recipes.handover-recipe-v1.txt" />
+    <EmbeddedResource Include="../../../recipes/rescue-recipe-v1.txt" LogicalName="Soil.Handover.recipes.rescue-recipe-v1.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Soil.Handover.Tests" />
+  </ItemGroup>
+
+</Project>

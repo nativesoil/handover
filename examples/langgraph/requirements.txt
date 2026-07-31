@@ -1,0 +1,5 @@
+# The framework side of the example, pinned. The Soil SDK itself is imported
+# from packages/sdk-py in this repository and has no dependencies.
+langgraph==1.2.9
+langgraph-checkpoint==4.1.1
+langchain-core==1.5.1

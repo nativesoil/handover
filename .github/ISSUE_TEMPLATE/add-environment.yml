@@ -1,0 +1,106 @@
+name: Add a tested environment
+description:
+  You ran Soil in a client or agent that is not on the compatibility map yet,
+  and you want the test recorded.
+title: "[environment] "
+labels: [compatibility]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The map lives in [docs/compatibility.md](../../blob/main/docs/compatibility.md),
+        rendered from `compatibility/environments.yaml`, one row per client
+        surface: a product's desktop app, its web page, its CLI and its IDE
+        form are different rows. The axes are used exactly as defined there.
+        Maturity says what works. Evidence says how it was proven, and a run
+        only you can see is `maintainer-attested`, never a demonstration. A
+        vendor's documentation supports what a surface can attach, never a
+        run; this form is for runs.
+  - type: input
+    id: client
+    attributes:
+      label: Client or agent
+      description: The environment you tested, with a version if it has one.
+      placeholder: e.g. Windsurf, Zed, JetBrains AI Assistant
+    validations:
+      required: true
+  - type: input
+    id: surface
+    attributes:
+      label: Surface
+      description:
+        Which form of the client you ran. A desktop app and a web page are
+        different surfaces of one product.
+      placeholder: e.g. IDE, CLI, desktop app, web, web app builder
+    validations:
+      required: true
+  - type: dropdown
+    id: integration
+    attributes:
+      label: Integration path
+      options:
+        - local-cli (the soil command)
+        - local-stdio-mcp (a local MCP server the client starts)
+        - remote-http-mcp (an MCP server you run yourself, over HTTP)
+        - hosted-cloud (the hosted Native Soil connector)
+        - library / SDK
+        - manual-paste (copy and paste)
+        - other (describe under limitations)
+    validations:
+      required: true
+  - type: dropdown
+    id: evidence
+    attributes:
+      label: Evidence
+      description:
+        How anyone other than you can check this. Pick the strongest label
+        whose criteria your run actually meets.
+      options:
+        - reproducible-in-repo (an artefact here reproduces it)
+        - open-integration-observed (real run, report you can publish)
+        - hosted-integration-observed (real run through a hosted service, report you can publish)
+        - maintainer-attested (you ran it, no artefact anyone can inspect)
+        - source-reviewed (read from source, never executed)
+    validations:
+      required: true
+  - type: input
+    id: operations
+    attributes:
+      label: Capability exercised
+      description: Which operations actually ran.
+      placeholder: e.g. save, load, list, validate, check, render, rescue
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: e.g. macOS 15, Ubuntu 24.04, Windows 11
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: Result
+      options:
+        - worked end to end
+        - worked with limitations
+        - did not work
+    validations:
+      required: true
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Limitations and notes
+      description:
+        Anything that did not work, needed a workaround, or surprised you.
+        Never paste a real handover or any credentials.
+  - type: checkboxes
+    id: permission
+    attributes:
+      label: Permission
+      options:
+        - label:
+            You may add this result to the public compatibility map, with the
+            date.
+          required: true

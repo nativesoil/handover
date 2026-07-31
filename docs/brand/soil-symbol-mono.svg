@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1193 914" role="img" aria-labelledby="sm-title sm-desc">
+  <title id="sm-title">The Native Soil symbol, mono</title>
+  <desc id="sm-desc">Two interlocking blocks and the small seed block, all in one colour. Everything is currentColor: inlined into a page it takes the surrounding text colour, and referenced as an image it renders black, so it is a single-colour mark for contexts the colour variant cannot serve.</desc>
+
+  <!-- The geometry is copied verbatim from the product's brand component and
+       must stay byte for byte: the two transforms and the path data ARE the
+       mark. Only fills may differ between variants. -->
+
+  <g transform="matrix(8.29103e-17,-1.35403,0.983178,6.02023e-17,-37549.3,24198)">
+    <path d="M17421.4,38488.7L17871.2,38488.7L17871.2,39095.2L17646.3,39095.2L17646.3,38798.4L17196.5,38798.4L17196.5,38191.8L17421.4,38191.8L17421.4,38488.7Z" fill="currentColor"/>
+  </g>
+  <g transform="matrix(3.16287e-17,0.516535,-4.34472,2.66038e-16,233975,-12287.1)">
+    <rect x="24966.6" y="53578.2" width="589.504" height="70.085" fill="currentColor"/>
+  </g>
+</svg>

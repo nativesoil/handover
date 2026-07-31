@@ -1,0 +1,83 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-7000-8000-000000000010",
+  "projectId": "unicode-attack",
+  "title": "Innehåll utanför grundplanet 🌍 med smala mellanslag",
+  "createdAt": "2026-07-22T10:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾 Ett projekt som odlar jord 🌱 och håller varje beslut vid liv med kombinerande tecken: é å ö och ett no-break mellanslag mitt i raden."
+    },
+    "decisions": {
+      "status": "available",
+      "summary": "1. We chose 🌱 plain files 🌍 because they last across every boundary the project has met and the reasons travel.\n\n2. We picked 🧭 the compass path 🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾 och den vägen håller ännu.\n\n3. Beslutet om skörden ☕ står kvar utan endring."
+    },
+    "workflow": {
+      "status": "available",
+      "summary": "café see the repo för hela flödet 🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾"
+    },
+    "architecture": {
+      "status": "missing",
+      "summary": null
+    },
+    "constraints": {
+      "status": "missing",
+      "summary": null
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": " ﻿Ett kort läge. "
+    },
+    "currentTask": {
+      "status": "available",
+      "summary": "🐛 fixing this week: the parser boundary 🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾"
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "available",
+      "summary": "🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾 vid sparandet."
+    },
+    "blockers": {
+      "status": "available",
+      "summary": "🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾!"
+    },
+    "nextSteps": {
+      "status": "available",
+      "summary": "🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭 nästa steg finns."
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "available",
+      "summary": "🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍 sessionen loggades."
+    },
+    "restoreInstructions": {
+      "status": "available",
+      "summary": "🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾 fortsätt."
+    },
+    "provenanceMap": {
+      "status": "available",
+      "summary": "🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾🌱🌍🚀🔥📦🧭🪴🌾 kartan är hel."
+    },
+    "safetySummary": {
+      "status": "missing",
+      "summary": null
+    }
+  },
+  "quality": {
+    "missingInputs": [
+      "Tråden höll inget material för de återstående sektionerna."
+    ]
+  },
+  "code": "#010"
+}

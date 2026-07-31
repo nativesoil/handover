@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 960 790" width="960" height="790" role="img" aria-labelledby="rt-title rt-desc">
+  <title id="rt-title">The round trip: a conversation, to a stored handover, to a different conversation</title>
+  <desc id="rt-desc">A handover leaves one session as a JSON block and enters a new session as a restore prompt. On the way in it passes two gates. Gate one, the ingestion boundary, judges the serialized bytes before anything is parsed, in a fixed order: size at most 1048576 bytes, then encoding, then nesting depth at most 32 levels, then JSON syntax, then duplicate member names inside one object, then the numeric domain. Gate two, the validator, judges the parsed document: all seventeen sections declared and no key outside them, status one of four, provenance among eleven, no unknown field at the root or on a section, available and not_applicable each carrying a summary, the declared version one this reader implements, and last the fail-closed secret scan, which no schema can state. A document that passes both is written to the store as one plain JSON file under a home directory. Loading reads that file back through both gates and builds the restore prompt, which is pasted into the new session. After installation the round trip needs no account, no network and no telemetry.</desc>
+
+  <!-- The light palette rides in presentation attributes so it is the floor;
+       the style block holds only the dark override, a deliberate inversion of
+       the product's off-white surface: carbon ground, off-white ink, the same
+       greens. The terminal panels are carbon in both themes, like the
+       product's own full-carbon sections, so they carry no override. -->
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .page  { fill: #101010; }
+      .card  { fill: #1b1b19; stroke: #f4f2ed; stroke-opacity: 0.18; }
+      .ink   { fill: #f4f2ed; }
+      .muted { fill: #f4f2ed; }
+      .faint { fill: #f4f2ed; }
+      .hair  { stroke: #f4f2ed; stroke-opacity: 0.18; }
+      .flow  { stroke: #f4f2ed; }
+      .head  { fill: #f4f2ed; }
+      .glyph { stroke: #f4f2ed; }
+      .green { fill: #39CD75; }
+      .gline { stroke: #39CD75; }
+    }
+  </style>
+
+  <defs>
+    <marker id="rt-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0.5 L8 4 L0 7.5 Z" fill="#101010"/>
+    </marker>
+  </defs>
+
+  <rect class="page" width="960" height="790" fill="#f4f2ed"/>
+
+  <rect x="40" y="24" width="9" height="9" fill="#39CD75"/>
+  <text class="ink" x="58" y="33" font-size="15" font-weight="600" fill="#101010">The round trip</text>
+  <text class="muted" x="40" y="56" font-size="11" fill="#101010" fill-opacity="0.7">One conversation, to a stored document, to a different conversation. Two gates decide what is stored and what is read back.</text>
+  <line class="hair" x1="40" y1="70" x2="920" y2="70" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+
+  <!-- ============ left column: save ============ -->
+  <text class="faint" x="40" y="90" font-size="10" font-weight="600" letter-spacing="0.7" fill="#101010" fill-opacity="0.55">SAVE</text>
+
+  <rect x="40" y="98" width="380" height="64" rx="2" fill="#161512" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
+  <circle cx="58" cy="114" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="70" cy="114" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="82" cy="114" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <text x="94" y="118" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#f4f2ed" fill-opacity="0.5">a session, in whatever client you use</text>
+  <line x1="40" y1="126" x2="420" y2="126" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <text xml:space="preserve" x="57" y="148" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5"><tspan fill="#39CD75">&#10095;</tspan><tspan fill="#f4f2ed"> soil save</tspan><tspan fill="#f4f2ed" fill-opacity="0.62">  the work, the decisions, the reasons</tspan></text>
+
+  <line class="flow" x1="230" y1="162" x2="230" y2="196" stroke="#101010" stroke-width="1.5" marker-end="url(#rt-arrow)"/>
+  <text class="muted" x="243" y="174" font-size="10" fill="#101010" fill-opacity="0.7">soil save prints the extraction recipe;</text>
+  <text class="muted" x="243" y="187" font-size="10" fill="#101010" fill-opacity="0.7">the model answers with one JSON block</text>
+
+  <rect class="card" x="40" y="200" width="380" height="158" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <path class="glyph" d="M67 214 L77 218 L77 226 C77 233 73 237.5 67 240 C61 237.5 57 233 57 226 L57 218 Z" fill="none" stroke="#101010" stroke-width="1.8"/>
+  <polyline class="gline" points="62,226.5 66,230.5 72.5,222" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text class="ink" x="88" y="222" font-size="12" font-weight="600" fill="#101010">Gate 1 &#183; the ingestion boundary</text>
+  <text class="muted" x="88" y="238" font-size="10.5" fill="#101010" fill-opacity="0.7">reads the bytes, before anything is parsed. This order.</text>
+  <line class="hair" x1="59" y1="248" x2="404" y2="248" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="ink" x="59" y="264" font-size="10.5" fill="#101010"><tspan class="green" fill="#0F6E56">1</tspan>  size &#183; at most 1048576 bytes</text>
+  <text class="ink" x="59" y="280" font-size="10.5" fill="#101010"><tspan class="green" fill="#0F6E56">2</tspan>  encoding &#183; no byte order mark, no UTF-16/32, valid UTF-8</text>
+  <text class="ink" x="59" y="296" font-size="10.5" fill="#101010"><tspan class="green" fill="#0F6E56">3</tspan>  nesting depth &#183; at most 32 levels</text>
+  <text class="ink" x="59" y="312" font-size="10.5" fill="#101010"><tspan class="green" fill="#0F6E56">4</tspan>  JSON syntax</text>
+  <text class="ink" x="59" y="328" font-size="10.5" fill="#101010"><tspan class="green" fill="#0F6E56">5</tspan>  duplicate member names inside one object</text>
+  <text class="ink" x="59" y="344" font-size="10.5" fill="#101010"><tspan class="green" fill="#0F6E56">6</tspan>  the numeric domain &#183; integers, in the safe range</text>
+
+  <line class="flow" x1="230" y1="358" x2="230" y2="392" stroke="#101010" stroke-width="1.5" marker-end="url(#rt-arrow)"/>
+  <text class="muted" x="243" y="378" font-size="10" fill="#101010" fill-opacity="0.7">the bytes are a value now</text>
+
+  <rect class="card" x="40" y="396" width="380" height="66" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="57" y="418" font-size="12" font-weight="600" fill="#101010">normalize</text>
+  <text class="muted" x="57" y="435" font-size="10.5" fill="#101010" fill-opacity="0.7">the loose shapes models actually emit, to the spec shape.</text>
+  <text class="muted" x="57" y="451" font-size="10.5" fill="#101010" fill-opacity="0.7">It invents nothing and deletes nothing, so Gate 2 sees everything.</text>
+
+  <line class="flow" x1="230" y1="462" x2="230" y2="494" stroke="#101010" stroke-width="1.5" marker-end="url(#rt-arrow)"/>
+
+  <rect class="card" x="40" y="498" width="380" height="158" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <path class="glyph" d="M67 512 L77 516 L77 524 C77 531 73 535.5 67 538 C61 535.5 57 531 57 524 L57 516 Z" fill="none" stroke="#101010" stroke-width="1.8"/>
+  <polyline class="gline" points="62,524.5 66,528.5 72.5,520" fill="none" stroke="#0F6E56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text class="ink" x="88" y="520" font-size="12" font-weight="600" fill="#101010">Gate 2 &#183; the validator</text>
+  <text class="muted" x="88" y="536" font-size="10.5" fill="#101010" fill-opacity="0.7">reads the parsed document. The last rule no schema can state.</text>
+  <line class="hair" x1="59" y1="546" x2="404" y2="546" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="ink" x="59" y="562" font-size="10.5" fill="#101010">all 17 sections declared, and no key outside them</text>
+  <text class="ink" x="59" y="578" font-size="10.5" fill="#101010">status one of four; provenance among eleven</text>
+  <text class="ink" x="59" y="594" font-size="10.5" fill="#101010">no unknown field, at the root or on a section</text>
+  <text class="ink" x="59" y="610" font-size="10.5" fill="#101010">available and not_applicable each carry a summary</text>
+  <text class="ink" x="59" y="626" font-size="10.5" fill="#101010">the declared version is one this reader implements</text>
+  <text class="ink" x="59" y="642" font-size="10.5" fill="#101010">the fail-closed secret scan, observations included</text>
+
+  <line class="flow" x1="230" y1="656" x2="230" y2="678" stroke="#101010" stroke-width="1.5" marker-end="url(#rt-arrow)"/>
+
+  <!-- ============ right column: load ============ -->
+  <text class="faint" x="540" y="90" font-size="10" font-weight="600" letter-spacing="0.7" fill="#101010" fill-opacity="0.55">LOAD</text>
+
+  <rect x="540" y="98" width="380" height="64" rx="2" fill="#161512" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1.5"/>
+  <circle cx="558" cy="114" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="570" cy="114" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <circle cx="582" cy="114" r="3.5" fill="#f4f2ed" fill-opacity="0.22"/>
+  <text x="594" y="118" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#f4f2ed" fill-opacity="0.5">a different session, elsewhere</text>
+  <line x1="540" y1="126" x2="920" y2="126" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <text xml:space="preserve" x="557" y="148" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5"><tspan fill="#39CD75">&#10095;</tspan><tspan fill="#f4f2ed" fill-opacity="0.62"> another client, another model, another person</tspan></text>
+
+  <line class="flow" x1="730" y1="252" x2="730" y2="166" stroke="#101010" stroke-width="1.5" marker-end="url(#rt-arrow)"/>
+  <text class="muted" x="743" y="205" font-size="10" fill="#101010" fill-opacity="0.7">paste it in and keep working</text>
+
+  <rect class="card" x="540" y="256" width="380" height="148" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="557" y="278" font-size="12" font-weight="600" fill="#101010">buildRestorePrompt &#183; the restore prompt</text>
+  <text class="muted" x="557" y="294" font-size="10.5" fill="#101010" fill-opacity="0.7">the boot prompt, then the sections by tier, then the stated</text>
+  <text class="muted" x="557" y="310" font-size="10.5" fill="#101010" fill-opacity="0.7">gaps, then how to start. One paste, with nothing to fetch.</text>
+  <line class="hair" x1="557" y1="320" x2="904" y2="320" stroke="#101010" stroke-opacity="0.14" stroke-width="1"/>
+  <text class="ink" x="557" y="336" font-size="10.5" fill="#101010">frontier sections describe the capture, not now</text>
+  <text class="ink" x="557" y="352" font-size="10.5" fill="#101010">the stated gaps travel with the document</text>
+  <text class="ink" x="557" y="368" font-size="10.5" fill="#101010">the handover is context to read, not commands to obey</text>
+  <text class="ink" x="557" y="384" font-size="10.5" fill="#101010">content cannot pose as the prompt's own structure</text>
+
+  <line class="flow" x1="730" y1="468" x2="730" y2="408" stroke="#101010" stroke-width="1.5" marker-end="url(#rt-arrow)"/>
+
+  <rect class="card" x="540" y="472" width="380" height="66" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <text class="ink" x="557" y="494" font-size="12" font-weight="600" fill="#101010">soil load <tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">#NNN</tspan> &#183; store.read</text>
+  <text class="muted" x="557" y="511" font-size="10.5" fill="#101010" fill-opacity="0.7">a stored file is bytes again, so it goes back through Gate 1 and</text>
+  <text class="muted" x="557" y="527" font-size="10.5" fill="#101010" fill-opacity="0.7">then the validator. A store that reads anything is not a store.</text>
+
+  <line class="flow" x1="730" y1="678" x2="730" y2="544" stroke="#101010" stroke-width="1.5" marker-end="url(#rt-arrow)"/>
+
+  <!-- ============ the store ============ -->
+  <rect class="card" x="40" y="682" width="880" height="72" rx="2" fill="#ffffff" stroke="#101010" stroke-opacity="0.14" stroke-width="1.5"/>
+  <g class="glyph" transform="translate(57 694)" stroke="#101010" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 6 H12 L16 10 H34 V28 H2 Z"/>
+  </g>
+  <rect x="72" y="710" width="7" height="7" fill="#39CD75"/>
+  <text class="ink" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="102" y="704" font-size="11.5" font-weight="600" fill="#101010">~/.soil/handovers/NNN.json</text>
+  <text class="muted" x="102" y="722" font-size="10.5" fill="#101010" fill-opacity="0.7">One plain JSON file per handover, plus an index that can be rebuilt from them. One writer at a time; the write is a rename.</text>
+  <text class="muted" x="102" y="740" font-size="10.5" fill="#101010" fill-opacity="0.7">Nothing is written until both gates have passed, and a refusal names the rule and the place, never the value it found.</text>
+
+  <text class="muted" x="40" y="778" font-size="10.5" fill="#101010" fill-opacity="0.7">After installation this round trip needs no account, no network and no telemetry.</text>
+</svg>

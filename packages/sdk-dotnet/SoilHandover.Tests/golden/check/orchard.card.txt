@@ -1,0 +1,19 @@
+  ┌─ SOIL · handover checked ────────────────── #901 ─
+  │
+  │   Checkout rework: address step split, payment
+  │   retry pending
+  │   orchard-checkout
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   adequate
+  │   0 problems · 1 caution · 0 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   blockers
+  │   ▸ time.unanchored · caution
+  │     uses "now" with no capture-time anchor, so a
+  │     later reader cannot tell when it was true
+  │
+  └─ checked from the document alone · only a real load proves restore

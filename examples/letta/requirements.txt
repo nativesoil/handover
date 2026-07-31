@@ -1,0 +1,5 @@
+# Intentionally empty. The framework side of this example is a clearly
+# labeled in-process stand-in (a Letta agent lives behind a server and needs
+# a configured language model provider, so it cannot run keyless in
+# continuous integration), and the Soil SDK in packages/sdk-py has no
+# dependencies.

@@ -1,0 +1,29 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "thin",
+  "counts": {
+    "problems": 2,
+    "cautions": 0,
+    "advice": 0
+  },
+  "findings": [
+    {
+      "rule": "completeness.no-durable-truth",
+      "severity": "problem",
+      "message": "none of the six durable-tier sections carries content, so the project's lasting truth did not travel"
+    },
+    {
+      "rule": "restore.absent",
+      "severity": "problem",
+      "section": "restoreInstructions",
+      "message": "content was captured but restoreInstructions is empty, so nothing tells the next session how to begin"
+    }
+  ],
+  "sections": {
+    "withContent": 1,
+    "missing": 16,
+    "blocked": 0,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

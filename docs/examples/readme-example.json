@@ -1,0 +1,82 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f8a12-4c00-7b3a-8e51-2d9c6b7a0e42",
+  "projectId": "orchard-checkout",
+  "title": "Checkout rework: payment retry design",
+  "createdAt": "2026-07-30T14:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "Orchard is a fruit box subscription reworking its checkout. This thread designs the payment retry path."
+    },
+    "decisions": {
+      "status": "available",
+      "summary": "The address is kept in the server session, so a declined card re-mounts the payment widget with the address intact. Locked because the current code returns the subscriber to an empty form, and re-entering everything is where retries are abandoned."
+    },
+    "workflow": {
+      "status": "missing",
+      "summary": null
+    },
+    "architecture": {
+      "status": "missing",
+      "summary": null
+    },
+    "constraints": {
+      "status": "available",
+      "summary": "Card data never touches Orchard's servers. The hosted widget stays the only place card details are entered. This is a compliance boundary, not a preference."
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "missing",
+      "summary": null
+    },
+    "currentTask": {
+      "status": "available",
+      "summary": "Designing the payment retry path: about half done, the session shape is agreed, the re-mount behaviour is not written yet. Next step: write the decline message, because the founder wants to review that string before the logic lands."
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "missing",
+      "summary": null
+    },
+    "blockers": {
+      "status": "missing",
+      "summary": null
+    },
+    "nextSteps": {
+      "status": "missing",
+      "summary": null
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "missing",
+      "summary": null
+    },
+    "restoreInstructions": {
+      "status": "missing",
+      "summary": null
+    },
+    "provenanceMap": {
+      "status": "missing",
+      "summary": null
+    },
+    "safetySummary": {
+      "status": "missing",
+      "summary": null
+    }
+  },
+  "quality": {
+    "missingInputs": [
+      "This document is the README's illustration and was written for that page, not captured from a live session; it is deliberately thinner than a real save."
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+  ┌─ SOIL · handover checked ────────────────── #008 ─
+  │
+  │   A boot prompt that is small and points
+  │   elsewhere
+  │   edge-two-problems
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   thin
+  │   2 problems · 0 cautions · 0 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   restore instructions
+  │   ▸ restore.thin · problem
+  │     the restore instructions are 250 characters
+  │     against 1536 of captured content, below the
+  │     documented floor of 300
+  │   ▸ self-containment.fetch-pointer · problem
+  │     sends the reader elsewhere ("see the docs"),
+  │     but a handover reader has no repo, no docs
+  │     and no earlier thread
+  │
+  └─ checked from the document alone · only a real load proves restore

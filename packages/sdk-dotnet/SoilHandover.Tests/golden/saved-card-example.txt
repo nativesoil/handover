@@ -1,0 +1,55 @@
+  ┌─ SOIL · handover saved ──────────────────── #001 ─
+  │
+  │   Checkout rework: address step split, payment
+  │   retry pending
+  │   orchard-checkout
+  │
+  ├─ written by ──────────────────────────────────────
+  │
+  │   client      claude-code
+  │   model       opus-4.8
+  │   provider    anthropic
+  │   recipe      1.0.0
+  │
+  ├─ what this document carries ──────────────────────
+  │
+  │   17 / 17 sections carrying content
+  │   provenance  repo_verified, user_locked_memory,
+  │               model_reported, owner_observed
+  │
+  ├─ stated gaps ─────────────────────────────────────
+  │
+  │   ▸ Conversion numbers since Monday's
+  │     address-step deploy had not accumulated at
+  │     capture, so the effect of that deploy is
+  │     unknown.
+  │   ▸ The payment provider's documented behaviour
+  │     on widget re-mount after a decline could not
+  │     be confirmed, because the sandbox was
+  │     returning intermittent errors.
+  │
+  ├─ unresolved contradictions ───────────────────────
+  │
+  │   ▸ The bundle ceiling is described as 180 KB
+  │     gzipped in the project notes and as 'about
+  │     175' in an earlier conversation. The
+  │     stricter figure is used here; the exact
+  │     number was not re-confirmed.
+  │
+  ├─ held back · by design ───────────────────────────
+  │
+  │   ▸ Payment provider API credentials exist and
+  │     are set as environment variables in the
+  │     deployment platform. Values withheld.
+  │   ▸ The delivery partner webhook signing secret
+  │     exists and is configured in the deployment
+  │     platform. Value withheld.
+  │
+  ├─ local ───────────────────────────────────────────
+  │
+  │   stored on this machine · no account · no
+  │   network
+  │
+  └─ load it in another thread, model, or tool
+
+          ❯ soil load #001

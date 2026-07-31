@@ -1,0 +1,96 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "thin",
+  "counts": {
+    "problems": 0,
+    "cautions": 13,
+    "advice": 0
+  },
+  "findings": [
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "decisions",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "workflow",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "constraints",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "rejectedPaths",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "executiveSummary",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "currentTask",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "latestUserIntent",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "sessionDelta",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "blockers",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "nextSteps",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "openQuestions",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "sessionActivity",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    },
+    {
+      "rule": "completeness.missing-without-reason",
+      "severity": "caution",
+      "section": "provenanceMap",
+      "message": "declared missing, with no note here and nothing in quality.missingInputs saying why"
+    }
+  ],
+  "sections": {
+    "withContent": 3,
+    "missing": 13,
+    "blocked": 1,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

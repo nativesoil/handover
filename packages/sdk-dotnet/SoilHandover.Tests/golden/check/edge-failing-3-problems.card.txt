@@ -1,0 +1,30 @@
+  ┌─ SOIL · handover checked ────────────────── #009 ─
+  │
+  │   Nothing durable, and the boot prompt points
+  │   away
+  │   edge-failing
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   failing
+  │   3 problems · 0 cautions · 0 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   the document
+  │   ▸ completeness.no-durable-truth · problem
+  │     none of the six durable-tier sections
+  │     carries content, so the project's lasting
+  │     truth did not travel
+  │
+  │   restore instructions
+  │   ▸ restore.thin · problem
+  │     the restore instructions are 60 characters
+  │     against 1423 of captured content, below the
+  │     documented floor of 300
+  │   ▸ self-containment.fetch-pointer · problem
+  │     sends the reader elsewhere ("see the docs"),
+  │     but a handover reader has no repo, no docs
+  │     and no earlier thread
+  │
+  └─ checked from the document alone · only a real load proves restore

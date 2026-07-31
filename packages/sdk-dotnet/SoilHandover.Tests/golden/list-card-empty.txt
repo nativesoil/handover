@@ -1,0 +1,5 @@
+  ┌─ SOIL · handovers ────────────────────────────────
+  │
+  │   nothing saved yet · run `soil save` to start
+  │
+  └─ local store · ~/.soil

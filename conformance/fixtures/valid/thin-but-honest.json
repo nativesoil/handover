@@ -1,0 +1,82 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-7e76-92a3-f4671b02fd51",
+  "projectId": "thin-thread",
+  "title": "A thread that had almost nothing in it",
+  "createdAt": "2026-07-20T08:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "missing",
+      "summary": null
+    },
+    "decisions": {
+      "status": "missing",
+      "summary": null
+    },
+    "workflow": {
+      "status": "missing",
+      "summary": null
+    },
+    "architecture": {
+      "status": "missing",
+      "summary": null
+    },
+    "constraints": {
+      "status": "missing",
+      "summary": null
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "This conversation contained no substantive project work before the save. Nothing was captured because there was nothing to capture."
+    },
+    "currentTask": {
+      "status": "missing",
+      "summary": null
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "missing",
+      "summary": null
+    },
+    "blockers": {
+      "status": "missing",
+      "summary": null
+    },
+    "nextSteps": {
+      "status": "missing",
+      "summary": null
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "missing",
+      "summary": null
+    },
+    "restoreInstructions": {
+      "status": "missing",
+      "summary": null
+    },
+    "provenanceMap": {
+      "status": "missing",
+      "summary": null
+    },
+    "safetySummary": {
+      "status": "missing",
+      "summary": null
+    }
+  },
+  "quality": {
+    "missingInputs": [
+      "The conversation opened with the save request and held no project work, so there was nothing to capture."
+    ]
+  }
+}

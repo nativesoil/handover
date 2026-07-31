@@ -1,0 +1,36 @@
+{
+  "name": "@nativesoil/handover-mcp",
+  "version": "0.1.0",
+  "description": "A local MCP stdio server exposing soil_save, soil_load and soil_list against the handover store in ~/.soil.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nativesoil/handover.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://github.com/nativesoil/handover",
+  "bugs": "https://github.com/nativesoil/handover/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module",
+  "bin": {
+    "soil-mcp": "./bin/soil-mcp.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@nativesoil/handover-sdk": "workspace:*"
+  }
+}

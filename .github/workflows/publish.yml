@@ -1,0 +1,159 @@
+name: Publish
+
+# Publishes the packages to their registries. Dispatched by hand, and only
+# by hand: the v1 launch is a deliberate act, not a side effect of a tag or
+# a push. A maintainer runs the full gate here even though CI already ran
+# it, because the thing that publishes must be the thing that tested, in
+# one run, on the commit it publishes.
+#
+# What publishes today:
+#
+#   PyPI  soil-handover, from packages/sdk-py, via trusted publishing:
+#         the job carries `id-token: write` and the `pypi` environment,
+#         and PyPI's pending publisher for this repository and workflow
+#         accepts the OIDC token. No credential is stored anywhere.
+#
+#   npm   the four @nativesoil packages, with provenance. npm has no
+#         tokenless first publish, so this uses a granular automation
+#         token stored as the `NPM_TOKEN` Actions secret. When the secret
+#         is absent the npm steps skip with a clear line rather than fail:
+#         a missing token is a configuration state, not a broken build,
+#         and it must never block the PyPI leg beside it.
+#
+# NuGet and Maven are deliberately absent from this version: their
+# prefix/namespace registrations are still pending. The commented block at
+# the bottom is the placeholder for when they are not.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # The full verify gate, exactly as the repository defines it: build, the
+  # TS and Python suites, all five conformance runners and the interop
+  # harness, via the root `pnpm verify` script. Nothing publishes untested.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - run: pnpm install --frozen-lockfile
+      - run: python -m pip install pytest
+      - run: pnpm verify
+
+  publish-pypi:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      # Trusted publishing: PyPI accepts this job's OIDC token in place of
+      # any stored credential. The pending publisher on PyPI names this
+      # repository, this workflow file and this environment.
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build sdist and wheel from packages/sdk-py
+        run: |
+          python -m pip install build
+          python -m build packages/sdk-py --outdir dist-py
+          ls -l dist-py
+      - name: Publish soil-handover to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist-py
+
+  publish-npm:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      # npm provenance attests the build through the same OIDC mechanism.
+      id-token: write
+      contents: read
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: "https://registry.npmjs.org"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -r build
+      - name: Publish the @nativesoil packages with provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/tarballs"
+          # Dependency order: the SDK first, then the three that depend on
+          # it. `pnpm pack` produces the publishable tarball with the
+          # workspace: ranges rewritten to real versions; `npm publish` of
+          # that tarball carries provenance.
+          for dir in packages/sdk-ts packages/mcp packages/cli packages/server; do
+            name="$(node -p "require('./$dir/package.json').name")"
+            version="$(node -p "require('./$dir/package.json').version")"
+            if [ -z "${NODE_AUTH_TOKEN:-}" ]; then
+              echo "NPM_TOKEN is not configured; skipping publish of $name@$version"
+              continue
+            fi
+            echo "publishing $name@$version"
+            tarball="$(cd "$dir" && pnpm pack --pack-destination "$RUNNER_TEMP/tarballs" | tail -n 1)"
+            npm publish "$tarball" --provenance --access public
+          done
+
+  # ---------------------------------------------------------------------
+  # NuGet and Maven: not in this publish round. Their prefix/namespace
+  # registrations are pending, and a job that publishes into an unclaimed
+  # namespace is a job that fails in public. When the registrations are
+  # confirmed, uncomment and complete these, and give each the same
+  # `needs: test` gate as the jobs above.
+  # ---------------------------------------------------------------------
+  # publish-nuget:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: "8.0.x"
+  #     - run: dotnet pack packages/sdk-dotnet/SoilHandover -c Release -o dist-nuget
+  #     - run: dotnet nuget push "dist-nuget/*.nupkg" --source https://api.nuget.org/v3/index.json
+  #
+  # publish-maven:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-java@v4
+  #       with:
+  #         distribution: temurin
+  #         java-version: 17
+  #     - run: ./gradlew publish --quiet
+  #       working-directory: packages/sdk-jvm

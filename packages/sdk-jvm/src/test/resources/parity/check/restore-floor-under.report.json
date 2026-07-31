@@ -1,0 +1,24 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "thin",
+  "counts": {
+    "problems": 1,
+    "cautions": 0,
+    "advice": 0
+  },
+  "findings": [
+    {
+      "rule": "restore.thin",
+      "severity": "problem",
+      "section": "restoreInstructions",
+      "message": "the restore instructions are 399 characters against 8000 of captured content, below the documented floor of 400"
+    }
+  ],
+  "sections": {
+    "withContent": 4,
+    "missing": 13,
+    "blocked": 0,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

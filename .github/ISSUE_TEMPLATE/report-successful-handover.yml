@@ -1,0 +1,64 @@
+name: Report a successful handover
+description:
+  A real save in one client and a real load in another worked. Reports like
+  this are how the compatibility map grows.
+title: "[handover-success] "
+labels: [compatibility]
+body:
+  - type: input
+    id: source
+    attributes:
+      label: Source client
+      description: Where the handover was saved.
+      placeholder: e.g. Claude Code
+    validations:
+      required: true
+  - type: input
+    id: target
+    attributes:
+      label: Target client
+      description: Where the handover was loaded.
+      placeholder: e.g. Codex CLI
+    validations:
+      required: true
+  - type: dropdown
+    id: integration
+    attributes:
+      label: Integration
+      options:
+        - local-cli
+        - local-mcp
+        - hosted-remote-mcp
+        - mixed (describe under limitations)
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: e.g. macOS 15, Ubuntu 24.04, Windows 11
+    validations:
+      required: true
+  - type: input
+    id: operations
+    attributes:
+      label: Operations that worked
+      placeholder: e.g. save, load, list
+    validations:
+      required: true
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Limitations
+      description:
+        Anything that needed a workaround or did not carry over. Never paste
+        a real handover or any credentials.
+  - type: checkboxes
+    id: permission
+    attributes:
+      label: Permission
+      options:
+        - label:
+            You may add this result to the public compatibility map, with the
+            date.
+          required: true

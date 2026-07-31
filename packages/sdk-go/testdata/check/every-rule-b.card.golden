@@ -1,0 +1,94 @@
+  ┌─ SOIL · handover checked ────────────────── #002 ─
+  │
+  │   A rich capture that keeps pointing elsewhere
+  │   rule-storm-b
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   thin
+  │   2 problems · 12 cautions · 4 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   decisions
+  │   ▸ decisions.entry-without-reason · caution
+  │     entry 1 states a decision with no recorded
+  │     reason ("1. We chose Postgres.")
+  │   ▸ decisions.entry-without-reason · caution
+  │     entry 10 states a decision with no recorded
+  │     reason ("- We picked the delivery partner.")
+  │   ▸ decisions.entry-without-reason · caution
+  │     entry 11 states a decision with no recorded
+  │     reason ("• We opted for one shared cutoff
+  │     module.")
+  │   ▸ decisions.entry-without-reason · caution
+  │     entry 12 states a decision with no recorded
+  │     reason ("▸ Session state was migrated to the
+  │     server.")
+  │   ▸ decisions.entry-without-reason · caution
+  │     entry 3 states a decision with no recorded
+  │     reason ("3. The team adopted trunk-based
+  │     work.")
+  │   ▸ decisions.entry-without-reason · caution
+  │     entry 4 states a decision with no recorded
+  │     reason ("4) We locked the release train.")
+  │   ▸ decisions.entry-without-reason · caution
+  │     entry 6 states a decision with no recorded
+  │     reason ("6. We went with plain files.")
+  │   ▸ decisions.entry-without-reason · caution
+  │     entry 8 states a decision with no recorded
+  │     reason ("8. We picked the hosted widget.")
+  │   ▸ decisions.entry-without-reason · caution
+  │     entry 9 states a decision with no recorded
+  │     reason ("9. The parser was standardized.")
+  │
+  │   workflow
+  │   ▸ self-containment.fetch-pointer · caution
+  │     sends the reader elsewhere ("Refer to"), but
+  │     a handover reader has no repo, no docs and
+  │     no earlier thread
+  │
+  │   architecture
+  │   ▸ anchors.no-exact-values · advice
+  │     mentions configuration but holds no numbers,
+  │     versions or pins; exact values are what
+  │     survive a move
+  │
+  │   constraints
+  │   ▸ anchors.no-exact-values · advice
+  │     mentions configuration but holds no numbers,
+  │     versions or pins; exact values are what
+  │     survive a move
+  │
+  │   current task
+  │   ▸ time.unanchored · caution
+  │     uses "Today" with no capture-time anchor, so
+  │     a later reader cannot tell when it was true
+  │
+  │   latest user intent
+  │   ▸ self-containment.fetch-pointer · caution
+  │     sends the reader elsewhere ("documented at
+  │     https://"), but a handover reader has no
+  │     repo, no docs and no earlier thread
+  │
+  │   blockers
+  │   ▸ size.one-liner · advice
+  │     carries 5 characters in a document whose
+  │     sections are otherwise substantial
+  │
+  │   open questions
+  │   ▸ size.one-liner · advice
+  │     carries 39 characters in a document whose
+  │     sections are otherwise substantial
+  │
+  │   restore instructions
+  │   ▸ restore.thin · problem
+  │     the restore instructions are 82 characters
+  │     against 3541 of captured content, below the
+  │     documented floor of 300
+  │   ▸ self-containment.fetch-pointer · problem
+  │     sends the reader elsewhere ("see the docs"),
+  │     but a handover reader has no repo, no docs
+  │     and no earlier thread
+  │
+  └─ checked from the document alone · only a real load proves restore

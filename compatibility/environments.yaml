@@ -1,0 +1,488 @@
+# Compatibility data: the machine-readable source of truth.
+#
+# Two lists. `client_surfaces` holds third-party clients, one row per client
+# surface and claim: a product's desktop app, its web page, its CLI and its
+# IDE form are different surfaces, and they get different rows because what
+# is true of one is routinely false of another. `product_surfaces` holds what
+# this repository itself ships. docs/compatibility.md, the generated block
+# inside README.md and compatibility/readme-snippet.md are GENERATED from
+# this file and compatibility/integrations.yaml by
+# scripts/generate-compatibility.mjs; .github/workflows/compatibility.yml
+# fails when any of the three drifts from this data. Edit here, then run
+# `node scripts/generate-compatibility.mjs`.
+#
+# This file is written in a deliberate YAML subset the generator parses
+# without dependencies: top-level keys, list items of `key: value` pairs,
+# flow arrays, and nested lists of quoted strings. No block scalars, no
+# nested maps. The parser throws on anything outside the subset.
+#
+# THREE AXES, and no row ever collapses one into another.
+#
+# CAPABILITY (`maturity`) says what works. It is the primary axis, because a
+# reader cares first about which features exist and which of them work.
+#
+#   maturity vocabulary, exactly four values:
+#     works      every capability listed has been exercised end to end
+#     partial    some of the listed capability works, the rest is not exercised
+#     unproven   nothing exercised; the claim rests on a surface, not a run
+#     planned    nothing exercised and nothing claimed; intent only
+#
+# EVIDENCE STRENGTH stays its own axis and never becomes the headline. Saying
+# something works when only we have seen it is the same defect in a new place,
+# so how a row was proven travels beside what it does.
+#
+#   evidence vocabulary, exactly six values. A label is used only when its
+#   criteria are met:
+#     reproducible-in-repo         an artefact in this repository reproduces
+#                                  it: CI, the conformance suite, or a
+#                                  runnable example anybody can run
+#     open-integration-observed    a real run against an openly available
+#                                  integration, recorded in a report committed
+#                                  here; repeatable by hand, not automated
+#     hosted-integration-observed  a real run that went through a hosted
+#                                  service, recorded in a report committed here
+#     maintainer-attested          the maintainers ran it and logged it
+#                                  internally; no artefact a reader can inspect
+#     source-reviewed              read from source, specification or the
+#                                  vendor's documentation, never executed
+#     planned                      nothing has been run; the row states an
+#                                  intention, and carries no evidence
+#
+# An internal log with no publicly reproducible artefact is a maintainer
+# attestation. There is no label that turns one into a demonstration.
+#
+# WHERE A CLAIM COMES FROM (`capability_source`, client rows only), exactly
+# two values. What a client CAN do and what WE have shown are different
+# statements, and a reader needs both, separately:
+#   vendor-documentation   the vendor's own published documentation, cited in
+#                          `vendor_doc` as a URL. It supports what a surface
+#                          can attach. It never supports a run, so a row
+#                          resting on it is `unproven` and `source-reviewed`,
+#                          and the generator refuses anything stronger.
+#   this-repository        this repository's own record: a run in CI, a
+#                          committed session report, the maintainers'
+#                          internal log, or a reading of code here. The
+#                          `evidence` field says which.
+#
+# `paths` on a client row lists how that surface reaches the format, from a
+# closed set the generator words for the reader:
+#   local-stdio-mcp   a local MCP server the client starts on this machine
+#   remote-http-mcp   an MCP server the user runs themselves, over HTTP
+#   hosted-cloud      the hosted Native Soil connector, a separate service
+#                     with accounts and no code in this repository
+#   manual-paste      copy and paste through the client's own text box
+#
+# `runs_in` is required on every client row and takes exactly two values:
+# `elsewhere` for a page in a browser or an app on a phone, `your machine`
+# for a process on the reader's own computer. It describes the SURFACE,
+# never the client as a whole: the same product can be a page in a browser
+# on one row and a desktop process on another, and collapsing the two rows
+# into one is how a sentence gets written about the wrong surface. A surface
+# running elsewhere cannot start a local process, so the generator refuses a
+# row that pairs `elsewhere` with `local-stdio-mcp`.
+#
+# `hosted_dependency` says whether the row exists only through the hosted
+# connector. Hosted rows never appear in the README table, which carries
+# `product_surfaces` alone; a reader who installs this repository does not
+# get them.
+#
+# Every row also carries the evidence label, an evidence source, an evidence
+# date, whether it is reproducible in the open repository, and its known
+# limitation. `reproducible_in_repo` is yes, no or partial.
+
+client_surfaces:
+  - client: Claude Code
+    surface: CLI
+    runs_in: your machine
+    paths: [local-stdio-mcp]
+    capability: [save, load, list]
+    capability_source: this-repository
+    maturity: works
+    evidence: open-integration-observed
+    reproducible_in_repo: "no"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: One recorded session, on macOS, repeatable by hand; not an automated check.
+    evidence_source:
+      - "Headless Claude Code session on 2026-07-24 driving soil_list, soil_save and soil_load against the local server from packages/mcp, on a scratch store: [session report](compatibility/reports/local-mcp-claude-code.md)."
+
+  - client: Claude Code
+    surface: CLI
+    runs_in: your machine
+    paths: [hosted-cloud]
+    capability: [save, load, list]
+    capability_source: this-repository
+    maturity: works
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-07"
+    limitation: Run only through the hosted connector, with no inspectable artefact.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07, from daily use on active development projects. Nothing in this repository reproduces it."
+
+  - client: ChatGPT
+    surface: web and iOS
+    runs_in: elsewhere
+    paths: [hosted-cloud]
+    capability: [save, load, interactive UI cards]
+    capability_source: this-repository
+    maturity: works
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-07"
+    limitation: Run only through the hosted connector, with no inspectable artefact.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07. Nothing in this repository reproduces it."
+
+  - client: ChatGPT
+    surface: desktop app
+    runs_in: your machine
+    paths: [local-stdio-mcp, remote-http-mcp]
+    capability: [attach local and HTTP MCP servers]
+    capability_source: vendor-documentation
+    vendor_doc: "https://learn.chatgpt.com/docs/extend/mcp"
+    maturity: unproven
+    evidence: source-reviewed
+    reproducible_in_repo: "no"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-30"
+    limitation: The vendor documents the surface; no run through it is recorded in this repository. The HTTP path does not pair with the self-hostable server as built, because this client's connector flow requires an OAuth authorization server and that server is deliberately bearer-token only; the hosted row above is the route that remains.
+    evidence_source:
+      - "[OpenAI's MCP page](https://learn.chatgpt.com/docs/extend/mcp) documents the ChatGPT desktop app attaching STDIO servers, run as a local process, and Streamable HTTP servers reached at an address. Read on 2026-07-30; no run through this surface is recorded here."
+
+  - client: Claude
+    surface: web and iOS
+    runs_in: elsewhere
+    paths: [hosted-cloud]
+    capability: [save, load, list, info, UI cards]
+    capability_source: this-repository
+    maturity: works
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-07"
+    limitation: Run only through the hosted connector, with no inspectable artefact.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07. Nothing in this repository reproduces it."
+
+  - client: Claude
+    surface: desktop app
+    runs_in: your machine
+    paths: [local-stdio-mcp]
+    capability: [attach local MCP servers]
+    capability_source: vendor-documentation
+    vendor_doc: "https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop"
+    maturity: unproven
+    evidence: source-reviewed
+    reproducible_in_repo: "no"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-30"
+    limitation: The vendor documents the surface; no run through it is recorded in this repository. The self-hostable server is out of this surface's reach as built, because this client's remote connector flow requires an OAuth authorization server and that server is deliberately bearer-token only; the hosted row above is the route that remains.
+    evidence_source:
+      - "[Anthropic's page on local MCP servers in Claude Desktop](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop) documents installing local MCP servers on the desktop app, packaged as desktop extensions. Read on 2026-07-30; no run through this surface is recorded here."
+
+  - client: Codex
+    surface: CLI
+    runs_in: your machine
+    paths: [hosted-cloud]
+    capability: [MCP setup, handover flow]
+    capability_source: this-repository
+    maturity: works
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-07"
+    limitation: Run only through the hosted connector, with no inspectable artefact.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07. Nothing in this repository reproduces it."
+
+  - client: Codex
+    surface: CLI
+    runs_in: your machine
+    paths: [local-stdio-mcp]
+    capability: [save, load]
+    capability_source: this-repository
+    maturity: works
+    evidence: open-integration-observed
+    reproducible_in_repo: "no"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-30"
+    limitation: One recorded session, on macOS, repeatable by hand; not an automated check.
+    evidence_source:
+      - "Headless Codex CLI session on 2026-07-30 driving soil_load and soil_save against the local server from packages/mcp, on a scratch store, as one leg of [the client-switch walkthrough](docs/switch-clients.md): it loaded the handover committed as [saved-by-claude-code.json](docs/switch-clients/saved-by-claude-code.json) and stored [saved-by-codex.json](docs/switch-clients/saved-by-codex.json), which is held byte for byte to the receipt shown on that page."
+
+  - client: Grok
+    surface: web
+    runs_in: elsewhere
+    paths: [hosted-cloud]
+    capability: [load]
+    capability_source: this-repository
+    maturity: partial
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-06"
+    limitation: A load was run; a save was not. Hosted connector only, no inspectable artefact.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07. Nothing in this repository reproduces it."
+
+  - client: Cursor
+    surface: IDE
+    runs_in: your machine
+    paths: [hosted-cloud]
+    capability: [project handover flow]
+    capability_source: this-repository
+    maturity: works
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-06"
+    limitation: Run only through the hosted connector, with no inspectable artefact.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07. Nothing in this repository reproduces it."
+
+  - client: Cursor
+    surface: IDE
+    runs_in: your machine
+    paths: [local-stdio-mcp]
+    capability: [attach local MCP servers]
+    capability_source: vendor-documentation
+    vendor_doc: "https://cursor.com/docs/mcp"
+    maturity: unproven
+    evidence: source-reviewed
+    reproducible_in_repo: "no"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-30"
+    limitation: The vendor documents the surface; no run through it is recorded in this repository.
+    evidence_source:
+      - "[Cursor's MCP page](https://cursor.com/docs/mcp) documents stdio servers, started by the editor and configured in mcp.json. Read on 2026-07-30; no run through this surface's local path is recorded here."
+
+  - client: VS Code
+    surface: IDE
+    runs_in: your machine
+    paths: [hosted-cloud]
+    capability: [project handover flow]
+    capability_source: this-repository
+    maturity: works
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-06"
+    limitation: Run only through the hosted connector, with no inspectable artefact.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07. Nothing in this repository reproduces it."
+
+  - client: VS Code
+    surface: IDE
+    runs_in: your machine
+    paths: [local-stdio-mcp]
+    capability: [attach local MCP servers]
+    capability_source: vendor-documentation
+    vendor_doc: "https://code.visualstudio.com/docs/copilot/chat/mcp-servers"
+    maturity: unproven
+    evidence: source-reviewed
+    reproducible_in_repo: "no"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-30"
+    limitation: The vendor documents the surface; no run through it is recorded in this repository.
+    evidence_source:
+      - "[VS Code's MCP page](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) documents local stdio servers configured in mcp.json. Read on 2026-07-30; no run through this surface's local path is recorded here."
+
+  - client: Lovable
+    surface: web app builder
+    runs_in: elsewhere
+    paths: [hosted-cloud]
+    capability: [project handover flow]
+    capability_source: this-repository
+    maturity: works
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-06"
+    limitation: Run only through the hosted connector, with no inspectable artefact.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07. Nothing in this repository reproduces it."
+
+  - client: v0
+    surface: web app builder
+    runs_in: elsewhere
+    paths: [hosted-cloud]
+    capability: [project handover flow]
+    capability_source: this-repository
+    maturity: works
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-06"
+    limitation: Run only through the hosted connector, with no inspectable artefact.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07. Nothing in this repository reproduces it."
+
+  - client: Base44
+    surface: web app builder
+    runs_in: elsewhere
+    paths: [hosted-cloud]
+    capability: [connection and authorization]
+    capability_source: this-repository
+    maturity: partial
+    evidence: maintainer-attested
+    reproducible_in_repo: "no"
+    hosted_dependency: "yes"
+    evidence_date: "2026-06"
+    limitation: Connection and authorization only; no handover flow has run there.
+    evidence_source:
+      - "Maintainers' internal test log, 2026-06/07. Nothing in this repository reproduces it."
+
+  - client: Any other MCP client
+    surface: varies
+    runs_in: your machine
+    paths: [local-stdio-mcp]
+    capability: [none run]
+    capability_source: this-repository
+    maturity: unproven
+    evidence: source-reviewed
+    reproducible_in_repo: "no"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: No third-party client beyond those above has been run. The row is a reading, not a result.
+    evidence_source:
+      - "The local server in [packages/mcp](packages/mcp) speaks MCP over stdio the way the specification defines it, read from its source and from that specification. This row is the local path only: what a client reaches through the hosted connector instead is on that client's own rows."
+
+# What this repository itself ships, described by who each surface is for.
+# `for_whom` is required: a surface a reader cannot place themselves against
+# is a surface they skip.
+product_surfaces:
+  - surface: Local CLI
+    for_whom: You, at a terminal, driving the round trip by hand
+    capability: [save, load, list, validate, check]
+    maturity: works
+    integration: local-cli
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: The by-hand stranger test ran on macOS; CI covers three operating systems.
+    evidence_source:
+      - "The CLI suite runs on every push in [the CI workflow](.github/workflows/ci.yml), covering save, load, list, validate, check and the fail-closed refusal paths."
+      - "A fresh-clone stranger test on 2026-07-24 ran the same round trip by hand. That run has no published artefact and is not what this row rests on."
+
+  - surface: Local MCP server
+    for_whom: Any MCP client on this machine, so the model saves and loads itself
+    capability: [save, load, list]
+    maturity: works
+    integration: local-mcp
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-24"
+    limitation: The headless client session ran on macOS.
+    evidence_source:
+      - "Protocol round trip in the root test suite, run by [the CI workflow](.github/workflows/ci.yml) on every push."
+      - "Headless Claude Code session on 2026-07-24 driving soil_list, soil_save and soil_load against a scratch store: [session report](compatibility/reports/local-mcp-claude-code.md)."
+
+  - surface: Self-hostable server (preview)
+    for_whom: An operator running one server for a team, on hardware they choose
+    capability: [save, load, list, shared projects]
+    maturity: works
+    integration: self-hosted-http
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-27"
+    limitation: A preview. Single node, tokens the operator hands out, not hardened for multi-tenant use. Its MCP endpoint is exercised only by this repository's own suite; no external client has been run against it.
+    evidence_source:
+      - "The suite in [packages/server](packages/server) drives the running server over real HTTP on every push, through [the CI workflow](.github/workflows/ci.yml): bearer-token refusals, a personal save, list and load, a shared-project save read back by a second member, a non-member getting 404 on every project route, and the fail-closed refusal that stores nothing. The same suite drives the server's MCP endpoint over HTTP through the three tools."
+      - "Not covered: no client outside this repository has been pointed at it, and the operator setup in [docs/server.md](docs/server.md) is run by hand rather than checked."
+
+  - surface: TypeScript SDK
+    for_whom: Developers building the format into their own tools, in TypeScript or JavaScript
+    capability: [validate, save, load, check]
+    maturity: works
+    integration: local
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-30"
+    limitation: Conformance is a fixture suite; it says nothing about content quality.
+    evidence_source:
+      - "The official source implementation, and the one the CLI, the local MCP server and the self-hostable server are built on. Its suite and the TypeScript conformance runner run in [the CI workflow](.github/workflows/ci.yml) on ubuntu, macos and windows: document validation and the fail-closed writer pipeline, held to the shared fixtures."
+      - "Load renders the restore prompt, and this SDK is the reference for its bytes: [its restore suite](packages/sdk-ts/src/restore.test.ts) and the adversarial restore fixtures in the conformance suite pin the output in [the CI workflow](.github/workflows/ci.yml), and the other four SDKs' restore goldens are generated from this SDK's built output."
+      - "The cross-language store harness in the same workflow drives one writer per implementation against one store, and each suite holds the deterministic check report and card byte-identical to the reference over a shared corpus."
+
+  - surface: Python SDK
+    for_whom: Developers building the format into their own tools, in Python
+    capability: [validate, save, load, check]
+    maturity: works
+    integration: local
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-30"
+    limitation: Conformance is a fixture suite; it says nothing about content quality.
+    evidence_source:
+      - "Conformance runner in [the CI workflow](.github/workflows/ci.yml) on ubuntu, macos and windows: document validation and the fail-closed writer pipeline, held to the shared fixtures."
+      - "Load renders the restore prompt: [the parity suite](packages/sdk-py/tests/test_parity.py) holds it byte for byte to the built TypeScript reference, over a thirty-document corpus of hostile working-style inputs, on every push in [the CI workflow](.github/workflows/ci.yml)."
+      - "The cross-language store harness in the same workflow drives one writer per implementation against one store, and each suite holds the deterministic check report and card byte-identical to the reference over a shared corpus."
+
+  - surface: Go SDK
+    for_whom: Developers building the format into their own tools, in Go
+    capability: [validate, save, load, check]
+    maturity: works
+    integration: local
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-30"
+    limitation: Conformance is a fixture suite; it says nothing about content quality.
+    evidence_source:
+      - "Conformance runner in [the CI workflow](.github/workflows/ci.yml) on ubuntu, macos and windows: document validation and the fail-closed writer pipeline, held to the shared fixtures."
+      - "Load renders the restore prompt: the goldens in [packages/sdk-go/testdata](packages/sdk-go/testdata), generated from the built TypeScript reference, hold it byte for byte in the Go suite on every push in [the CI workflow](.github/workflows/ci.yml), beside that suite's own hostile working-style cases."
+      - "The cross-language store harness in the same workflow drives one writer per implementation against one store, and each suite holds the deterministic check report and card byte-identical to the reference over a shared corpus."
+
+  - surface: JVM SDK
+    for_whom: Developers building the format into their own tools, in Kotlin or Java
+    capability: [validate, save, load, check]
+    maturity: works
+    integration: local
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-30"
+    limitation: CI runs the JVM suite on ubuntu-latest only.
+    evidence_source:
+      - "Conformance runner in [the CI workflow](.github/workflows/ci.yml): document validation and the fail-closed writer pipeline, held to the shared fixtures."
+      - "Load renders the restore prompt: the goldens in [the JVM parity resources](packages/sdk-jvm/src/test/resources/parity), generated from the built TypeScript reference, hold it byte for byte in the JVM suite in [the CI workflow](.github/workflows/ci.yml), beside that suite's own hostile working-style cases."
+      - "The cross-language store harness in the same workflow drives one writer per implementation against one store, and each suite holds the deterministic check report and card byte-identical to the reference over a shared corpus."
+
+  - surface: .NET SDK
+    for_whom: Developers building the format into their own tools, in C#
+    capability: [validate, save, load, check]
+    maturity: works
+    integration: local
+    evidence: reproducible-in-repo
+    reproducible_in_repo: "yes"
+    hosted_dependency: "no"
+    evidence_date: "2026-07-30"
+    limitation: CI runs the .NET suite on ubuntu-latest only.
+    evidence_source:
+      - "Conformance runner in [the CI workflow](.github/workflows/ci.yml): document validation and the fail-closed writer pipeline, held to the shared fixtures."
+      - "Load renders the restore prompt: the goldens in [the .NET golden files](packages/sdk-dotnet/SoilHandover.Tests/golden), regenerated from the built TypeScript reference by [tools/generate-golden.mjs](packages/sdk-dotnet/tools/generate-golden.mjs), hold it byte for byte in the .NET suite in [the CI workflow](.github/workflows/ci.yml), beside that suite's own hostile working-style cases."
+      - "The cross-language store harness in the same workflow drives one writer per implementation against one store, and each suite holds the deterministic check report and card byte-identical to the reference over a shared corpus."
+      - "The cross-language store harness in the same workflow drives one writer per implementation against one store, and each suite holds the deterministic check report and card byte-identical to the reference over a shared corpus."
+
+# What continuous integration proves per operating system, from the CI matrix
+# on main. The portable core is pnpm build, the root vitest suite, the Python
+# tests, the Go tests, and the TypeScript, Python and Go conformance runners.
+operating_systems:
+  - os: ubuntu-latest
+    suites:
+      [portable core, JVM suite and runner, .NET suite and runner, formatting]
+    last_green: "2026-07-27"
+  - os: macos-latest
+    suites: [portable core]
+    last_green: "2026-07-27"
+  - os: windows-latest
+    suites: [portable core]
+    last_green: "2026-07-27"

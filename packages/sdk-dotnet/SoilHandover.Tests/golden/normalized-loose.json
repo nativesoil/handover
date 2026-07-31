@@ -1,0 +1,91 @@
+{
+  "soilHandover": "1.0",
+  "projectId": "loose-shape",
+  "title": "A reply in the rescue shape",
+  "createdAt": "2026-07-22T10:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "available",
+      "summary": "A project that exists only to test the loose shape."
+    },
+    "decisions": {
+      "status": "available",
+      "summary": "One decision was made."
+    },
+    "workflow": {
+      "status": "available",
+      "summary": "padded",
+      "provenance": [
+        "model_reported",
+        "vibe_checked"
+      ]
+    },
+    "architecture": {
+      "status": "missing",
+      "summary": null
+    },
+    "constraints": {
+      "status": "missing",
+      "summary": null
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "missing",
+      "summary": null
+    },
+    "currentTask": {
+      "status": "missing",
+      "summary": null
+    },
+    "latestUserIntent": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionDelta": {
+      "status": "missing",
+      "summary": null
+    },
+    "blockers": {
+      "status": "missing",
+      "summary": null
+    },
+    "nextSteps": {
+      "status": "missing",
+      "summary": null
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "missing",
+      "summary": null
+    },
+    "restoreInstructions": {
+      "status": "missing",
+      "summary": null
+    },
+    "provenanceMap": {
+      "status": "missing",
+      "summary": null
+    },
+    "safetySummary": {
+      "status": "missing",
+      "summary": null
+    }
+  },
+  "quality": {
+    "missingInputs": [
+      "the logs",
+      "  "
+    ]
+  },
+  "safety": {
+    "unsafeOmissions": [
+      "a key exists in the platform config"
+    ]
+  }
+}

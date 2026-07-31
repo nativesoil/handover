@@ -1,0 +1,9 @@
+{
+  "soilHandover": "1.0",
+  "observations": [
+    {
+      "kind": "com.example.numbers",
+      "data": { "count": 9007199254740992 }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+  ┌─ SOIL · handover checked ────────────────── #902 ─
+  │
+  │   A thread that had almost nothing in it
+  │   thin-thread
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   thin
+  │   2 problems · 0 cautions · 0 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   the document
+  │   ▸ completeness.no-durable-truth · problem
+  │     none of the six durable-tier sections
+  │     carries content, so the project's lasting
+  │     truth did not travel
+  │
+  │   restore instructions
+  │   ▸ restore.absent · problem
+  │     content was captured but restoreInstructions
+  │     is empty, so nothing tells the next session
+  │     how to begin
+  │
+  └─ checked from the document alone · only a real load proves restore

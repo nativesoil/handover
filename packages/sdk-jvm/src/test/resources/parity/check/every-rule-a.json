@@ -1,0 +1,78 @@
+{
+  "soilHandover": "1.0",
+  "handoverId": "019f7e89-fc00-7000-8000-000000000001",
+  "projectId": "rule-storm-a",
+  "title": "A capture that failed at the durable tier",
+  "createdAt": "2026-07-22T10:00:00Z",
+  "sections": {
+    "projectIdentity": {
+      "status": "missing",
+      "summary": null
+    },
+    "decisions": {
+      "status": "missing",
+      "summary": null
+    },
+    "workflow": {
+      "status": "missing",
+      "summary": null
+    },
+    "architecture": {
+      "status": "blocked",
+      "summary": null
+    },
+    "constraints": {
+      "status": "missing",
+      "summary": null
+    },
+    "rejectedPaths": {
+      "status": "missing",
+      "summary": null
+    },
+    "executiveSummary": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the w."
+    },
+    "currentTask": {
+      "status": "available",
+      "summary": "Right Now the retry path is half designed and the widget re-mount is not written, which is where the work stopped. The step list is agreed. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "latestUserIntent": {
+      "status": "available",
+      "summary": "For the exact wording of the direction, see the repo history and settle it there. The framing was about attribution. xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "sessionDelta": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files, and each section of this document repea."
+    },
+    "blockers": {
+      "status": "available",
+      "summary": "None known."
+    },
+    "nextSteps": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files,."
+    },
+    "openQuestions": {
+      "status": "missing",
+      "summary": null
+    },
+    "sessionActivity": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written down in plain files, and each section of."
+    },
+    "restoreInstructions": {
+      "status": "missing",
+      "summary": null
+    },
+    "provenanceMap": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its la."
+    },
+    "safetySummary": {
+      "status": "available",
+      "summary": "The project keeps its lasting truth written down in plain files, and each section of this document repeats what the sessions agreed on in full sentences so a cold reader can pick the work up without asking anything. The project keeps its lasting truth written."
+    }
+  },
+  "code": "#001"
+}

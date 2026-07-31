@@ -1,0 +1,35 @@
+{
+  "name": "@nativesoil/handover-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for the Soil Handover Specification: types, validation, the extraction recipe, the local store, and the rail-card renderer.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nativesoil/handover.git",
+    "directory": "packages/sdk-ts"
+  },
+  "homepage": "https://github.com/nativesoil/handover",
+  "bugs": "https://github.com/nativesoil/handover/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  }
+}

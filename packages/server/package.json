@@ -1,0 +1,36 @@
+{
+  "name": "@nativesoil/handover-server",
+  "version": "0.1.0",
+  "description": "A self-hostable single-node reference server for the Soil Handover Specification: bearer-token users, shared projects, an HTTP API and an MCP endpoint over the same plain-file stores.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nativesoil/handover.git",
+    "directory": "packages/server"
+  },
+  "homepage": "https://github.com/nativesoil/handover",
+  "bugs": "https://github.com/nativesoil/handover/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module",
+  "bin": {
+    "soil-server": "./bin/soil-server.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@nativesoil/handover-sdk": "workspace:*"
+  }
+}

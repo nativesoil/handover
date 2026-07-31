@@ -1,0 +1,43 @@
+name: Documentation problem
+description:
+  A human or an agent followed the documentation and could not complete an
+  install or a documented flow.
+title: "[docs] "
+labels: [documentation]
+body:
+  - type: input
+    id: document
+    attributes:
+      label: Which document
+      placeholder: e.g. docs/install-with-an-agent.md, docs/quickstart.md
+    validations:
+      required: true
+  - type: dropdown
+    id: who
+    attributes:
+      label: Who was following it
+      options:
+        - a human
+        - an agent
+        - both
+    validations:
+      required: true
+  - type: textarea
+    id: where
+    attributes:
+      label: Where it broke
+      description: The step or command where the documentation stopped matching reality.
+    validations:
+      required: true
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened instead
+      description: The output or error, with any credentials and private paths removed.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: e.g. macOS 15, Node 22, Go 1.23

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+coverage/
+.soil-test-home/
+__pycache__/
+.pytest_cache/
+packages/sdk-py/uv.lock
+.venv/
+
+# Compiled soil CLI from go build in packages/sdk-go
+packages/sdk-go/soil

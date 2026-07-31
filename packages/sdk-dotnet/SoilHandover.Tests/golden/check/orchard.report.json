@@ -1,0 +1,24 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "adequate",
+  "counts": {
+    "problems": 0,
+    "cautions": 1,
+    "advice": 0
+  },
+  "findings": [
+    {
+      "rule": "time.unanchored",
+      "severity": "caution",
+      "section": "blockers",
+      "message": "uses \"now\" with no capture-time anchor, so a later reader cannot tell when it was true"
+    }
+  ],
+  "sections": {
+    "withContent": 17,
+    "missing": 0,
+    "blocked": 0,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    One saving writer process for the .NET concurrency test. It is its own
+    program rather than a test case because the defect it reproduces only
+    happens between processes: a test that ran the loop in threads would
+    prove nothing, since one process is safe by construction here.
+
+    Not packable and not part of the shipped SDK. The test builds it and
+    spawns several copies against one store.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Soil.Handover.ConcurrentSave</RootNamespace>
+    <AssemblyName>Soil.Handover.ConcurrentSave</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../SoilHandover/SoilHandover.csproj" />
+  </ItemGroup>
+
+</Project>

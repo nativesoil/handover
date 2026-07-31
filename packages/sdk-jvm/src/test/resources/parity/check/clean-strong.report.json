@@ -1,0 +1,17 @@
+{
+  "checkVersion": "1.0.0",
+  "grade": "strong",
+  "counts": {
+    "problems": 0,
+    "cautions": 0,
+    "advice": 0
+  },
+  "findings": [],
+  "sections": {
+    "withContent": 17,
+    "missing": 0,
+    "blocked": 0,
+    "notApplicable": 0,
+    "total": 17
+  }
+}

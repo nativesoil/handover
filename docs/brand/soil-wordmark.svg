@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" viewBox="0 0 580 104" role="img" aria-labelledby="wm-title wm-desc">
+  <title id="wm-title">Native Soil</title>
+  <desc id="wm-desc">The Native Soil wordmark: the brand symbol, two interlocking carbon blocks with one small green block, the seed, beside the name Native Soil with a superscript registered-trademark sign. Carbon on light backgrounds; the style block inverts the carbon to off-white when the reader prefers a dark scheme, and the seed stays green in both.</desc>
+
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .mark { fill: #f4f2ed; }
+    }
+  </style>
+
+  <!-- The symbol geometry is copied verbatim from docs/brand/soil-symbol.svg
+       and must stay byte for byte; only the outer placement transform and the
+       fills belong to this file. -->
+
+  <g transform="translate(0 20) scale(0.07)">
+    <g transform="matrix(8.29103e-17,-1.35403,0.983178,6.02023e-17,-37549.3,24198)">
+      <path class="mark" d="M17421.4,38488.7L17871.2,38488.7L17871.2,39095.2L17646.3,39095.2L17646.3,38798.4L17196.5,38798.4L17196.5,38191.8L17421.4,38191.8L17421.4,38488.7Z" fill="#101010"/>
+    </g>
+    <g transform="matrix(3.16287e-17,0.516535,-4.34472,2.66038e-16,233975,-12287.1)">
+      <rect x="24966.6" y="53578.2" width="589.504" height="70.085" fill="#39CD75"/>
+    </g>
+  </g>
+
+  <text class="mark" x="116" y="77" font-size="72" font-weight="600" letter-spacing="-1.8" fill="#101010">Native Soil<tspan font-size="34" dy="-30" font-weight="400" letter-spacing="0">&#174;</tspan></text>
+</svg>

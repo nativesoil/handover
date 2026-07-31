@@ -1,0 +1,30 @@
+{
+  "indexVersion": 1,
+  "nextCode": 4,
+  "entries": [
+    {
+      "code": "#001",
+      "projectId": "orchard-checkout",
+      "title": "Checkout rework: address step split, payment retry pending",
+      "createdAt": "2026-07-19T14:12:00Z",
+      "sectionsWithContent": 17,
+      "file": "001.json"
+    },
+    {
+      "code": "#002",
+      "projectId": "golden-store",
+      "title": "Stored with a fixed identity",
+      "createdAt": "2026-07-22T10:00:00Z",
+      "sectionsWithContent": 1,
+      "file": "002.json"
+    },
+    {
+      "code": "#003",
+      "projectId": "observed-project",
+      "title": "Carries observations from producers this reader has never heard of",
+      "createdAt": "2026-07-20T08:00:00Z",
+      "sectionsWithContent": 1,
+      "file": "003.json"
+    }
+  ]
+}

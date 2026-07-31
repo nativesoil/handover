@@ -1,0 +1,15 @@
+  ┌─ SOIL · handover checked ────────────────── #003 ─
+  │
+  │   A capture every rule passes
+  │   clean-strong
+  │
+  ├─ grade ───────────────────────────────────────────
+  │
+  │   strong
+  │   0 problems · 0 cautions · 0 advice
+  │
+  ├─ findings ────────────────────────────────────────
+  │
+  │   none · every rule passed on this document
+  │
+  └─ checked from the document alone · only a real load proves restore

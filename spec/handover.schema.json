@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nativesoil.dev/spec/handover-1.0.schema.json",
+  "title": "Soil Handover v1",
+  "description": "A portable capture of a project's working state: 17 declared sections, the gaps stated out loud, and nothing that should not travel. This schema is the normative statement of the format. It describes shape only, and says nothing about whether a handover is any good.",
+  "$comment": "This schema is handed an already-constructed value, so the normative rules that bind while a handover is still bytes are structurally invisible to it and to any validator running it. They are, in full: a serialized handover must not exceed 1048576 bytes; must be UTF-8 with no byte order mark; must not repeat a member name inside one object; must not nest more than 32 levels; and must hold every number as an integer in the safe-integer range judged from the token text. By the time a schema validator sees a document, the size of what arrived is gone, the byte order mark is gone, the repeated member has collapsed to one, the recursion that a deep document would break has already run, and an oversized integer has been rounded into one the schema would accept. Those rules live in spec/ingestion.md and spec/value-domain.md and are enforced at the ingestion boundary, before parsing. An implementation that only validates against this schema is not conformant, which is the same reason the fail-closed secret rule lives outside the schema. One rule this schema DOES state is the text unit: every maxLength here is a bound in Unicode code points, as JSON Schema defines it, which spec/value-domain.md states normatively so that an implementation counting its own language's string length cannot read the same bound differently.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "soilHandover",
+    "handoverId",
+    "projectId",
+    "title",
+    "createdAt",
+    "sections"
+  ],
+  "properties": {
+    "soilHandover": {
+      "description": "The format version this document claims. An enumeration, not a pattern: a reader supports exact versions and refuses one it does not implement, so this lists the versions that actually exist. Today that is exactly 1.0. A pattern such as ^1\\.[0-9]+$ would accept a minor nobody has written yet, which is a reader claiming to implement a version that does not exist. See spec/versioning.md.",
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "handoverId": {
+      "description": "The handover's globally unique id, assigned by the writer when the handover is stored. The official writers emit a UUIDv7 (RFC 9562). Opaque: never derived from content, never reused, and carrying no meaning beyond identity. A copy keeps it; a new capture gets a new one; migration never changes it.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "projectId": {
+      "description": "A short stable slug for the project, e.g. billing-rework. Two handovers of the same project share it.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "title": {
+      "description": "A short human title for this handover.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "createdAt": {
+      "description": "When the handover was written, ISO 8601 with an offset or Z.",
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "source": {
+      "description": "Where the handover was written. Informational only.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "client": { "type": "string" },
+        "model": { "type": "string" },
+        "provider": { "type": "string" },
+        "recipeVersion": {
+          "description": "The semver of the extraction recipe that produced this document, e.g. 1.0.0. Set only by a writer that actually produced the document from that recipe; a tool handed a finished document must not stamp its own version into it. Documents produced by other writers may lack it. Moves independently of the format version: improving the recipe never moves the format version.",
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "sections": { "$ref": "#/$defs/sections" },
+    "quality": {
+      "description": "The extractor's own honesty record. Stated gaps are the point of this object, not a defect in it.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "missingInputs": { "$ref": "#/$defs/noteList" },
+        "contradictions": { "$ref": "#/$defs/noteList" }
+      }
+    },
+    "safety": {
+      "description": "What was deliberately withheld, so the omission is visible rather than silent.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "unsafeOmissions": { "$ref": "#/$defs/noteList" }
+      }
+    },
+    "observations": {
+      "description": "Optional evidence attached to this handover. The extension point: a reader that does not recognise an entry's kind ignores that entry and carries it forward unchanged. Observations are never required, and they never change how the 17 sections are read. The safety rule applies inside data.",
+      "type": "array",
+      "maxItems": 100,
+      "items": { "$ref": "#/$defs/observation" }
+    },
+    "code": {
+      "description": "The local address a store assigned, e.g. #004. Written by a store, never by the extractor.",
+      "type": "string",
+      "pattern": "^#[0-9]{3,}$"
+    }
+  },
+  "$defs": {
+    "provenanceLabel": {
+      "description": "Where a claim came from, so a cold reader can tell a check from a report from a guess. The set is closed and frozen for the whole 1.x line: a label outside it is refused, and adding one requires a major version.",
+      "type": "string",
+      "enum": [
+        "repo_verified",
+        "soil_observed",
+        "prompt_report",
+        "user_locked_memory",
+        "model_reported",
+        "inferred",
+        "owner_observed",
+        "live_verified",
+        "emulator_verified",
+        "planned_only",
+        "blocked"
+      ]
+    },
+    "section": {
+      "description": "One of the 17 sections. A section is always present: status available means the content is here, missing means the extractor could not see it, blocked means it was withheld for safety, and not_applicable means the section genuinely has no subject in this project. The three gap statuses are not interchangeable: missing says the extractor failed to see something that may well exist, blocked says a thing exists and is being held back, and not_applicable says there is nothing there to see. A reader that cannot tell them apart cannot tell whether to go looking.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "summary"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["available", "missing", "blocked", "not_applicable"]
+        },
+        "summary": {
+          "type": ["string", "null"],
+          "maxLength": 20000
+        },
+        "provenance": {
+          "type": "array",
+          "maxItems": 11,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/provenanceLabel" }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "status": { "const": "available" } },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "summary": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        {
+          "$comment": "not_applicable carries its reason, on the same terms as available. It is a positive assertion about the project, not a gap report: it tells the next model to stop looking, and an instruction to stop looking with no reason attached is the most expensive thin section in the format. A writer that cannot say why a section does not apply has not established that it does not apply, and the honest status for that is missing, which stays free.",
+          "if": {
+            "properties": { "status": { "const": "not_applicable" } },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "summary": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ]
+    },
+    "observation": {
+      "description": "One piece of evidence about the project or about the capture. This specification says nothing about how an observation is produced, scored, weighted or interpreted.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "data"],
+      "properties": {
+        "kind": {
+          "description": "What this observation is. Namespaced strings are encouraged. An unrecognised kind is ignored, never an error.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "producedBy": {
+          "description": "What produced this observation.",
+          "type": "string"
+        },
+        "producedAt": {
+          "description": "When it was produced.",
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+        },
+        "data": {
+          "description": "The payload. Free-form and opaque to this specification, but still subject to the safety rule: no secrets, no private absolute paths.",
+          "type": "object"
+        }
+      }
+    },
+    "noteList": {
+      "type": "array",
+      "maxItems": 200,
+      "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+    },
+    "sections": {
+      "description": "All 17 sections, every one declared. A gap is stated with a status, never left out: missing when the extractor could not see it, blocked when it was withheld, not_applicable when the project has no such thing.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "projectIdentity",
+        "decisions",
+        "workflow",
+        "architecture",
+        "constraints",
+        "rejectedPaths",
+        "executiveSummary",
+        "currentTask",
+        "latestUserIntent",
+        "sessionDelta",
+        "blockers",
+        "nextSteps",
+        "openQuestions",
+        "sessionActivity",
+        "restoreInstructions",
+        "provenanceMap",
+        "safetySummary"
+      ],
+      "properties": {
+        "projectIdentity": { "$ref": "#/$defs/section" },
+        "decisions": { "$ref": "#/$defs/section" },
+        "workflow": { "$ref": "#/$defs/section" },
+        "architecture": { "$ref": "#/$defs/section" },
+        "constraints": { "$ref": "#/$defs/section" },
+        "rejectedPaths": { "$ref": "#/$defs/section" },
+        "executiveSummary": { "$ref": "#/$defs/section" },
+        "currentTask": { "$ref": "#/$defs/section" },
+        "latestUserIntent": { "$ref": "#/$defs/section" },
+        "sessionDelta": { "$ref": "#/$defs/section" },
+        "blockers": { "$ref": "#/$defs/section" },
+        "nextSteps": { "$ref": "#/$defs/section" },
+        "openQuestions": { "$ref": "#/$defs/section" },
+        "sessionActivity": { "$ref": "#/$defs/section" },
+        "restoreInstructions": { "$ref": "#/$defs/section" },
+        "provenanceMap": { "$ref": "#/$defs/section" },
+        "safetySummary": { "$ref": "#/$defs/section" }
+      }
+    }
+  }
+}

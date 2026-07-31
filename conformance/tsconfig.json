@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist"
+  },
+  "include": ["run.ts"],
+  "references": [
+    { "path": "../packages/sdk-ts" },
+    { "path": "../packages/mcp" }
+  ]
+}
