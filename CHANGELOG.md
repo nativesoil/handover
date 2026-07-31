@@ -5,7 +5,31 @@ own changelog in [spec/CHANGELOG.md](spec/CHANGELOG.md); the two version lines
 move independently. Release tags: `v<implementation>` and
 `spec-v<specification>`.
 
-## Unreleased
+## 0.1.0
+
+The first public release, and the only one this file has ever described.
+Everything below ships under the `v0.1.0` tag; there is no earlier public
+version for any of it to be unreleased relative to. The format contract moves
+on its own version line and is at 1.0.0, in
+[spec/CHANGELOG.md](spec/CHANGELOG.md).
+
+In outline, the release is:
+
+- TypeScript SDK, the `soil` CLI and a local MCP stdio server
+- Python, Go, JVM (Kotlin) and .NET SDKs, all passing the shared conformance
+  fixtures (conformant previews until packaged)
+- The self-hostable single-node server preview, `packages/server`: bearer-token
+  users, personal and shared project stores, an HTTP API and an experimental
+  MCP endpoint, on the same on-disk layout as the local store
+- Conformance suite with five runners, two classes reported separately
+- The pre-schema ingestion boundary, in all five SDKs and on the CLI's
+  raw-document input path
+- Local store: one JSON file per handover plus an index, `SOIL_HOME` override
+- Documentation: quickstart, concepts, format, architecture, the server,
+  checking, related work, FAQ
+
+The rest of this section is the detailed record of how it got there, newest
+first.
 
 - Fixed: **the restore prompt framed the whole document as context and never
   said why part of it is written in the second person.** The boot prompt is a
@@ -45,32 +69,6 @@ move independently. Release tags: `v<implementation>` and
   say exactly that and move on, an honest gap never blocks a save, and a
   symptom you do not have is a gap to note rather than a blank to fill
   (RULE 3).
-
-## 0.1.0
-
-The first public release, and the only one this file has ever described.
-Everything below ships under the `v0.1.0` tag; there is no earlier public
-version for any of it to be unreleased relative to. The format contract moves
-on its own version line and is at 1.0.0, in
-[spec/CHANGELOG.md](spec/CHANGELOG.md).
-
-In outline, the release is:
-
-- TypeScript SDK, the `soil` CLI and a local MCP stdio server
-- Python, Go, JVM (Kotlin) and .NET SDKs, all passing the shared conformance
-  fixtures (conformant previews until packaged)
-- The self-hostable single-node server preview, `packages/server`: bearer-token
-  users, personal and shared project stores, an HTTP API and an experimental
-  MCP endpoint, on the same on-disk layout as the local store
-- Conformance suite with five runners, two classes reported separately
-- The pre-schema ingestion boundary, in all five SDKs and on the CLI's
-  raw-document input path
-- Local store: one JSON file per handover plus an index, `SOIL_HOME` override
-- Documentation: quickstart, concepts, format, architecture, the server,
-  checking, related work, FAQ
-
-The rest of this section is the detailed record of how it got there, newest
-first.
 
 - Added: **checking and grading in every implementation, and `soil check` in
   the Go binary.** The deterministic baseline existed only in the TypeScript
