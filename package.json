@@ -26,7 +26,7 @@
     "@nativesoil/handover-mcp": "workspace:*",
     "@nativesoil/handover-sdk": "workspace:*",
     "@nativesoil/handover-server": "workspace:*",
-    "@types/node": "^20.17.10",
+    "@types/node": "^26.5.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "prettier": "^3.4.2",
